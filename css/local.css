@@ -110,3 +110,12 @@
       border-top: none;
       font-size: 13.5px;
     }
+
+    .graph-help {
+      font-size: 10px;
+    }
+    
+    .depgraph {
+      width: 100%;
+      max-width: 1140px;
+    }
