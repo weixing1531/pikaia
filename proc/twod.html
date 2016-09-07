@@ -53,13 +53,20 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 				
-                
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+		 aria-expanded="false">Contents <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+              
             <li><a href="../lists/files.html">Source Files</a></li>
 				
 				
             <li><a href="../lists/modules.html">Modules</a></li>
 				
-				
+            
+                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
 				
 				
@@ -69,7 +76,27 @@
 				
 				
             <li><a href="../program/pikaia_test.html">Program</a></li>
-				
+	    
+            </ul>
+            </li>
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../program/pikaia_test.html">Program</a></li>
+
           </ul>
         
         <form action="../search.html" class="navbar-form navbar-right" role="search">
@@ -90,12 +117,12 @@
   
   <div class="row">
     <h1>twod
-    <small>Subroutine</small>
+      <small>Subroutine</small>
     
     </h1>
-	 
+    
 <div class="row">
-<div class="col-lg-12">
+  <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
      
@@ -104,6 +131,13 @@
      
     
     
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+	  data-placement="bottom" data-html="true"
+	  title=" 2.6% of total for procedures.">19 statements</a>
+     </li> 
+     
+     
     <li><i class="fa fa-code"></i><a href="../src/pikaia_test.f90"> Source File</a></li>
      
   </ul>
@@ -118,59 +152,53 @@
 </div>
 </div>
 </div>
-    
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
   </div>
   
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
     
+<div id="sidebar">
   
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Variables</h3></div>
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../proc/twod.html#variable-pi">pi</a>
-      
-      <a class="list-group-item" href="../proc/twod.html#variable-sigma2">sigma2</a>
-      
-      <a class="list-group-item" href="../proc/twod.html#variable-nn">nn</a>
-      
-      <a class="list-group-item" href="../proc/twod.html#variable-rr">rr</a>
-      
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/twod.html#src">twod</a>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-    <div class="list-group">
-      <a class="list-group-item" href="../proc/twod.html#src">twod</a>
-    </div>
-  </div>
-  
+</div>
+
+
   <hr>
   
-  <div class="panel panel-default">
-    <div class="panel-heading text-left"><h3 class="panel-title">All Procedures</h3></div>
+
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprocs-0">All Procedures</a></h3></div>
+  <div id="allprocs-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../proc/adjmut.html">adjmut</a>
@@ -217,21 +245,28 @@
       
     </div>
   </div>
-  
-  
+</div>
+
+
+</div>  
+
     </div>
     
-    <div class="col-lg-9" id='text'>
+    <div class="col-md-9" id='text'>
     <h2>
 subroutine twod(me, x, f)
     
     
-    
+	 
 </h2>
     
   
 
 
+    
+    <p>Compute sample fitness function
+ (a smooth 2-d landscape)</p>
+    
 
     <h3>Arguments</h3>
     
@@ -266,7 +301,7 @@ subroutine twod(me, x, f)
   
 <tr>
   
-  <td><span class="anchor" id="variable-x%7E7"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x%7E6"></span>real(kind=wp),</td>
   <td>intent(in),</td>
   <td></td>
   
@@ -281,7 +316,7 @@ subroutine twod(me, x, f)
   
 <tr>
   
-  <td><span class="anchor" id="variable-f%7E8"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-f%7E7"></span>real(kind=wp),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -296,87 +331,44 @@ subroutine twod(me, x, f)
     
     
     
-    <h3>Description</h3>
-    <p>Compute sample fitness function 
- (a smooth 2-d landscape)</p>
-    
-    
      
     <br>
-    
-    <section>
-    <h2>Variables</h2>
-    
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th>
 
-<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+    <section class="visible-xs visible-sm hidden-md">
+      
 
 
 
-<tbody>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pi"></span>real(kind=wp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pi</strong></td><td> =</td><td>acos(-1.0_wp)</td><td></td>
-  
-</tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-sigma2"></span>real(kind=wp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>sigma2</strong></td><td> =</td><td>0.15_wp</td><td></td>
-  
-</tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-nn"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>nn</strong></td><td> =</td><td>9</td><td></td>
-  
-</tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-rr"></span>real(kind=wp),</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>rr</strong></td><td></td><td></td><td></td>
-  
-</tr>
 
-</tbody>
-</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/twod.html#src">twod</a>
+  </div>
+</div>
+
 
     </section>
-    <br>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
     
     
     
@@ -395,9 +387,9 @@ subroutine twod(me, x, f)
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre>        <span class="k">subroutine </span><span class="n">twod</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span>        <span class="k">subroutine </span><span class="n">twod</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 
-        <span class="c">!! Compute sample fitness function </span>
+        <span class="c">!! Compute sample fitness function</span>
         <span class="c">!! (a smooth 2-d landscape)</span>
 
         <span class="k">implicit none</span>
@@ -424,8 +416,8 @@ subroutine twod(me, x, f)
 <span class="k">            </span><span class="n">rr</span><span class="o">=</span><span class="nb">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="mf">0.5_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span> <span class="p">(</span><span class="mf">0.5_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">f</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">rr</span><span class="o">*</span><span class="n">nn</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rr</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">sigma2</span><span class="p">)</span>
         <span class="k">end if</span>
-<span class="k">        </span>
-<span class="k">        end subroutine </span><span class="n">twod</span>   
+
+<span class="k">        end subroutine </span><span class="n">twod</span>
 </pre></div>
 
     </section>
@@ -435,16 +427,82 @@ subroutine twod(me, x, f)
     </div>
   </div>
 
+  <section class="visible-xs visible-sm hidden-md">
     <hr>
-    <footer>
-        <div class="row">
-        <div class="col-md-6">&copy; 2015 Pikaia was written by Jacob Williams. </div>
-        <div class="col-md-6"><span class="pull-right">Documentation generated by <a href="https://github.com/cmacmackin/ford">FORD</a>.</span></div>
-        </div>
-        <br>
-    </footer>
-    </div> <!-- /container -->
+    
 
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprocs-1">All Procedures</a></h3></div>
+  <div id="allprocs-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../proc/adjmut.html">adjmut</a>
+      
+      <a class="list-group-item" href="../proc/cross.html">cross</a>
+      
+      <a class="list-group-item" href="../proc/decode.html">decode</a>
+      
+      <a class="list-group-item" href="../proc/encode.html">encode</a>
+      
+      <a class="list-group-item" href="../proc/func_wrapper.html">func_wrapper</a>
+      
+      <a class="list-group-item" href="../proc/genrep.html">genrep</a>
+      
+      <a class="list-group-item" href="../proc/mutate.html">mutate</a>
+      
+      <a class="list-group-item" href="../proc/newpop.html">newpop</a>
+      
+      <a class="list-group-item" href="../proc/pikaia.html">pikaia</a>
+      
+      <a class="list-group-item" href="../proc/report.html">report</a>
+      
+      <a class="list-group-item" href="../proc/report_iteration.html">report_iteration</a>
+      
+      <a class="list-group-item" href="../proc/rninit.html">rninit</a>
+      
+      <a class="list-group-item" href="../proc/rnkpop.html">rnkpop</a>
+      
+      <a class="list-group-item" href="../proc/rosenbrock.html">rosenbrock</a>
+      
+      <a class="list-group-item" href="../proc/rqsort.html">rqsort</a>
+      
+      <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
+      
+      <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
+      
+      <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
+      
+      <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
+      
+      <a class="list-group-item" href="../proc/twod.html">twod</a>
+      
+      <a class="list-group-item" href="../proc/urand.html">urand</a>
+      
+    </div>
+  </div>
+</div>
+
+
+  </section>
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2016 </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> Pikaia was developed by Jacob Williams</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -469,6 +527,6 @@ subroutine twod(me, x, f)
         }
       });
     </script>
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 </html>

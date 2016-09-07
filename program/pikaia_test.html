@@ -53,13 +53,20 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 				
-                
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+		 aria-expanded="false">Contents <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+              
             <li><a href="../lists/files.html">Source Files</a></li>
 				
 				
             <li><a href="../lists/modules.html">Modules</a></li>
 				
-				
+            
+                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
 				
 				
@@ -69,7 +76,27 @@
 				
 				
             <li><a href="../program/pikaia_test.html">Program</a></li>
-				
+	    
+            </ul>
+            </li>
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../program/pikaia_test.html">Program</a></li>
+
           </ul>
         
         <form action="../search.html" class="navbar-form navbar-right" role="search">
@@ -89,17 +116,17 @@
     
   
   <div class="row">
-    <h1>pikaia_test 
+    <h1>pikaia_test
     <small>Program</small>
     
     </h1>
-	 
+    
 <div class="row">
-<div class="col-lg-12">
+  <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
      
-    <li><i class="fa fa-pencil"></i> Jacob Williams</li>
+     <li><i class="fa fa-pencil"></i> Jacob Williams</li>
      
      
     <li><i class="fa fa-calendar-o"></i> 3/9/2015</li>
@@ -108,6 +135,13 @@
      
     
     
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+	  data-placement="bottom" data-html="true"
+	  title="100.0% of total for programs.">103 statements</a>
+     </li> 
+     
+     
     <li><i class="fa fa-code"></i><a href="../src/pikaia_test.f90"> Source File</a></li>
      
   </ul>
@@ -120,30 +154,35 @@
 </div>
 </div>
 </div>
-    
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
   </div>
   
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
     
+<div id="sidebar">
   
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Variables</h3></div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-n%7E5">n</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-n%7E4">n</a>
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-seed%7E2">seed</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-seed">seed</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-status%7E4">status</a>
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-x%7E10">x</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-x%7E9">x</a>
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E11">f</a>
-      
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-ierr">ierr</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E10">f</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-iunit">iunit</a>
       
@@ -165,21 +204,23 @@
       
     </div>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Subroutines</h3></div>
-    <div class="list-group">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-0">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-0" class="panel-collapse collapse">
       
       <a class="list-group-item" href="../program/pikaia_test.html#proc-twod">twod</a>
       
@@ -189,37 +230,43 @@
       
     </div>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-    <div class="list-group">
-      <a class="list-group-item" href="../program/pikaia_test.html#src">pikaia_test</a>
-    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../program/pikaia_test.html#src">pikaia_test</a>
   </div>
-  
+</div>
+
+
   <hr>
   
-  <div class="panel panel-default">
-    <div class="panel-heading text-left"><h3 class="panel-title">All Programs</h3></div>
+
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprogs-0">All Programs</a></h3></div>
+  <div id="allprogs-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../program/pikaia_test.html">pikaia_test</a>
       
     </div>
   </div>
-  
-  
+</div>
+
+
+</div>  
+
     </div>
     
-    <div class="col-lg-9" id='text'>
+    <div class="col-md-9" id='text'>
     
   
     <ul class="list-inline">
@@ -230,8 +277,6 @@
       <li><a href="https://software.intel.com/en-us/node/511041">iso_fortran_env</a></li>
       
     </ul>
-  
-
     
                 <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -258,8 +303,8 @@
 </g>
 <!-- module~pikaia_module&#45;&gt;program~pikaia_test -->
 <g id="edge4" class="edge"><title>module~pikaia_module&#45;&gt;program~pikaia_test</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M206.208,-20.5611C214.609,-22.1025 223.458,-23.7263 231.89,-25.2733"/>
-<polygon fill="black" stroke="black" points="231.441,-28.7494 241.909,-27.1117 232.705,-21.8644 231.441,-28.7494"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M206.208,-20.5611C214.609,-22.1025 223.458,-23.7263 231.89,-25.2733"/>
+<polygon fill="#000000" stroke="#000000" points="231.441,-28.7494 241.909,-27.1117 232.705,-21.8644 231.441,-28.7494"/>
 </g>
 <!-- iso_fortran_env -->
 <g id="node3" class="node"><title>iso_fortran_env</title>
@@ -270,13 +315,13 @@
 </g>
 <!-- iso_fortran_env&#45;&gt;program~pikaia_test -->
 <g id="edge6" class="edge"><title>iso_fortran_env&#45;&gt;program~pikaia_test</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M87.592,-34.2874C99.4052,-34.5824 112.192,-34.8524 124,-35 160.442,-35.4554 169.559,-35.5358 206,-35 214.312,-34.8778 223.193,-34.6716 231.703,-34.4369"/>
-<polygon fill="black" stroke="black" points="231.942,-37.9315 241.835,-34.1401 231.737,-30.9345 231.942,-37.9315"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M87.592,-34.2874C99.4052,-34.5824 112.192,-34.8524 124,-35 160.442,-35.4554 169.559,-35.5358 206,-35 214.312,-34.8778 223.193,-34.6716 231.703,-34.4369"/>
+<polygon fill="#000000" stroke="#000000" points="231.942,-37.9315 241.835,-34.1401 231.737,-30.9345 231.942,-37.9315"/>
 </g>
 <!-- iso_fortran_env&#45;&gt;module~pikaia_module -->
 <g id="edge2" class="edge"><title>iso_fortran_env&#45;&gt;module~pikaia_module</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M87.6838,-25.7795C96.1497,-24.3802 105.093,-22.902 113.775,-21.467"/>
-<polygon fill="black" stroke="black" points="114.507,-24.8935 123.803,-19.8095 113.366,-17.9872 114.507,-24.8935"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M87.6838,-25.7795C96.1497,-24.3802 105.093,-22.902 113.775,-21.467"/>
+<polygon fill="#000000" stroke="#000000" points="114.507,-24.8935 123.803,-19.8095 113.366,-17.9872 114.507,-24.8935"/>
 </g>
 </g>
 </svg>
@@ -291,18 +336,18 @@
                       </div>
                       <div class="modal-body">
                         
-Nodes of different colours represent the following:
+<p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="641pt" height="28pt"
- viewBox="0.00 0.00 641.00 27.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph1" class="graph" transform="scale(0.817602 0.817602) rotate(0) translate(4 30)">
+<svg width="486pt" height="34pt"
+ viewBox="0.00 0.00 486.00 34.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 30)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-30 781,-30 781,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-30 483,-30 483,5 -4,5"/>
 <!-- Module -->
 <g id="node1" class="node"><title>Module</title>
 <polygon fill="#337ab7" stroke="#337ab7" points="54,-26 2.13163e-14,-26 0,-1.24345e-14 54,-3.55271e-15 54,-26"/>
@@ -313,69 +358,134 @@ Nodes of different colours represent the following:
 <polygon fill="#5bc0de" stroke="#5bc0de" points="138,-26 72,-26 72,-1.24345e-14 138,-3.55271e-15 138,-26"/>
 <text text-anchor="middle" x="105" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
 </g>
-<!-- Type -->
-<g id="node3" class="node"><title>Type</title>
-<polygon fill="#5cb85c" stroke="#5cb85c" points="210,-26 156,-26 156,-1.24345e-14 210,-3.55271e-15 210,-26"/>
-<text text-anchor="middle" x="183" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
-</g>
 <!-- Subroutine -->
-<g id="node4" class="node"><title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="292,-26 228,-26 228,-1.24345e-14 292,-3.55271e-15 292,-26"/>
-<text text-anchor="middle" x="260" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+<g id="node3" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="220,-26 156,-26 156,-1.24345e-14 220,-3.55271e-15 220,-26"/>
+<text text-anchor="middle" x="188" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
 </g>
 <!-- Function -->
-<g id="node5" class="node"><title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
-<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node6" class="node"><title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="436,-26 382,-26 382,-1.24345e-14 436,-3.55271e-15 436,-26"/>
-<text text-anchor="middle" x="409" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node7" class="node"><title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="590,-26 454,-26 454,-1.24345e-14 590,-3.55271e-15 590,-26"/>
-<text text-anchor="middle" x="522" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<g id="node4" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="292,-26 238,-26 238,-1.24345e-14 292,-3.55271e-15 292,-26"/>
+<text text-anchor="middle" x="265" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
 </g>
 <!-- Program -->
-<g id="node8" class="node"><title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="662,-26 608,-26 608,-1.24345e-14 662,-3.55271e-15 662,-26"/>
-<text text-anchor="middle" x="635" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<g id="node5" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
+<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node9" class="node"><title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="776,-26 680,-26 680,-1.24345e-14 776,-3.55271e-15 776,-26"/>
-<text text-anchor="middle" x="728" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<g id="node6" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="478,-26 382,-26 382,-1.24345e-14 478,-3.55271e-15 478,-26"/>
+<text text-anchor="middle" x="430" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
 
-<h5>Module Graph</h5>
+
 <p>Solid arrows point from a parent (sub)module to the submodule which is
 descended from it. Dashed arrows point from a module being used to the
-module using it.</p>
-<h5>Type Graph</h5>
-<p>Solid arrows point from one derived type to another which extends
-(inherits from) it. Dashed arrows point from a derived type to another
-type containing it as a components, with a label listing the name(s) of
-said component(s).</p>
-<h5>Call Graph</h5>
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.</p>
+module or program unit using it.
+</p>
 
                       </div>
                     </div>
                   </div>
                 </div>
                 
+    
+
     <br><br>
-    <p>Sample driver program for pikaia.<br>
-  Based on the xpikaia routine.</p>
+    <p>Sample driver program for pikaia.
+  Based on the <a href="http://www.hao.ucar.edu/modeling/pikaia/xpikaia.f">xpikaia</a> routine.</p>
     
     <br>
+
+     <section class="visible-xs visible-sm hidden-md">
+       
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-n%7E4">n</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-seed">seed</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-status%7E4">status</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-x%7E9">x</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E10">f</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-iunit">iunit</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-istat">istat</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-xl%7E3">xl</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-xu%7E3">xu</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-p%7E2">p</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-header_written">header_written</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-tstart">tstart</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-tend">tend</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-filename">filename</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-1">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-1" class="panel-collapse collapse">
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#proc-twod">twod</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#proc-rosenbrock">rosenbrock</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#proc-report_iteration">report_iteration</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../program/pikaia_test.html#src">pikaia_test</a>
+  </div>
+</div>
+
+
+     </section>
+     <br class="visible-xs visible-sm hidden-md">
+
+     
 
     
     <section>
@@ -396,7 +506,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-n%7E5"></span>integer,</td>
+  <td><span class="anchor" id="variable-n%7E4"></span>integer,</td>
   
   
   <td>parameter</td><td>::</td>
@@ -410,7 +520,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-seed%7E2"></span>integer</td>
+  <td><span class="anchor" id="variable-seed"></span>integer</td>
   
   
   <td></td><td>::</td>
@@ -438,7 +548,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-x%7E10"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-x%7E9"></span>real(kind=wp),</td>
   
   
   <td>dimension(n)</td><td>::</td>
@@ -452,25 +562,11 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-f%7E11"></span>real(kind=wp)</td>
+  <td><span class="anchor" id="variable-f%7E10"></span>real(kind=wp)</td>
   
   
   <td></td><td>::</td>
   <td><strong>f</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-ierr"></span>integer</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -628,10 +724,20 @@ implementation in a submodule of an interface in a parent module.</p>
 subroutine <a href='../proc/twod.html'>twod</a>(me, x, f)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Compute sample fitness function
+ (a smooth 2-d landscape)</p>
     
     <h4>Arguments</h4>
     
@@ -697,16 +803,6 @@ subroutine <a href='../proc/twod.html'>twod</a>(me, x, f)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Compute sample fitness function 
- (a smooth 2-d landscape)</p>
-        
 
   </div>
   </div>
@@ -718,10 +814,20 @@ subroutine <a href='../proc/twod.html'>twod</a>(me, x, f)
 subroutine <a href='../proc/rosenbrock.html'>rosenbrock</a>(me, x, f)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Rosenbrock function for testing the algorithm.
+ The minimum is at f(1,1) = 0.</p>
     
     <h4>Arguments</h4>
     
@@ -787,17 +893,6 @@ subroutine <a href='../proc/rosenbrock.html'>rosenbrock</a>(me, x, f)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Rosenbrock function for testing the algorithm.
- The minimum is at f(1,1) = 0.
- http://en.wikipedia.org/wiki/Rosenbrock_function</p>
-        
 
   </div>
   </div>
@@ -809,10 +904,20 @@ subroutine <a href='../proc/rosenbrock.html'>rosenbrock</a>(me, x, f)
 subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter, x, f)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>A simple iteration reporting function.
+ Writes <code>iter,x,f</code> to the output file.</p>
     
     <h4>Arguments</h4>
     
@@ -893,16 +998,6 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>A simple iteration reporting function.
- Writes iter,x,f to the output file.</p>
-        
 
   </div>
   </div>
@@ -914,19 +1009,19 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     
     <section>
     <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre>    <span class="k">program </span><span class="n">pikaia_test</span>
+    <div class="highlight"><pre><span></span>    <span class="k">program </span><span class="n">pikaia_test</span>
 
     <span class="k">use </span><span class="n">pikaia_module</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">pikaia_class</span>
     <span class="k">use</span><span class="p">,</span><span class="k">intrinsic</span> <span class="kd">::</span> <span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">wp</span> <span class="o">=&gt;</span> <span class="n">real64</span>
 
     <span class="k">implicit none</span>
-<span class="k">    </span>
+
 <span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c">!! dimension of problem (number of optimization variables)</span>
-    
+
     <span class="kt">integer</span>                 <span class="kd">::</span> <span class="n">seed</span><span class="p">,</span><span class="n">status</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">x</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>                <span class="kd">::</span> <span class="n">f</span>
-    <span class="kt">integer</span>                 <span class="kd">::</span> <span class="n">ierr</span><span class="p">,</span><span class="n">iunit</span><span class="p">,</span><span class="n">istat</span>
+    <span class="kt">integer</span>                 <span class="kd">::</span> <span class="n">iunit</span><span class="p">,</span><span class="n">istat</span>
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">xl</span><span class="p">,</span><span class="n">xu</span>
     <span class="k">type</span><span class="p">(</span><span class="n">pikaia_class</span><span class="p">)</span>      <span class="kd">::</span> <span class="n">p</span>
     <span class="kt">logical</span>                 <span class="kd">::</span> <span class="n">header_written</span>
@@ -934,11 +1029,6 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
     <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;pikaia_test.txt&#39;</span>
 
-    <span class="c">!the user enters a new seed value to use:</span>
-    <span class="c">!write(output_unit,fmt=&#39;(A)&#39;) &#39;Enter random number seed: &#39;</span>
-    <span class="c">!read(input_unit,fmt=&#39;(I10)&#39;,iostat=ierr) seed</span>
-    <span class="c">!if (ierr/=0) stop &#39;Invalid input.&#39;</span>
-    
     <span class="n">seed</span> <span class="o">=</span> <span class="mi">999</span>  <span class="c">! specify the random seed</span>
 
     <span class="c">!output file:</span>
@@ -954,7 +1044,7 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="n">x</span> <span class="o">=</span> <span class="mf">0.0_wp</span>
     <span class="n">xl</span> <span class="o">=</span> <span class="mf">0.0_wp</span>
     <span class="n">xu</span> <span class="o">=</span> <span class="mf">1.0_wp</span>
-    
+
     <span class="c">!initialize the class:</span>
     <span class="k">call </span><span class="n">p</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">xl</span><span class="p">,</span><span class="n">xu</span><span class="p">,</span><span class="n">twod</span><span class="p">,</span><span class="n">status</span><span class="p">,&amp;</span>
                 <span class="n">iter_f</span>              <span class="o">=</span> <span class="n">report_iteration</span><span class="p">,&amp;</span>
@@ -989,7 +1079,7 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="n">x</span>  <span class="o">=</span> <span class="mf">0.5_wp</span>
     <span class="n">xl</span> <span class="o">=</span> <span class="mf">0.0_wp</span>
     <span class="n">xu</span> <span class="o">=</span> <span class="mf">2.0_wp</span>
-    
+
     <span class="c">!initialize the class:</span>
     <span class="k">call </span><span class="n">p</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">xl</span><span class="p">,</span><span class="n">xu</span><span class="p">,</span><span class="n">rosenbrock</span><span class="p">,</span><span class="n">status</span><span class="p">,&amp;</span>
                 <span class="n">np</span>                  <span class="o">=</span> <span class="mi">500</span><span class="p">,&amp;</span>        <span class="c">!try a larger population for this one</span>
@@ -1016,10 +1106,10 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="k">close</span><span class="p">(</span><span class="n">iunit</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span>
 
     <span class="k">contains</span>
-<span class="k">      </span>
+
 <span class="k">        subroutine </span><span class="n">twod</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 
-        <span class="c">!! Compute sample fitness function </span>
+        <span class="c">!! Compute sample fitness function</span>
         <span class="c">!! (a smooth 2-d landscape)</span>
 
         <span class="k">implicit none</span>
@@ -1046,14 +1136,16 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 <span class="k">            </span><span class="n">rr</span><span class="o">=</span><span class="nb">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="mf">0.5_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span> <span class="p">(</span><span class="mf">0.5_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">f</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">rr</span><span class="o">*</span><span class="n">nn</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rr</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">sigma2</span><span class="p">)</span>
         <span class="k">end if</span>
-<span class="k">        </span>
-<span class="k">        end subroutine </span><span class="n">twod</span>   
+
+<span class="k">        end subroutine </span><span class="n">twod</span>
 
         <span class="k">subroutine </span><span class="n">rosenbrock</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 
         <span class="c">!! Rosenbrock function for testing the algorithm.</span>
         <span class="c">!! The minimum is at f(1,1) = 0.</span>
-        <span class="c">!! http://en.wikipedia.org/wiki/Rosenbrock_function</span>
+        <span class="c">!!</span>
+        <span class="c">!!#Reference</span>
+        <span class="c">!!   * [Rosenbrock function](http://en.wikipedia.org/wiki/Rosenbrock_function)</span>
 
         <span class="k">implicit none</span>
 
@@ -1063,24 +1155,24 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">one</span>     <span class="o">=</span> <span class="mf">1.0_wp</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">hundred</span> <span class="o">=</span> <span class="mi">10</span><span class="mf">0.0_wp</span>
-        
+
         <span class="c">!the rosenbrock function:</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">one</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">hundred</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
         <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span>    <span class="c">!since pikaia maximizes</span>
-        
+
         <span class="k">end subroutine </span><span class="n">rosenbrock</span>
 
         <span class="k">subroutine </span><span class="n">report_iteration</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">iter</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 
         <span class="c">!! A simple iteration reporting function.</span>
-        <span class="c">!! Writes iter,x,f to the output file.</span>
+        <span class="c">!! Writes `iter,x,f` to the output file.</span>
 
         <span class="k">implicit none</span>
 
-<span class="k">        class</span><span class="p">(</span><span class="n">pikaia_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">me</span>   
-        <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">iter</span> 
-        <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">x</span>    
+<span class="k">        class</span><span class="p">(</span><span class="n">pikaia_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">me</span>
+        <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">iter</span>
+        <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">x</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>                <span class="kd">::</span> <span class="n">f</span>
 
         <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xheader</span>
@@ -1110,16 +1202,42 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     </div>
   </div>
 
+  <section class="visible-xs visible-sm hidden-md">
     <hr>
-    <footer>
-        <div class="row">
-        <div class="col-md-6">&copy; 2015 Pikaia was written by Jacob Williams. </div>
-        <div class="col-md-6"><span class="pull-right">Documentation generated by <a href="https://github.com/cmacmackin/ford">FORD</a>.</span></div>
-        </div>
-        <br>
-    </footer>
-    </div> <!-- /container -->
+    
 
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprogs-1">All Programs</a></h3></div>
+  <div id="allprogs-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../program/pikaia_test.html">pikaia_test</a>
+      
+    </div>
+  </div>
+</div>
+
+
+  </section>
+  
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2016 </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> Pikaia was developed by Jacob Williams</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -1144,6 +1262,6 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
         }
       });
     </script>
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 </html>

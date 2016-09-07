@@ -53,13 +53,20 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 				
-                
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+		 aria-expanded="false">Contents <span class="caret"></span></a>
+	      <ul class="dropdown-menu">
+              
             <li><a href="../lists/files.html">Source Files</a></li>
 				
 				
             <li><a href="../lists/modules.html">Modules</a></li>
 				
-				
+            
+                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
 				
 				
@@ -69,7 +76,27 @@
 				
 				
             <li><a href="../program/pikaia_test.html">Program</a></li>
-				
+	    
+            </ul>
+            </li>
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../program/pikaia_test.html">Program</a></li>
+
           </ul>
         
         <form action="../search.html" class="navbar-form navbar-right" role="search">
@@ -93,9 +120,9 @@
     <small>Module</small>
     
     </h1>
-	 
+    
 <div class="row">
-<div class="col-lg-12">
+  <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
      
@@ -104,6 +131,13 @@
      
     
     
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+	  data-placement="bottom" data-html="true"
+	  title="100.0% of total for modules and submodules.">741 statements</a>
+     </li> 
+     
+     
     <li><i class="fa fa-code"></i><a href="../src/pikaia_module.f90"> Source File</a></li>
      
   </ul>
@@ -116,34 +150,43 @@
 </div>
 </div>
 </div>
-    
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
   </div>
   
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
     
+<div id="sidebar">
   
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Variables</h3></div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../module/pikaia_module.html#variable-wp">wp</a>
       
     </div>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Abstract Interfaces</h3></div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#absints-0">Abstract Interfaces</a></h3></div>
+  <div id="absints-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../module/pikaia_module.html#interface-pikaia_func">pikaia_func</a>
@@ -152,34 +195,37 @@
       
     </div>
   </div>
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Derived Types</h3></div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-0">Derived Types</a></h3></div>
+  <div id="types-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../module/pikaia_module.html#type-pikaia_class">pikaia_class</a>
       
     </div>
   </div>
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Functions</h3></div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-0">Functions</a></h3></div>
+  <div id="funcs-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../module/pikaia_module.html#proc-urand">urand</a>
       
     </div>
   </div>
-  
-  
-  
-  <div class="panel panel-primary">
-    <div class="panel-heading text-left"><h3 class="panel-title">Subroutines</h3></div>
-    <div class="list-group">
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-0">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-0" class="panel-collapse collapse">
       
       <a class="list-group-item" href="../module/pikaia_module.html#proc-set_inputs">set_inputs</a>
       
@@ -217,30 +263,37 @@
       
     </div>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
+</div>
+
+
+
+
+
+
+
+
+
   <hr>
   
-  <div class="panel panel-default">
-    <div class="panel-heading text-left"><h3 class="panel-title">All Modules</h3></div>
+
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-0">All Modules</a></h3></div>
+  <div id="allmods-0" class="panel-collapse collapse">
     <div class="list-group">
       
       <a class="list-group-item" href="../module/pikaia_module.html">pikaia_module</a>
       
     </div>
   </div>
-  
-  
+</div>
+
+
+</div>  
+
     </div>
     
-    <div class="col-lg-9" id='text'>
-    
+    <div class="col-md-9" id='text'>
+      
     
   
     <ul class="list-inline">
@@ -249,8 +302,6 @@
       <li><a href="https://software.intel.com/en-us/node/511041">iso_fortran_env</a></li>
       
     </ul>
-  
-
     
                 <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -277,8 +328,8 @@
 </g>
 <!-- iso_fortran_env&#45;&gt;module~pikaia_module -->
 <g id="edge2" class="edge"><title>iso_fortran_env&#45;&gt;module~pikaia_module</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M87.6838,-13C96.1497,-13 105.093,-13 113.775,-13"/>
-<polygon fill="black" stroke="black" points="113.803,-16.5001 123.803,-13 113.803,-9.5001 113.803,-16.5001"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M87.6838,-13C96.1497,-13 105.093,-13 113.775,-13"/>
+<polygon fill="#000000" stroke="#000000" points="113.803,-16.5001 123.803,-13 113.803,-9.5001 113.803,-16.5001"/>
 </g>
 </g>
 </svg>
@@ -293,18 +344,18 @@
                       </div>
                       <div class="modal-body">
                         
-Nodes of different colours represent the following:
+<p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="641pt" height="28pt"
- viewBox="0.00 0.00 641.00 27.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph1" class="graph" transform="scale(0.817602 0.817602) rotate(0) translate(4 30)">
+<svg width="486pt" height="34pt"
+ viewBox="0.00 0.00 486.00 34.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 30)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-30 781,-30 781,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-30 483,-30 483,5 -4,5"/>
 <!-- Module -->
 <g id="node1" class="node"><title>Module</title>
 <polygon fill="#337ab7" stroke="#337ab7" points="54,-26 2.13163e-14,-26 0,-1.24345e-14 54,-3.55271e-15 54,-26"/>
@@ -315,64 +366,42 @@ Nodes of different colours represent the following:
 <polygon fill="#5bc0de" stroke="#5bc0de" points="138,-26 72,-26 72,-1.24345e-14 138,-3.55271e-15 138,-26"/>
 <text text-anchor="middle" x="105" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
 </g>
-<!-- Type -->
-<g id="node3" class="node"><title>Type</title>
-<polygon fill="#5cb85c" stroke="#5cb85c" points="210,-26 156,-26 156,-1.24345e-14 210,-3.55271e-15 210,-26"/>
-<text text-anchor="middle" x="183" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
-</g>
 <!-- Subroutine -->
-<g id="node4" class="node"><title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="292,-26 228,-26 228,-1.24345e-14 292,-3.55271e-15 292,-26"/>
-<text text-anchor="middle" x="260" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+<g id="node3" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="220,-26 156,-26 156,-1.24345e-14 220,-3.55271e-15 220,-26"/>
+<text text-anchor="middle" x="188" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
 </g>
 <!-- Function -->
-<g id="node5" class="node"><title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
-<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node6" class="node"><title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="436,-26 382,-26 382,-1.24345e-14 436,-3.55271e-15 436,-26"/>
-<text text-anchor="middle" x="409" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node7" class="node"><title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="590,-26 454,-26 454,-1.24345e-14 590,-3.55271e-15 590,-26"/>
-<text text-anchor="middle" x="522" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<g id="node4" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="292,-26 238,-26 238,-1.24345e-14 292,-3.55271e-15 292,-26"/>
+<text text-anchor="middle" x="265" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
 </g>
 <!-- Program -->
-<g id="node8" class="node"><title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="662,-26 608,-26 608,-1.24345e-14 662,-3.55271e-15 662,-26"/>
-<text text-anchor="middle" x="635" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<g id="node5" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
+<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node9" class="node"><title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="776,-26 680,-26 680,-1.24345e-14 776,-3.55271e-15 776,-26"/>
-<text text-anchor="middle" x="728" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<g id="node6" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="478,-26 382,-26 382,-1.24345e-14 478,-3.55271e-15 478,-26"/>
+<text text-anchor="middle" x="430" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
 
-<h5>Module Graph</h5>
+
 <p>Solid arrows point from a parent (sub)module to the submodule which is
 descended from it. Dashed arrows point from a module being used to the
-module using it.</p>
-<h5>Type Graph</h5>
-<p>Solid arrows point from one derived type to another which extends
-(inherits from) it. Dashed arrows point from a derived type to another
-type containing it as a components, with a label listing the name(s) of
-said component(s).</p>
-<h5>Call Graph</h5>
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.</p>
+module or program unit using it.
+</p>
 
                       </div>
                     </div>
                   </div>
                 </div>
                 
+    
+
     
     <p>PIKAIA is a general purpose unconstrained optimization
   method based on a genetic algorithm.
@@ -383,7 +412,7 @@ implementation in a submodule of an interface in a parent module.</p>
 <li><a href="http://download.hao.ucar.edu/archive/pikaia/">Original sourcecode</a></li>
 </ul>
 <h1>License</h1>
-<div class="codehilite"><pre>Copyright (c) 2015, Jacob Williams
+<div class="codehilite"><pre><span></span>Copyright (c) 2015, Jacob Williams
 
 http://github.com/jacobwilliams/pikaia
 
@@ -455,8 +484,8 @@ http://www.hao.ucar.edu/modeling/pikaia/pikaia.php
 </g>
 <!-- module~pikaia_module&#45;&gt;program~pikaia_test -->
 <g id="edge2" class="edge"><title>module~pikaia_module&#45;&gt;program~pikaia_test</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M82.2082,-13C90.6088,-13 99.4581,-13 107.89,-13"/>
-<polygon fill="black" stroke="black" points="107.909,-16.5001 117.909,-13 107.909,-9.5001 107.909,-16.5001"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M82.2082,-13C90.6088,-13 99.4581,-13 107.89,-13"/>
+<polygon fill="#000000" stroke="#000000" points="107.909,-16.5001 117.909,-13 107.909,-9.5001 107.909,-16.5001"/>
 </g>
 </g>
 </svg>
@@ -471,18 +500,18 @@ http://www.hao.ucar.edu/modeling/pikaia/pikaia.php
                       </div>
                       <div class="modal-body">
                         
-Nodes of different colours represent the following:
+<p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="641pt" height="28pt"
- viewBox="0.00 0.00 641.00 27.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph1" class="graph" transform="scale(0.817602 0.817602) rotate(0) translate(4 30)">
+<svg width="486pt" height="34pt"
+ viewBox="0.00 0.00 486.00 34.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 30)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-30 781,-30 781,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-30 483,-30 483,5 -4,5"/>
 <!-- Module -->
 <g id="node1" class="node"><title>Module</title>
 <polygon fill="#337ab7" stroke="#337ab7" points="54,-26 2.13163e-14,-26 0,-1.24345e-14 54,-3.55271e-15 54,-26"/>
@@ -493,58 +522,34 @@ Nodes of different colours represent the following:
 <polygon fill="#5bc0de" stroke="#5bc0de" points="138,-26 72,-26 72,-1.24345e-14 138,-3.55271e-15 138,-26"/>
 <text text-anchor="middle" x="105" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
 </g>
-<!-- Type -->
-<g id="node3" class="node"><title>Type</title>
-<polygon fill="#5cb85c" stroke="#5cb85c" points="210,-26 156,-26 156,-1.24345e-14 210,-3.55271e-15 210,-26"/>
-<text text-anchor="middle" x="183" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
-</g>
 <!-- Subroutine -->
-<g id="node4" class="node"><title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="292,-26 228,-26 228,-1.24345e-14 292,-3.55271e-15 292,-26"/>
-<text text-anchor="middle" x="260" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+<g id="node3" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="220,-26 156,-26 156,-1.24345e-14 220,-3.55271e-15 220,-26"/>
+<text text-anchor="middle" x="188" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
 </g>
 <!-- Function -->
-<g id="node5" class="node"><title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
-<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node6" class="node"><title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="436,-26 382,-26 382,-1.24345e-14 436,-3.55271e-15 436,-26"/>
-<text text-anchor="middle" x="409" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node7" class="node"><title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="590,-26 454,-26 454,-1.24345e-14 590,-3.55271e-15 590,-26"/>
-<text text-anchor="middle" x="522" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<g id="node4" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="292,-26 238,-26 238,-1.24345e-14 292,-3.55271e-15 292,-26"/>
+<text text-anchor="middle" x="265" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
 </g>
 <!-- Program -->
-<g id="node8" class="node"><title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="662,-26 608,-26 608,-1.24345e-14 662,-3.55271e-15 662,-26"/>
-<text text-anchor="middle" x="635" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<g id="node5" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
+<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node9" class="node"><title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="776,-26 680,-26 680,-1.24345e-14 776,-3.55271e-15 776,-26"/>
-<text text-anchor="middle" x="728" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<g id="node6" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="478,-26 382,-26 382,-1.24345e-14 478,-3.55271e-15 478,-26"/>
+<text text-anchor="middle" x="430" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
 
-<h5>Module Graph</h5>
+
 <p>Solid arrows point from a parent (sub)module to the submodule which is
 descended from it. Dashed arrows point from a module being used to the
-module using it.</p>
-<h5>Type Graph</h5>
-<p>Solid arrows point from one derived type to another which extends
-(inherits from) it. Dashed arrows point from a derived type to another
-type containing it as a components, with a label listing the name(s) of
-said component(s).</p>
-<h5>Call Graph</h5>
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.</p>
+module or program unit using it.
+</p>
 
                       </div>
                     </div>
@@ -552,6 +557,123 @@ implementation in a submodule of an interface in a parent module.</p>
                 </div>
                 
     <br>
+    
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#variable-wp">wp</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#absints-1">Abstract Interfaces</a></h3></div>
+  <div id="absints-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#interface-pikaia_func">pikaia_func</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#interface-iter_func">iter_func</a>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-1">Derived Types</a></h3></div>
+  <div id="types-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#type-pikaia_class">pikaia_class</a>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-1">Functions</a></h3></div>
+  <div id="funcs-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-urand">urand</a>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-1">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-1" class="panel-collapse collapse">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-set_inputs">set_inputs</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-pikaia">pikaia</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-solve_with_pikaia">solve_with_pikaia</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-func_wrapper">func_wrapper</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-rqsort">rqsort</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-rninit">rninit</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-report">report</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-encode">encode</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-decode">decode</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-cross">cross</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-mutate">mutate</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-adjmut">adjmut</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-select_parents">select_parents</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-rnkpop">rnkpop</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-genrep">genrep</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-stdrep">stdrep</a>
+      
+      <a class="list-group-item" href="../module/pikaia_module.html#proc-newpop">newpop</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
     
 
     
@@ -610,8 +732,17 @@ implementation in a submodule of an interface in a parent module.</p>
 private subroutine <a href='../interface/pikaia_func.html'>pikaia_func</a>(me, x, f)
     
     
-    
+	 
 </h3>
+    
+
+
+
+
+
+
+
+<p>The interface for the function that pikaia will be maximizing.</p>
     
     <h4>Arguments</h4>
     
@@ -677,15 +808,6 @@ private subroutine <a href='../interface/pikaia_func.html'>pikaia_func</a>(me, x
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>The interface for the function that pikaia will be maximizing.</p>
-        
 
     </li>
   </ul>
@@ -706,8 +828,20 @@ private subroutine <a href='../interface/pikaia_func.html'>pikaia_func</a>(me, x
 private subroutine <a href='../interface/iter_func.html'>iter_func</a>(me, iter, x, f)
     
     
-    
+	 
 </h3>
+    
+
+
+
+
+
+
+
+<p>The interface for the function that user can specify
+ to report each iteration when pikaia is running.
+ The best (fittest) population member is passed to
+ this routine in each generation.</p>
     
     <h4>Arguments</h4>
     
@@ -788,18 +922,6 @@ private subroutine <a href='../interface/iter_func.html'>iter_func</a>(me, iter,
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>The interface for the function that user can specify
- to report each iteration when pikaia is running.
- The best (fittest) population member is passed to
- this routine in each generation.</p>
-        
 
     </li>
   </ul>
@@ -820,6 +942,11 @@ private subroutine <a href='../interface/iter_func.html'>iter_func</a>(me, iter,
     
   </h3></div>
   <div class="panel-body">
+    
+    
+    <p>Main class for using the Pikaia algorithm.
+ INIT and SOLVE are the only public methods.</p>
+    
      
      <h4>Components</h4>
     
@@ -1193,59 +1320,53 @@ private subroutine <a href='../interface/iter_func.html'>iter_func</a>(me, iter,
       <table class="table table-striped varlist">
       <tbody>
       
-       <tr><td>procedure, public, non_overridable :: <strong>init</strong>  => set_inputs </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-init'>init</a></strong>  => set_inputs </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>solve</strong>  => solve_with_pikaia </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-solve'>solve</a></strong>  => solve_with_pikaia </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>ff</strong>  => func_wrapper </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-ff'>ff</a></strong>  => func_wrapper </td>
        <td><p>internal pikaia function (x:[0,1])</p></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>pikaia</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-newpop'>newpop</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>rnkpop</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-stdrep'>stdrep</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>report</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-genrep'>genrep</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>select_parents</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-adjmut'>adjmut</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>decode</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-cross'>cross</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>mutate</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-encode'>encode</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>encode</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-mutate'>mutate</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>cross</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-decode'>decode</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>adjmut</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-select_parents'>select_parents</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>genrep</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-report'>report</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>stdrep</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-rnkpop'>rnkpop</a></strong>  </td>
        <td></td></tr>
       
-       <tr><td>procedure, public, non_overridable :: <strong>newpop</strong>  </td>
+       <tr><td>procedure, public, non_overridable :: <strong><a href='../type/pikaia_class.html#boundprocedure-pikaia'>pikaia</a></strong>  </td>
        <td></td></tr>
       
        </tbody>
        </table>
-     
-     
-     <h4>Description</h4>
-       
-       <p>Main class for using the Pikaia algorithm.
- INIT and SOLVE are the only public methods.</p>
      
   </div>
 </div>
@@ -1265,10 +1386,32 @@ private subroutine <a href='../interface/iter_func.html'>iter_func</a>(me, iter,
 private function <a href='../proc/urand.html'>urand</a>() result(r)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>Jacob Williams</dd>
+    
+    
+    <dt>Date</dt><dd>3/8/2015</dd>
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Return the next pseudo-random deviate from a sequence which is
+  uniformly distributed in the interval [0,1]</p>
     
     <h4>Arguments</h4>
     
@@ -1284,28 +1427,6 @@ private function <a href='../proc/urand.html'>urand</a>() result(r)
   </small></h4>
   
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>Jacob Williams</dd>
-    
-    
-    <dt>Date</dt><dd>3/8/2015</dd>
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Return the next pseudo-random deviate from a sequence which is
-  uniformly distributed in the interval [0,1]</p>
-        
 
   </div>
   </div>
@@ -1325,10 +1446,30 @@ private function <a href='../proc/urand.html'>urand</a>() result(r)
 private subroutine <a href='../proc/set_inputs.html'>set_inputs</a>(me, n, xl, xu, f, status, iter_f, np, ngen, nd, pcross, pmutmn, pmutmx, pmut, imut, fdif, irep, ielite, ivrb, convergence_tol, convergence_window, initial_guess_frac, iseed)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>Jacob Williams</dd>
+    
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Constructor for the <a href="../type/pikaia_class.html">pikaia_class</a>.
+  The routine must be called before the solve routine can be used.</p>
     
     <h4>Arguments</h4>
     
@@ -1445,8 +1586,8 @@ private subroutine <a href='../proc/set_inputs.html'>set_inputs</a>(me, n, xl, x
   
 <tr>
   
-  <td><span class="anchor" ></span>procedure(<a href='../interface/iter_func.html'>iter_func</a>)</td>
-  <td>,</td>
+  <td><span class="anchor" ></span>procedure(<a href='../interface/iter_func.html'>iter_func</a>),</td>
+  <td></td>
   <td>optional</td>
   
   <td></td><td>::</td>
@@ -1726,26 +1867,6 @@ private subroutine <a href='../proc/set_inputs.html'>set_inputs</a>(me, n, xl, x
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>Jacob Williams</dd>
-    
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Constructor for the <a href="../type/pikaia_class.html">pikaia_class</a>.
-  The routine must be called before the solve routine can be used.</p>
-        
 
   </div>
   </div>
@@ -1757,10 +1878,21 @@ private subroutine <a href='../proc/set_inputs.html'>set_inputs</a>(me, n, xl, x
 private subroutine <a href='../proc/pikaia.html'>pikaia</a>(me, x, f, status)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Optimization (maximization) of user-supplied "fitness" function
+  over n-dimensional parameter space x using a basic genetic
+  algorithm method.</p>
     
     <h4>Arguments</h4>
     
@@ -1844,17 +1976,6 @@ private subroutine <a href='../proc/pikaia.html'>pikaia</a>(me, x, f, status)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Optimization (maximization) of user-supplied "fitness" function
-  over n-dimensional parameter space x using a basic genetic
-  algorithm method.</p>
-        
 
   </div>
   </div>
@@ -1866,10 +1987,29 @@ private subroutine <a href='../proc/pikaia.html'>pikaia</a>(me, x, f, status)
 private subroutine <a href='../proc/solve_with_pikaia.html'>solve_with_pikaia</a>(me, x, f, status)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>Jacob Williams</dd>
+    
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Main pikaia wrapper used by the class.</p>
     
     <h4>Arguments</h4>
     
@@ -1950,25 +2090,6 @@ private subroutine <a href='../proc/solve_with_pikaia.html'>solve_with_pikaia</a
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>Jacob Williams</dd>
-    
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Main pikaia wrapper used by the class.</p>
-        
 
   </div>
   </div>
@@ -1980,10 +2101,30 @@ private subroutine <a href='../proc/solve_with_pikaia.html'>solve_with_pikaia</a
 private subroutine <a href='../proc/func_wrapper.html'>func_wrapper</a>(me, x, f)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>Jacob Williams</dd>
+    
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Wrapper for the user's function that is used by the main pikaia routine
+  The x input to this function comes from pikaia, and will be between [0,1].</p>
     
     <h4>Arguments</h4>
     
@@ -2049,26 +2190,6 @@ private subroutine <a href='../proc/func_wrapper.html'>func_wrapper</a>(me, x, f
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>Jacob Williams</dd>
-    
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Wrapper for the user's function that is used by the main pikaia routine
-  The x input to this function comes from pikaia, and will be between [0,1].</p>
-        
 
   </div>
   </div>
@@ -2080,10 +2201,32 @@ private subroutine <a href='../proc/func_wrapper.html'>func_wrapper</a>(me, x, f
 private subroutine <a href='../proc/rqsort.html'>rqsort</a>(n, a, p)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>B. G. Knapp</dd>
+    
+    
+    <dt>Date</dt><dd>86/12/23</dd>
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Return integer array p which indexes array a in increasing order.
+  Array a is not disturbed.  The Quicksort algorithm is used.</p>
     
     <h4>Arguments</h4>
     
@@ -2149,28 +2292,6 @@ private subroutine <a href='../proc/rqsort.html'>rqsort</a>(n, a, p)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>B. G. Knapp</dd>
-    
-    
-    <dt>Date</dt><dd>86/12/23</dd>
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Return integer array p which indexes array a in increasing order.
-  Array a is not disturbed.  The Quicksort algorithm is used.</p>
-        
 
   </div>
   </div>
@@ -2182,10 +2303,31 @@ private subroutine <a href='../proc/rqsort.html'>rqsort</a>(n, a, p)
 private subroutine <a href='../proc/rninit.html'>rninit</a>(iseed)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+  <dl class="dl-horizontal">
+    
+    <dt>Author</dt><dd>Jacob Williams</dd>
+    
+    
+    <dt>Date</dt><dd>3/8/2015</dd>
+    
+    
+    
+    
+  </dl>
+
+
+
+<p>Initialize the random number generator with the input seed value.</p>
     
     <h4>Arguments</h4>
     
@@ -2221,27 +2363,6 @@ private subroutine <a href='../proc/rninit.html'>rninit</a>(iseed)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-<dl class="dl-horizontal">
-    
-    <dt>Author</dt><dd>Jacob Williams</dd>
-    
-    
-    <dt>Date</dt><dd>3/8/2015</dd>
-    
-    
-    
-    
-  </dl>
-
-
-       
-       <p>Initialize the random number generator with the input seed value.</p>
-        
 
   </div>
   </div>
@@ -2253,10 +2374,19 @@ private subroutine <a href='../proc/rninit.html'>rninit</a>(iseed)
 private subroutine <a href='../proc/report.html'>report</a>(me, oldph, fitns, ifit, ig, nnew)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Write generation report to standard output</p>
     
     <h4>Arguments</h4>
     
@@ -2367,15 +2497,6 @@ private subroutine <a href='../proc/report.html'>report</a>(me, oldph, fitns, if
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Write generation report to standard output</p>
-        
 
   </div>
   </div>
@@ -2387,10 +2508,20 @@ private subroutine <a href='../proc/report.html'>report</a>(me, oldph, fitns, if
 private subroutine <a href='../proc/encode.html'>encode</a>(me, ph, gn)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Encode phenotype parameters into integer genotype
+  ph(k) are x,y coordinates [ 0 &lt; x,y &lt; 1 ]</p>
     
     <h4>Arguments</h4>
     
@@ -2456,16 +2587,6 @@ private subroutine <a href='../proc/encode.html'>encode</a>(me, ph, gn)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Encode phenotype parameters into integer genotype
-  ph(k) are x,y coordinates [ 0 &lt; x,y &lt; 1 ]</p>
-        
 
   </div>
   </div>
@@ -2477,10 +2598,20 @@ private subroutine <a href='../proc/encode.html'>encode</a>(me, ph, gn)
 private subroutine <a href='../proc/decode.html'>decode</a>(me, gn, ph)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>decode genotype into phenotype parameters
+  ph(k) are x,y coordinates [ 0 &lt; x,y &lt; 1 ]</p>
     
     <h4>Arguments</h4>
     
@@ -2546,16 +2677,6 @@ private subroutine <a href='../proc/decode.html'>decode</a>(me, gn, ph)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>decode genotype into phenotype parameters
-  ph(k) are x,y coordinates [ 0 &lt; x,y &lt; 1 ]</p>
-        
 
   </div>
   </div>
@@ -2567,10 +2688,22 @@ private subroutine <a href='../proc/decode.html'>decode</a>(me, gn, ph)
 private subroutine <a href='../proc/cross.html'>cross</a>(me, gn1, gn2)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>breeds two parent chromosomes into two offspring chromosomes.
+  breeding occurs through crossover. If the crossover probability
+  test yields true (crossover taking place), either one-point or
+  two-point crossover is used, with equal probabilities.</p>
     
     <h4>Arguments</h4>
     
@@ -2636,18 +2769,6 @@ private subroutine <a href='../proc/cross.html'>cross</a>(me, gn1, gn2)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>breeds two parent chromosomes into two offspring chromosomes.
-  breeding occurs through crossover. If the crossover probability
-  test yields true (crossover taking place), either one-point or
-  two-point crossover is used, with equal probabilities.</p>
-        
 
   </div>
   </div>
@@ -2659,10 +2780,20 @@ private subroutine <a href='../proc/cross.html'>cross</a>(me, gn1, gn2)
 private subroutine <a href='../proc/mutate.html'>mutate</a>(me, gn)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Introduces random mutation in a genotype.
+  Mutations occur at rate pmut at all gene loci.</p>
     
     <h4>Arguments</h4>
     
@@ -2713,16 +2844,6 @@ private subroutine <a href='../proc/mutate.html'>mutate</a>(me, gn)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Introduces random mutation in a genotype.
-  Mutations occur at rate pmut at all gene loci.</p>
-        
 
   </div>
   </div>
@@ -2734,10 +2855,19 @@ private subroutine <a href='../proc/mutate.html'>mutate</a>(me, gn)
 private subroutine <a href='../proc/adjmut.html'>adjmut</a>(me, oldph, fitns, ifit)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Dynamical adjustment of mutation rate:</p>
     
     <h4>Arguments</h4>
     
@@ -2818,15 +2948,6 @@ private subroutine <a href='../proc/adjmut.html'>adjmut</a>(me, oldph, fitns, if
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Dynamical adjustment of mutation rate:</p>
-        
 
   </div>
   </div>
@@ -2838,10 +2959,21 @@ private subroutine <a href='../proc/adjmut.html'>adjmut</a>(me, oldph, fitns, if
 private subroutine <a href='../proc/select_parents.html'>select_parents</a>(me, jfit, imom, idad)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Selects two parents from the population, using roulette wheel
+  algorithm with the relative fitnesses of the phenotypes as
+  the "hit" probabilities.</p>
     
     <h4>Arguments</h4>
     
@@ -2922,17 +3054,6 @@ private subroutine <a href='../proc/select_parents.html'>select_parents</a>(me, 
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Selects two parents from the population, using roulette wheel
-  algorithm with the relative fitnesses of the phenotypes as
-  the "hit" probabilities.</p>
-        
 
   </div>
   </div>
@@ -2944,10 +3065,21 @@ private subroutine <a href='../proc/select_parents.html'>select_parents</a>(me, 
 private subroutine <a href='../proc/rnkpop.html'>rnkpop</a>(me, arrin, indx, rank)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Ranks initial population.
+  Calls external sort routine to produce key index and rank order
+  of input array arrin (which is not altered).</p>
     
     <h4>Arguments</h4>
     
@@ -3028,17 +3160,6 @@ private subroutine <a href='../proc/rnkpop.html'>rnkpop</a>(me, arrin, indx, ran
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Ranks initial population.
-  Calls external sort routine to produce key index and rank order
-  of input array arrin (which is not altered).</p>
-        
 
   </div>
   </div>
@@ -3050,10 +3171,20 @@ private subroutine <a href='../proc/rnkpop.html'>rnkpop</a>(me, arrin, indx, ran
 private subroutine <a href='../proc/genrep.html'>genrep</a>(me, ip, ph, newph)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Full generational replacement: accumulate offspring into new
+  population array</p>
     
     <h4>Arguments</h4>
     
@@ -3134,16 +3265,6 @@ private subroutine <a href='../proc/genrep.html'>genrep</a>(me, ip, ph, newph)
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Full generational replacement: accumulate offspring into new
-  population array</p>
-        
 
   </div>
   </div>
@@ -3155,10 +3276,21 @@ private subroutine <a href='../proc/genrep.html'>genrep</a>(me, ip, ph, newph)
 private subroutine <a href='../proc/stdrep.html'>stdrep</a>(me, ph, oldph, fitns, ifit, jfit, nnew)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Steady-state reproduction: insert offspring pair into population
+  only if they are fit enough (replace-random if irep=2 or
+  replace-worst if irep=3).</p>
     
     <h4>Arguments</h4>
     
@@ -3284,17 +3416,6 @@ private subroutine <a href='../proc/stdrep.html'>stdrep</a>(me, ph, oldph, fitns
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Steady-state reproduction: insert offspring pair into population
-  only if they are fit enough (replace-random if irep=2 or
-  replace-worst if irep=3).</p>
-        
 
   </div>
   </div>
@@ -3306,10 +3427,19 @@ private subroutine <a href='../proc/stdrep.html'>stdrep</a>(me, ph, oldph, fitns
 private subroutine <a href='../proc/newpop.html'>newpop</a>(me, oldph, newph, ifit, jfit, fitns, nnew)
     
     
-    
+	 
 </h3></div>
   <div class="panel-body">
        
+    
+
+
+
+
+
+
+
+<p>Replaces old population by new; recomputes fitnesses &amp; ranks</p>
     
     <h4>Arguments</h4>
     
@@ -3435,15 +3565,6 @@ private subroutine <a href='../proc/newpop.html'>newpop</a>(me, oldph, newph, if
       
     
     
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Replaces old population by new; recomputes fitnesses &amp; ranks</p>
-        
 
   </div>
   </div>
@@ -3457,16 +3578,42 @@ private subroutine <a href='../proc/newpop.html'>newpop</a>(me, oldph, newph, if
     </div>
   </div>
 
+  <section class="visible-xs visible-sm hidden-md">
     <hr>
-    <footer>
-        <div class="row">
-        <div class="col-md-6">&copy; 2015 Pikaia was written by Jacob Williams. </div>
-        <div class="col-md-6"><span class="pull-right">Documentation generated by <a href="https://github.com/cmacmackin/ford">FORD</a>.</span></div>
-        </div>
-        <br>
-    </footer>
-    </div> <!-- /container -->
+    
 
+<div class="panel panel-default">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-1">All Modules</a></h3></div>
+  <div id="allmods-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/pikaia_module.html">pikaia_module</a>
+      
+    </div>
+  </div>
+</div>
+
+
+  </section>
+  
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2016 </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> Pikaia was developed by Jacob Williams</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -3491,6 +3638,6 @@ private subroutine <a href='../proc/newpop.html'>newpop</a>(me, oldph, newph, if
         }
       });
     </script>
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 </html>
