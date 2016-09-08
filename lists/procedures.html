@@ -211,7 +211,7 @@ All Procedures &ndash; Pikaia
 </a>
 </g>
 <!-- proc~urand -->
-<g id="node13" class="node"><title>proc~urand</title>
+<g id="node12" class="node"><title>proc~urand</title>
 <a xlink:href="../proc/urand.html" xlink:title="urand">
 <polygon fill="#d94e8f" stroke="#d94e8f" points="186,-136 132,-136 132,-110 186,-110 186,-136"/>
 <text text-anchor="middle" x="159" y="-120.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">urand</text>
@@ -229,11 +229,23 @@ All Procedures &ndash; Pikaia
 <text text-anchor="middle" x="48" y="-252.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slowdown</text>
 </a>
 </g>
-<!-- proc~pikaia -->
-<g id="node3" class="node"><title>proc~pikaia</title>
-<a xlink:href="../proc/pikaia.html" xlink:title="pikaia">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-48 21,-48 21,-22 75,-22 75,-48"/>
-<text text-anchor="middle" x="48" y="-32.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pikaia</text>
+<!-- proc~stdrep -->
+<g id="node3" class="node"><title>proc~stdrep</title>
+<a xlink:href="../proc/stdrep.html" xlink:title="stdrep">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-180 21,-180 21,-154 75,-154 75,-180"/>
+<text text-anchor="middle" x="48" y="-164.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stdrep</text>
+</a>
+</g>
+<!-- proc~stdrep&#45;&gt;proc~urand -->
+<g id="edge4" class="edge"><title>proc~stdrep&#45;&gt;proc~urand</title>
+<path fill="none" stroke="#000000" d="M75.1537,-156.236C89.2638,-150.643 106.715,-143.725 122.037,-137.652"/>
+<polygon fill="#000000" stroke="#000000" points="123.735,-140.744 131.742,-133.805 121.156,-134.236 123.735,-140.744"/>
+</g>
+<!-- proc~func_wrapper -->
+<g id="node4" class="node"><title>proc~func_wrapper</title>
+<a xlink:href="../proc/func_wrapper.html" xlink:title="func_wrapper">
+<polygon fill="#d9534f" stroke="#d9534f" points="87,-312 9,-312 9,-286 87,-286 87,-312"/>
+<text text-anchor="middle" x="48" y="-296.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">func_wrapper</text>
 </a>
 </g>
 <!-- proc~adjmut -->
@@ -243,35 +255,6 @@ All Procedures &ndash; Pikaia
 <text text-anchor="middle" x="159" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">adjmut</text>
 </a>
 </g>
-<!-- proc~pikaia&#45;&gt;proc~adjmut -->
-<g id="edge8" class="edge"><title>proc~pikaia&#45;&gt;proc~adjmut</title>
-<path fill="none" stroke="#000000" d="M75.1537,-40.3818C89.1294,-43.1518 106.383,-46.5714 121.599,-49.5872"/>
-<polygon fill="#000000" stroke="#000000" points="121.252,-53.0865 131.742,-51.5975 122.613,-46.22 121.252,-53.0865"/>
-</g>
-<!-- proc~pikaia&#45;&gt;proc~urand -->
-<g id="edge6" class="edge"><title>proc~pikaia&#45;&gt;proc~urand</title>
-<path fill="none" stroke="#000000" d="M75.1454,-45.2811C82.2314,-48.5331 89.6548,-52.4777 96,-57 113.733,-69.6384 130.587,-87.7349 142.394,-101.783"/>
-<polygon fill="#000000" stroke="#000000" points="140.013,-104.401 149.055,-109.922 145.43,-99.967 140.013,-104.401"/>
-</g>
-<!-- proc~rninit -->
-<g id="node22" class="node"><title>proc~rninit</title>
-<a xlink:href="../proc/rninit.html" xlink:title="rninit">
-<polygon fill="#d9534f" stroke="#d9534f" points="186,-26 132,-26 132,-1.24345e-14 186,-3.55271e-15 186,-26"/>
-<text text-anchor="middle" x="159" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rninit</text>
-</a>
-</g>
-<!-- proc~pikaia&#45;&gt;proc~rninit -->
-<g id="edge4" class="edge"><title>proc~pikaia&#45;&gt;proc~rninit</title>
-<path fill="none" stroke="#000000" d="M75.1537,-29.6182C89.1294,-26.8482 106.383,-23.4286 121.599,-20.4128"/>
-<polygon fill="#000000" stroke="#000000" points="122.613,-23.78 131.742,-18.4025 121.252,-16.9135 122.613,-23.78"/>
-</g>
-<!-- proc~func_wrapper -->
-<g id="node4" class="node"><title>proc~func_wrapper</title>
-<a xlink:href="../proc/func_wrapper.html" xlink:title="func_wrapper">
-<polygon fill="#d9534f" stroke="#d9534f" points="87,-312 9,-312 9,-286 87,-286 87,-312"/>
-<text text-anchor="middle" x="48" y="-296.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">func_wrapper</text>
-</a>
-</g>
 <!-- proc~set_inputs -->
 <g id="node6" class="node"><title>proc~set_inputs</title>
 <a xlink:href="../proc/set_inputs.html" xlink:title="set_inputs">
@@ -279,97 +262,107 @@ All Procedures &ndash; Pikaia
 <text text-anchor="middle" x="48" y="-340.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_inputs</text>
 </a>
 </g>
-<!-- proc~report -->
-<g id="node7" class="node"><title>proc~report</title>
-<a xlink:href="../proc/report.html" xlink:title="report">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-400 21,-400 21,-374 75,-374 75,-400"/>
-<text text-anchor="middle" x="48" y="-384.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report</text>
-</a>
-</g>
 <!-- proc~solve_with_pikaia -->
-<g id="node8" class="node"><title>proc~solve_with_pikaia</title>
+<g id="node7" class="node"><title>proc~solve_with_pikaia</title>
 <a xlink:href="../proc/solve_with_pikaia.html" xlink:title="solve_with_pikaia">
-<polygon fill="#d9534f" stroke="#d9534f" points="96,-444 3.55271e-14,-444 0,-418 96,-418 96,-444"/>
-<text text-anchor="middle" x="48" y="-428.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">solve_with_pikaia</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="96,-400 3.55271e-14,-400 0,-374 96,-374 96,-400"/>
+<text text-anchor="middle" x="48" y="-384.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">solve_with_pikaia</text>
 </a>
 </g>
 <!-- proc~mutate -->
-<g id="node9" class="node"><title>proc~mutate</title>
+<g id="node8" class="node"><title>proc~mutate</title>
 <a xlink:href="../proc/mutate.html" xlink:title="mutate">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-180 21,-180 21,-154 75,-154 75,-180"/>
-<text text-anchor="middle" x="48" y="-164.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mutate</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-136 21,-136 21,-110 75,-110 75,-136"/>
+<text text-anchor="middle" x="48" y="-120.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mutate</text>
 </a>
 </g>
 <!-- proc~mutate&#45;&gt;proc~urand -->
-<g id="edge10" class="edge"><title>proc~mutate&#45;&gt;proc~urand</title>
-<path fill="none" stroke="#000000" d="M75.1537,-156.236C89.2638,-150.643 106.715,-143.725 122.037,-137.652"/>
-<polygon fill="#000000" stroke="#000000" points="123.735,-140.744 131.742,-133.805 121.156,-134.236 123.735,-140.744"/>
-</g>
-<!-- proc~newpop -->
-<g id="node10" class="node"><title>proc~newpop</title>
-<a xlink:href="../proc/newpop.html" xlink:title="newpop">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-488 21,-488 21,-462 75,-462 75,-488"/>
-<text text-anchor="middle" x="48" y="-472.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">newpop</text>
-</a>
-</g>
-<!-- proc~rqsort -->
-<g id="node11" class="node"><title>proc~rqsort</title>
-<a xlink:href="../proc/rqsort.html" xlink:title="rqsort">
-<polygon fill="#d9534f" stroke="#d9534f" points="186,-532 132,-532 132,-506 186,-506 186,-532"/>
-<text text-anchor="middle" x="159" y="-516.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rqsort</text>
-</a>
-</g>
-<!-- proc~decode -->
-<g id="node12" class="node"><title>proc~decode</title>
-<a xlink:href="../proc/decode.html" xlink:title="decode">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-576 21,-576 21,-550 75,-550 75,-576"/>
-<text text-anchor="middle" x="48" y="-560.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">decode</text>
-</a>
-</g>
-<!-- proc~genrep -->
-<g id="node14" class="node"><title>proc~genrep</title>
-<a xlink:href="../proc/genrep.html" xlink:title="genrep">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-620 21,-620 21,-594 75,-594 75,-620"/>
-<text text-anchor="middle" x="48" y="-604.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">genrep</text>
-</a>
-</g>
-<!-- proc~twod -->
-<g id="node15" class="node"><title>proc~twod</title>
-<a xlink:href="../proc/twod.html" xlink:title="twod">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-664 21,-664 21,-638 75,-638 75,-664"/>
-<text text-anchor="middle" x="48" y="-648.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">twod</text>
-</a>
-</g>
-<!-- proc~stdrep -->
-<g id="node16" class="node"><title>proc~stdrep</title>
-<a xlink:href="../proc/stdrep.html" xlink:title="stdrep">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-136 21,-136 21,-110 75,-110 75,-136"/>
-<text text-anchor="middle" x="48" y="-120.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stdrep</text>
-</a>
-</g>
-<!-- proc~stdrep&#45;&gt;proc~urand -->
-<g id="edge12" class="edge"><title>proc~stdrep&#45;&gt;proc~urand</title>
+<g id="edge6" class="edge"><title>proc~mutate&#45;&gt;proc~urand</title>
 <path fill="none" stroke="#000000" d="M75.1537,-123C89.1294,-123 106.383,-123 121.599,-123"/>
 <polygon fill="#000000" stroke="#000000" points="121.742,-126.5 131.742,-123 121.742,-119.5 121.742,-126.5"/>
 </g>
+<!-- proc~newpop -->
+<g id="node9" class="node"><title>proc~newpop</title>
+<a xlink:href="../proc/newpop.html" xlink:title="newpop">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-444 21,-444 21,-418 75,-418 75,-444"/>
+<text text-anchor="middle" x="48" y="-428.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">newpop</text>
+</a>
+</g>
+<!-- proc~rqsort -->
+<g id="node10" class="node"><title>proc~rqsort</title>
+<a xlink:href="../proc/rqsort.html" xlink:title="rqsort">
+<polygon fill="#d9534f" stroke="#d9534f" points="186,-488 132,-488 132,-462 186,-462 186,-488"/>
+<text text-anchor="middle" x="159" y="-472.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rqsort</text>
+</a>
+</g>
+<!-- proc~decode -->
+<g id="node11" class="node"><title>proc~decode</title>
+<a xlink:href="../proc/decode.html" xlink:title="decode">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-532 21,-532 21,-506 75,-506 75,-532"/>
+<text text-anchor="middle" x="48" y="-516.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">decode</text>
+</a>
+</g>
+<!-- proc~rninit -->
+<g id="node13" class="node"><title>proc~rninit</title>
+<a xlink:href="../proc/rninit.html" xlink:title="rninit">
+<polygon fill="#d9534f" stroke="#d9534f" points="186,-26 132,-26 132,-1.24345e-14 186,-3.55271e-15 186,-26"/>
+<text text-anchor="middle" x="159" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rninit</text>
+</a>
+</g>
+<!-- proc~twod -->
+<g id="node14" class="node"><title>proc~twod</title>
+<a xlink:href="../proc/twod.html" xlink:title="twod">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-576 21,-576 21,-550 75,-550 75,-576"/>
+<text text-anchor="middle" x="48" y="-560.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">twod</text>
+</a>
+</g>
+<!-- proc~pikaia -->
+<g id="node15" class="node"><title>proc~pikaia</title>
+<a xlink:href="../proc/pikaia.html" xlink:title="pikaia">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-48 21,-48 21,-22 75,-22 75,-48"/>
+<text text-anchor="middle" x="48" y="-32.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pikaia</text>
+</a>
+</g>
+<!-- proc~pikaia&#45;&gt;proc~adjmut -->
+<g id="edge12" class="edge"><title>proc~pikaia&#45;&gt;proc~adjmut</title>
+<path fill="none" stroke="#000000" d="M75.1537,-40.3818C89.1294,-43.1518 106.383,-46.5714 121.599,-49.5872"/>
+<polygon fill="#000000" stroke="#000000" points="121.252,-53.0865 131.742,-51.5975 122.613,-46.22 121.252,-53.0865"/>
+</g>
+<!-- proc~pikaia&#45;&gt;proc~urand -->
+<g id="edge10" class="edge"><title>proc~pikaia&#45;&gt;proc~urand</title>
+<path fill="none" stroke="#000000" d="M75.1454,-45.2811C82.2314,-48.5331 89.6548,-52.4777 96,-57 113.733,-69.6384 130.587,-87.7349 142.394,-101.783"/>
+<polygon fill="#000000" stroke="#000000" points="140.013,-104.401 149.055,-109.922 145.43,-99.967 140.013,-104.401"/>
+</g>
+<!-- proc~pikaia&#45;&gt;proc~rninit -->
+<g id="edge8" class="edge"><title>proc~pikaia&#45;&gt;proc~rninit</title>
+<path fill="none" stroke="#000000" d="M75.1537,-29.6182C89.1294,-26.8482 106.383,-23.4286 121.599,-20.4128"/>
+<polygon fill="#000000" stroke="#000000" points="122.613,-23.78 131.742,-18.4025 121.252,-16.9135 122.613,-23.78"/>
+</g>
 <!-- proc~encode -->
-<g id="node17" class="node"><title>proc~encode</title>
+<g id="node16" class="node"><title>proc~encode</title>
 <a xlink:href="../proc/encode.html" xlink:title="encode">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-708 21,-708 21,-682 75,-682 75,-708"/>
-<text text-anchor="middle" x="48" y="-692.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">encode</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-620 21,-620 21,-594 75,-594 75,-620"/>
+<text text-anchor="middle" x="48" y="-604.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">encode</text>
+</a>
+</g>
+<!-- proc~report -->
+<g id="node17" class="node"><title>proc~report</title>
+<a xlink:href="../proc/report.html" xlink:title="report">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-664 21,-664 21,-638 75,-638 75,-664"/>
+<text text-anchor="middle" x="48" y="-648.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report</text>
 </a>
 </g>
 <!-- proc~rnkpop -->
 <g id="node18" class="node"><title>proc~rnkpop</title>
 <a xlink:href="../proc/rnkpop.html" xlink:title="rnkpop">
-<polygon fill="#d9534f" stroke="#d9534f" points="75,-532 21,-532 21,-506 75,-506 75,-532"/>
-<text text-anchor="middle" x="48" y="-516.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rnkpop</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-488 21,-488 21,-462 75,-462 75,-488"/>
+<text text-anchor="middle" x="48" y="-472.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rnkpop</text>
 </a>
 </g>
 <!-- proc~rnkpop&#45;&gt;proc~rqsort -->
 <g id="edge14" class="edge"><title>proc~rnkpop&#45;&gt;proc~rqsort</title>
-<path fill="none" stroke="#000000" d="M75.1537,-519C89.1294,-519 106.383,-519 121.599,-519"/>
-<polygon fill="#000000" stroke="#000000" points="121.742,-522.5 131.742,-519 121.742,-515.5 121.742,-522.5"/>
+<path fill="none" stroke="#000000" d="M75.1537,-475C89.1294,-475 106.383,-475 121.599,-475"/>
+<polygon fill="#000000" stroke="#000000" points="121.742,-478.5 131.742,-475 121.742,-471.5 121.742,-478.5"/>
 </g>
 <!-- proc~select_parents -->
 <g id="node19" class="node"><title>proc~select_parents</title>
@@ -386,15 +379,22 @@ All Procedures &ndash; Pikaia
 <!-- proc~report_iteration -->
 <g id="node20" class="node"><title>proc~report_iteration</title>
 <a xlink:href="../proc/report_iteration.html" xlink:title="report_iteration">
-<polygon fill="#d9534f" stroke="#d9534f" points="90,-752 6,-752 6,-726 90,-726 90,-752"/>
-<text text-anchor="middle" x="48" y="-736.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report_iteration</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="90,-708 6,-708 6,-682 90,-682 90,-708"/>
+<text text-anchor="middle" x="48" y="-692.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report_iteration</text>
 </a>
 </g>
 <!-- proc~rosenbrock -->
 <g id="node21" class="node"><title>proc~rosenbrock</title>
 <a xlink:href="../proc/rosenbrock.html" xlink:title="rosenbrock">
-<polygon fill="#d9534f" stroke="#d9534f" points="81,-796 15,-796 15,-770 81,-770 81,-796"/>
-<text text-anchor="middle" x="48" y="-780.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rosenbrock</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="81,-752 15,-752 15,-726 81,-726 81,-752"/>
+<text text-anchor="middle" x="48" y="-736.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rosenbrock</text>
+</a>
+</g>
+<!-- proc~genrep -->
+<g id="node22" class="node"><title>proc~genrep</title>
+<a xlink:href="../proc/genrep.html" xlink:title="genrep">
+<polygon fill="#d9534f" stroke="#d9534f" points="75,-796 21,-796 21,-770 75,-770 75,-796"/>
+<text text-anchor="middle" x="48" y="-780.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">genrep</text>
 </a>
 </g>
 </g>
