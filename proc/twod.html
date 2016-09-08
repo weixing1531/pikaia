@@ -235,6 +235,8 @@
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
       
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
+      
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
       <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
@@ -407,6 +409,8 @@ subroutine twod(me, x, f)
         <span class="c">!Local</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rr</span>
 
+<span class="c">!$      call slowdown(f)</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1.0_wp</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1.0_wp</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">            write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;Error in function twod: invalid inputs.&#39;</span>
             <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;x(1)=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;&gt;1.0&#39;</span>
@@ -469,6 +473,8 @@ subroutine twod(me, x, f)
       <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
+      
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
       
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
