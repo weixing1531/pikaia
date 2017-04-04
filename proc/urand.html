@@ -7,7 +7,7 @@
 	 
 	 <meta name="description" content="Modern Fortran Edition of the Pikaia Genetic Algorithm">
     
-    <meta name="author" content="Chris MacMackin" >
+    <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
     <title>urand &ndash; Pikaia</title>
@@ -239,8 +239,6 @@
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
       
-      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
-      
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
       <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
@@ -309,15 +307,15 @@ private function urand() result(r)
 <polygon fill="none" stroke="black" points="172,-114 118,-114 118,-88 172,-88 172,-114"/>
 <text text-anchor="middle" x="145" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50">urand</text>
 </g>
-<!-- proc~mutate -->
-<g id="node2" class="node"><title>proc~mutate</title>
-<a xlink:href="../proc/mutate.html" xlink:title="mutate">
+<!-- proc~pikaia -->
+<g id="node2" class="node"><title>proc~pikaia</title>
+<a xlink:href="../proc/pikaia.html" xlink:title="pikaia">
 <polygon fill="#d9534f" stroke="#d9534f" points="68,-202 14,-202 14,-176 68,-176 68,-202"/>
-<text text-anchor="middle" x="41" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mutate</text>
+<text text-anchor="middle" x="41" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pikaia</text>
 </a>
 </g>
-<!-- proc~mutate&#45;&gt;proc~urand -->
-<g id="edge2" class="edge"><title>proc~mutate&#45;&gt;proc~urand</title>
+<!-- proc~pikaia&#45;&gt;proc~urand -->
+<g id="edge2" class="edge"><title>proc~pikaia&#45;&gt;proc~urand</title>
 <path fill="none" stroke="#000000" d="M68.2188,-175.969C72.9774,-173.255 77.7575,-170.229 82,-167 99.2235,-153.891 116.009,-135.973 127.917,-122.115"/>
 <polygon fill="#000000" stroke="#000000" points="130.907,-123.997 134.662,-114.089 125.549,-119.493 130.907,-123.997"/>
 </g>
@@ -333,29 +331,29 @@ private function urand() result(r)
 <path fill="none" stroke="#000000" d="M68.0533,-133.554C80.3545,-128.35 95.0968,-122.113 108.371,-116.497"/>
 <polygon fill="#000000" stroke="#000000" points="109.875,-119.661 117.721,-112.541 107.147,-113.214 109.875,-119.661"/>
 </g>
-<!-- proc~pikaia -->
-<g id="node4" class="node"><title>proc~pikaia</title>
-<a xlink:href="../proc/pikaia.html" xlink:title="pikaia">
-<polygon fill="#d9534f" stroke="#d9534f" points="68,-114 14,-114 14,-88 68,-88 68,-114"/>
-<text text-anchor="middle" x="41" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pikaia</text>
-</a>
-</g>
-<!-- proc~pikaia&#45;&gt;proc~urand -->
-<g id="edge6" class="edge"><title>proc~pikaia&#45;&gt;proc~urand</title>
-<path fill="none" stroke="#000000" d="M68.0533,-101C80.1157,-101 94.5252,-101 107.596,-101"/>
-<polygon fill="#000000" stroke="#000000" points="107.721,-104.5 117.721,-101 107.721,-97.5001 107.721,-104.5"/>
-</g>
 <!-- proc~select_parents -->
-<g id="node5" class="node"><title>proc~select_parents</title>
+<g id="node4" class="node"><title>proc~select_parents</title>
 <a xlink:href="../proc/select_parents.html" xlink:title="select_parents">
-<polygon fill="#d9534f" stroke="#d9534f" points="82,-70 4.26326e-14,-70 0,-44 82,-44 82,-70"/>
-<text text-anchor="middle" x="41" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_parents</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="82,-114 4.26326e-14,-114 0,-88 82,-88 82,-114"/>
+<text text-anchor="middle" x="41" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_parents</text>
 </a>
 </g>
 <!-- proc~select_parents&#45;&gt;proc~urand -->
-<g id="edge8" class="edge"><title>proc~select_parents&#45;&gt;proc~urand</title>
-<path fill="none" stroke="#000000" d="M71.9218,-70.0823C83.4498,-74.9595 96.6414,-80.5406 108.615,-85.6065"/>
-<polygon fill="#000000" stroke="#000000" points="107.329,-88.8625 117.902,-89.5356 110.056,-82.4157 107.329,-88.8625"/>
+<g id="edge6" class="edge"><title>proc~select_parents&#45;&gt;proc~urand</title>
+<path fill="none" stroke="#000000" d="M82.1036,-101C90.5669,-101 99.4334,-101 107.751,-101"/>
+<polygon fill="#000000" stroke="#000000" points="107.921,-104.5 117.921,-101 107.921,-97.5001 107.921,-104.5"/>
+</g>
+<!-- proc~mutate -->
+<g id="node5" class="node"><title>proc~mutate</title>
+<a xlink:href="../proc/mutate.html" xlink:title="mutate">
+<polygon fill="#d9534f" stroke="#d9534f" points="68,-70 14,-70 14,-44 68,-44 68,-70"/>
+<text text-anchor="middle" x="41" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mutate</text>
+</a>
+</g>
+<!-- proc~mutate&#45;&gt;proc~urand -->
+<g id="edge8" class="edge"><title>proc~mutate&#45;&gt;proc~urand</title>
+<path fill="none" stroke="#000000" d="M68.0533,-68.4456C80.3545,-73.65 95.0968,-79.8871 108.371,-85.503"/>
+<polygon fill="#000000" stroke="#000000" points="107.147,-88.7858 117.721,-89.4588 109.875,-82.339 107.147,-88.7858"/>
 </g>
 <!-- proc~cross -->
 <g id="node6" class="node"><title>proc~cross</title>
@@ -382,8 +380,8 @@ private function urand() result(r)
                       </div>
                       <div class="modal-body">
                         
-<p>Nodes of different colours represent the following: </p>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <p>Nodes of different colours represent the following: </p>
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
@@ -427,13 +425,13 @@ private function urand() result(r)
 </g>
 </svg>
 
-
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.
-</p>
-
+    
+    <p>Solid arrows point from a procedure to one which it calls. Dashed 
+    arrows point from an interface to procedures which implement that interface.
+    This could include the module procedures in a generic interface or the
+    implementation in a submodule of an interface in a parent module.
+    </p>
+    
                       </div>
                     </div>
                   </div>
@@ -556,8 +554,6 @@ implementation in a submodule of an interface in a parent module.
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
       
-      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
-      
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
       <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
@@ -578,7 +574,7 @@ implementation in a submodule of an interface in a parent module.
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2016 </p></div>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2017 </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 

@@ -7,7 +7,7 @@
 	 
 	 <meta name="description" content="Modern Fortran Edition of the Pikaia Genetic Algorithm">
     
-    <meta name="author" content="Chris MacMackin" >
+    <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
     <title>set_inputs &ndash; Pikaia</title>
@@ -136,7 +136,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
 	  data-placement="bottom" data-html="true"
-	  title="20.2% of total for procedures.">148 statements</a>
+	  title="20.5% of total for procedures.">148 statements</a>
      </li> 
      
      
@@ -236,8 +236,6 @@
       <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
-      
-      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
       
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
@@ -897,44 +895,44 @@ private subroutine set_inputs(me, n, xl, xu, f, status, iter_f, np, ngen, nd, pc
 <span class="k">        write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: illegal value for Convergence tolerance.&#39;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="mi">101</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">convergence_window</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">        write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: illegal value for Convergence window.&#39;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="mi">102</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">iseed</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">        write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: illegal value for iseed.&#39;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="mi">103</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">nd</span><span class="o">&gt;</span><span class="mi">9</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">nd</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">        write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: illegal value for Chromosome length.&#39;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="mi">104</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="nb">mod</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">np</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">       write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: population size must be an even number.&#39;</span>
        <span class="n">status</span> <span class="o">=</span> <span class="mi">105</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">initial_guess_frac</span><span class="o">&lt;</span><span class="mf">0.0_wp</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">initial_guess_frac</span><span class="o">&gt;</span><span class="mf">1.0_wp</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">       write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39; ERROR: illegal value for Initial guess fraction.&#39;</span>
        <span class="n">status</span> <span class="o">=</span> <span class="mi">106</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">irep</span><span class="o">==</span><span class="mi">1</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">imut</span><span class="o">==</span><span class="mi">1</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">pmuti</span><span class="o">&gt;</span><span class="mf">0.5_wp</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">ielite</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">       write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
         <span class="s1">&#39; WARNING: dangerously high value for Initial mutation rate; &#39;</span><span class="o">//</span><span class="p">&amp;</span>
         <span class="s1">&#39;(Should enforce elitism with ielite=1.)&#39;</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">irep</span><span class="o">==</span><span class="mi">1</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">imut</span><span class="o">==</span><span class="mi">2</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">pmutmx</span><span class="o">&gt;</span><span class="mf">0.5_wp</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">ielite</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">       write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
        <span class="s1">&#39; WARNING: dangerously high value for Maximum mutation rate; &#39;</span><span class="o">//</span><span class="p">&amp;</span>
        <span class="s1">&#39;(Should enforce elitism with ielite=1.)&#39;</span>
     <span class="k">end if</span>
-
+<span class="k"> </span>
 <span class="k">    if</span> <span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">fdif</span><span class="o">&lt;</span><span class="mf">0.33_wp</span> <span class="p">.</span><span class="nb">and</span><span class="p">.</span> <span class="n">me</span><span class="p">%</span><span class="n">irep</span><span class="o">/=</span><span class="mi">3</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">       write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
        <span class="s1">&#39; WARNING: dangerously low value of Relative fitness differential.&#39;</span>
@@ -993,8 +991,6 @@ private subroutine set_inputs(me, n, xl, xu, f, status, iter_f, np, ngen, nd, pc
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
       
-      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
-      
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
       <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
@@ -1015,7 +1011,7 @@ private subroutine set_inputs(me, n, xl, xu, f, status, iter_f, np, ngen, nd, pc
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2016 </p></div>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2017 </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
