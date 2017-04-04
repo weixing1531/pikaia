@@ -10,7 +10,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>solve_with_pikaia &ndash; Pikaia</title>
+    <title>slowdown &ndash; Pikaia</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -116,7 +116,7 @@
     
   
   <div class="row">
-    <h1>solve_with_pikaia
+    <h1>slowdown
       <small>Subroutine</small>
     
     </h1>
@@ -126,8 +126,6 @@
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
      
-     <li><i class="fa fa-pencil"></i> Jacob Williams</li>
-     
      
      
      
@@ -136,20 +134,20 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
 	  data-placement="bottom" data-html="true"
-	  title=" 2.0% of total for procedures.">15 statements</a>
+	  title=" 1.2% of total for procedures.">9 statements</a>
      </li> 
      
      
-    <li><i class="fa fa-code"></i><a href="../src/pikaia_module.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/pikaia_test.f90"> Source File</a></li>
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
-     <li><a href='../sourcefile/pikaia_module.f90.html'>pikaia_module.f90</a></li>
+     <li><a href='../sourcefile/pikaia_test.f90.html'>pikaia_test.f90</a></li>
   
-     <li><a href='../module/pikaia_module.html'>pikaia_module</a></li>
+     <li><a href='../program/pikaia_test.html'>pikaia_test</a></li>
   
-     <li class="active">solve_with_pikaia</li>
+     <li class="active">slowdown</li>
   </ol>
 </div>
 </div>
@@ -190,7 +188,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/solve_with_pikaia.html#src">solve_with_pikaia</a>
+    <a class="list-group-item" href="../proc/slowdown.html#src">slowdown</a>
   </div>
 </div>
 
@@ -258,7 +256,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-private subroutine solve_with_pikaia(me, x, f, status)
+subroutine slowdown(f)
     
     
 	 
@@ -268,7 +266,8 @@ private subroutine solve_with_pikaia(me, x, f, status)
 
 
     
-    <p>Main pikaia wrapper used by the class.</p>
+    <p>for the openmp test.
+ just a function to slow things down</p>
     
 
     <h3>Arguments</h3>
@@ -289,57 +288,12 @@ private subroutine solve_with_pikaia(me, x, f, status)
   
 <tr>
   
-  <td><span class="anchor" id="variable-me%7E5"></span>class(<a href='../type/pikaia_class.html'>pikaia_class</a>),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>me</strong></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-x%7E4"></span>real(kind=wp),</td>
-  <td>intent(inout),</td>
-  <td></td>
-  
-  <td>dimension(:)</td><td>::</td>
-  <td><strong>x</strong></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-f%7E5"></span>real(kind=wp),</td>
+  <td><span class="anchor" id="variable-f%7E10"></span>real(kind=wp),</td>
   <td>intent(out)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>f</strong></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-status%7E3"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>status</strong></td><td></td>
   
 </tr>
 
@@ -377,7 +331,7 @@ private subroutine solve_with_pikaia(me, x, f, status)
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/solve_with_pikaia.html#src">solve_with_pikaia</a>
+    <a class="list-group-item" href="../proc/slowdown.html#src">slowdown</a>
   </div>
 </div>
 
@@ -405,34 +359,21 @@ private subroutine solve_with_pikaia(me, x, f, status)
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">solve_with_pikaia</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">status</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span>        <span class="k">subroutine </span><span class="n">slowdown</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="c">!! for the openmp test.</span>
+        <span class="c">!! just a function to slow things down</span>
 
-    <span class="k">implicit none</span>
+        <span class="k">implicit none</span>
 
-<span class="k">    class</span><span class="p">(</span><span class="n">pikaia_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">me</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                <span class="kd">::</span> <span class="n">f</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">status</span>
+<span class="k">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
+        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="c">!! counter</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">user_f</span><span class="p">))</span> <span class="k">then</span>
+        <span class="n">f</span><span class="o">=</span><span class="mf">1.0_wp</span>
+        <span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000000</span>
+            <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="o">+</span><span class="mf">1.0_wp</span>
+        <span class="k">end do</span>
 
-        <span class="c">!scale input initial guess to be [0,1]:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">me</span><span class="p">%</span><span class="n">xl</span><span class="p">)</span><span class="o">/</span><span class="n">me</span><span class="p">%</span><span class="n">del</span>
-
-        <span class="c">!call the main routine, using the wrapper function:</span>
-        <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">pikaia</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">status</span><span class="p">)</span>
-
-        <span class="c">!unscale output to be [xl,xu]:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">me</span><span class="p">%</span><span class="n">xl</span> <span class="o">+</span> <span class="n">me</span><span class="p">%</span><span class="n">del</span><span class="o">*</span><span class="n">x</span>
-
-    <span class="k">else</span>
-
-<span class="k">        write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;Error: pikaia class not initialized.&#39;</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">end if</span>
-
-<span class="k">    end subroutine </span><span class="n">solve_with_pikaia</span>
+<span class="k">        end subroutine </span><span class="n">slowdown</span>
 </pre></div>
 
     </section>

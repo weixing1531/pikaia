@@ -134,7 +134,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
 	  data-placement="bottom" data-html="true"
-	  title=" 3.5% of total for procedures.">25 statements</a>
+	  title=" 3.4% of total for procedures.">25 statements</a>
      </li> 
      
      
@@ -234,6 +234,8 @@
       <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
+      
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
       
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
@@ -482,6 +484,7 @@ private subroutine newpop(me, oldph, newph, ifit, jfit, fitns, nnew)
 <span class="k">    end if</span>
 
     <span class="c">!replace population</span>
+    <span class="c">!$omp parallel do private(i)</span>
     <span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">np</span>
 
         <span class="n">oldph</span><span class="p">(:,</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">newph</span><span class="p">(:,</span><span class="n">i</span><span class="p">)</span>
@@ -490,6 +493,7 @@ private subroutine newpop(me, oldph, newph, ifit, jfit, fitns, nnew)
         <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">ff</span><span class="p">(</span><span class="n">oldph</span><span class="p">(:,</span><span class="n">i</span><span class="p">),</span><span class="n">fitns</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 
     <span class="k">end do</span>
+    <span class="c">!$omp end parallel do</span>
 
     <span class="c">!compute new population fitness rank order</span>
     <span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">rnkpop</span><span class="p">(</span><span class="n">fitns</span><span class="p">,</span><span class="n">ifit</span><span class="p">,</span><span class="n">jfit</span><span class="p">)</span>
@@ -546,6 +550,8 @@ private subroutine newpop(me, oldph, newph, ifit, jfit, fitns, nnew)
       <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
+      
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
       
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       

@@ -235,6 +235,8 @@
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
       
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
+      
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       
       <a class="list-group-item" href="../proc/stdrep.html">stdrep</a>
@@ -408,6 +410,8 @@ subroutine rosenbrock(me, x, f)
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">one</span>     <span class="o">=</span> <span class="mf">1.0_wp</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">hundred</span> <span class="o">=</span> <span class="mi">10</span><span class="mf">0.0_wp</span>
 
+<span class="c">!$      call slowdown(f)</span>
+
         <span class="c">!the rosenbrock function:</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">one</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">hundred</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
@@ -465,6 +469,8 @@ subroutine rosenbrock(me, x, f)
       <a class="list-group-item" href="../proc/select_parents.html">select_parents</a>
       
       <a class="list-group-item" href="../proc/set_inputs.html">set_inputs</a>
+      
+      <a class="list-group-item" href="../proc/slowdown.html">slowdown</a>
       
       <a class="list-group-item" href="../proc/solve_with_pikaia.html">solve_with_pikaia</a>
       

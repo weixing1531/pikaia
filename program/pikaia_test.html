@@ -138,7 +138,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
 	  data-placement="bottom" data-html="true"
-	  title="100.0% of total for programs.">103 statements</a>
+	  title="100.0% of total for programs.">112 statements</a>
      </li> 
      
      
@@ -182,7 +182,7 @@
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-x%7E9">x</a>
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E10">f</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E11">f</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-iunit">iunit</a>
       
@@ -227,6 +227,8 @@
       <a class="list-group-item" href="../program/pikaia_test.html#proc-rosenbrock">rosenbrock</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#proc-report_iteration">report_iteration</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#proc-slowdown">slowdown</a>
       
     </div>
   </div>
@@ -417,7 +419,7 @@
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-x%7E9">x</a>
       
-      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E10">f</a>
+      <a class="list-group-item" href="../program/pikaia_test.html#variable-f%7E11">f</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#variable-iunit">iunit</a>
       
@@ -462,6 +464,8 @@
       <a class="list-group-item" href="../program/pikaia_test.html#proc-rosenbrock">rosenbrock</a>
       
       <a class="list-group-item" href="../program/pikaia_test.html#proc-report_iteration">report_iteration</a>
+      
+      <a class="list-group-item" href="../program/pikaia_test.html#proc-slowdown">slowdown</a>
       
     </div>
   </div>
@@ -562,7 +566,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-f%7E10"></span>real(kind=wp)</td>
+  <td><span class="anchor" id="variable-f%7E11"></span>real(kind=wp)</td>
   
   
   <td></td><td>::</td>
@@ -660,7 +664,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-tstart"></span>real</td>
+  <td><span class="anchor" id="variable-tstart"></span>real(kind=wp)</td>
   
   
   <td></td><td>::</td>
@@ -674,7 +678,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-tend"></span>real</td>
+  <td><span class="anchor" id="variable-tend"></span>real(kind=wp)</td>
   
   
   <td></td><td>::</td>
@@ -1003,6 +1007,66 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
   </div>
 
     
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-slowdown"></span><h3>
+subroutine <a href='../proc/slowdown.html'>slowdown</a>(f)
+    
+    
+	 
+</h3></div>
+  <div class="panel-body">
+       
+    
+
+
+
+
+
+
+
+<p>for the openmp test.
+ just a function to slow things down</p>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>f</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+    
     </section>    
     
     
@@ -1013,6 +1077,7 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
     <span class="k">use </span><span class="n">pikaia_module</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">pikaia_class</span>
     <span class="k">use</span><span class="p">,</span><span class="k">intrinsic</span> <span class="kd">::</span> <span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">wp</span> <span class="o">=&gt;</span> <span class="n">real64</span>
+<span class="c">!$  use omp_lib</span>
 
     <span class="k">implicit none</span>
 
@@ -1025,7 +1090,8 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">xl</span><span class="p">,</span><span class="n">xu</span>
     <span class="k">type</span><span class="p">(</span><span class="n">pikaia_class</span><span class="p">)</span>      <span class="kd">::</span> <span class="n">p</span>
     <span class="kt">logical</span>                 <span class="kd">::</span> <span class="n">header_written</span>
-    <span class="kt">real</span>                    <span class="kd">::</span> <span class="n">tstart</span><span class="p">,</span><span class="n">tend</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>                <span class="kd">::</span> <span class="n">tstart</span><span class="p">,</span><span class="n">tend</span>
+<span class="c">!$  real(wp)                :: ostart,oend</span>
 
     <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;pikaia_test.txt&#39;</span>
 
@@ -1057,8 +1123,10 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
     <span class="c">!Now call pikaia:</span>
     <span class="k">call </span><span class="nb">cpu_time</span><span class="p">(</span><span class="n">tstart</span><span class="p">)</span>
+<span class="c">!$  ostart = omp_get_wtime()</span>
     <span class="k">call </span><span class="n">p</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">status</span><span class="p">)</span>
     <span class="k">call </span><span class="nb">cpu_time</span><span class="p">(</span><span class="n">tend</span><span class="p">)</span>
+<span class="c">!$  oend = omp_get_wtime()</span>
 
     <span class="c">!Print the results:</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
@@ -1066,7 +1134,8 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,*(F12.6))&#39;</span><span class="p">)</span> <span class="s1">&#39;       x: &#39;</span><span class="p">,</span><span class="n">x</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,*(F12.6))&#39;</span><span class="p">)</span> <span class="s1">&#39;       f: &#39;</span><span class="p">,</span><span class="n">f</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,F12.6,A)&#39;</span><span class="p">)</span>  <span class="s1">&#39;run time: &#39;</span><span class="p">,</span><span class="n">tend</span><span class="o">-</span><span class="n">tstart</span><span class="p">,</span><span class="s1">&#39; sec&#39;</span>
+    <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,F12.6,A)&#39;</span><span class="p">)</span>  <span class="s1">&#39;cpu time : &#39;</span><span class="p">,</span><span class="n">tend</span><span class="o">-</span><span class="n">tstart</span><span class="p">,</span><span class="s1">&#39; sec&#39;</span>
+<span class="c">!$  write(output_unit,&#39;(A,1X,F12.6,A)&#39;)  &#39;wall time: &#39;,oend-ostart,&#39; sec&#39;</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
 
     <span class="c">!-------------------------</span>
@@ -1091,8 +1160,10 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
     <span class="c">!Now call pikaia:</span>
     <span class="k">call </span><span class="nb">cpu_time</span><span class="p">(</span><span class="n">tstart</span><span class="p">)</span>
+<span class="c">!$  ostart = omp_get_wtime()</span>
     <span class="k">call </span><span class="n">p</span><span class="p">%</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">status</span><span class="p">)</span>
     <span class="k">call </span><span class="nb">cpu_time</span><span class="p">(</span><span class="n">tend</span><span class="p">)</span>
+<span class="c">!$  oend = omp_get_wtime()</span>
 
     <span class="c">!Print the results:</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
@@ -1100,7 +1171,8 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,*(F12.6))&#39;</span><span class="p">)</span> <span class="s1">&#39;       x: &#39;</span><span class="p">,</span><span class="n">x</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,*(F12.6))&#39;</span><span class="p">)</span> <span class="s1">&#39;       f: &#39;</span><span class="p">,</span><span class="n">f</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,F12.6,A)&#39;</span><span class="p">)</span>  <span class="s1">&#39;run time: &#39;</span><span class="p">,</span><span class="n">tend</span><span class="o">-</span><span class="n">tstart</span><span class="p">,</span><span class="s1">&#39; sec&#39;</span>
+    <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,1X,F12.6,A)&#39;</span><span class="p">)</span>  <span class="s1">&#39;cpu time : &#39;</span><span class="p">,</span><span class="n">tend</span><span class="o">-</span><span class="n">tstart</span><span class="p">,</span><span class="s1">&#39; sec&#39;</span>
+<span class="c">!$  write(output_unit,&#39;(A,1X,F12.6,A)&#39;)  &#39;wall time: &#39;,oend-ostart,&#39; sec&#39;</span>
     <span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span> <span class="s1">&#39;&#39;</span>
 
     <span class="k">close</span><span class="p">(</span><span class="n">iunit</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">istat</span><span class="p">)</span>
@@ -1126,6 +1198,8 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
         <span class="c">!Local</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rr</span>
+
+<span class="c">!$      call slowdown(f)</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1.0_wp</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1.0_wp</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">            write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s1">&#39;Error in function twod: invalid inputs.&#39;</span>
@@ -1155,6 +1229,8 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">one</span>     <span class="o">=</span> <span class="mf">1.0_wp</span>
         <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">hundred</span> <span class="o">=</span> <span class="mi">10</span><span class="mf">0.0_wp</span>
+
+<span class="c">!$      call slowdown(f)</span>
 
         <span class="c">!the rosenbrock function:</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">one</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">hundred</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -1192,6 +1268,22 @@ subroutine <a href='../proc/report_iteration.html'>report_iteration</a>(me, iter
 <span class="k">        write</span><span class="p">(</span><span class="n">iunit</span><span class="p">,</span><span class="s1">&#39;(I5,1X,*(F10.6,1X))&#39;</span><span class="p">)</span> <span class="n">iter</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span>
 
         <span class="k">end subroutine </span><span class="n">report_iteration</span>
+
+        <span class="k">subroutine </span><span class="n">slowdown</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="c">!! for the openmp test.</span>
+        <span class="c">!! just a function to slow things down</span>
+
+        <span class="k">implicit none</span>
+
+<span class="k">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span>
+        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span> <span class="c">!! counter</span>
+
+        <span class="n">f</span><span class="o">=</span><span class="mf">1.0_wp</span>
+        <span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000000</span>
+            <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="o">+</span><span class="mf">1.0_wp</span>
+        <span class="k">end do</span>
+
+<span class="k">        end subroutine </span><span class="n">slowdown</span>
 
     <span class="k">end program </span><span class="n">pikaia_test</span>
 </pre></div>
