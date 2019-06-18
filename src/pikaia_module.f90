@@ -11,22 +11,22 @@
 !# License
 !
 !    Copyright (c) 2015, Jacob Williams
-! 
+!
 !    http://github.com/jacobwilliams/pikaia
-!    
+!
 !    All rights reserved.
-!    
+!
 !    Redistribution and use in source and binary forms, with or without
 !    modification, are permitted provided that the following conditions are met:
 !    * Redistributions of source code must retain the above copyright notice, this
 !      list of conditions and the following disclaimer.
 !    * Redistributions in binary form must reproduce the above copyright notice,
 !      this list of conditions and the following disclaimer in the documentation
-!      and/or other materials provided with the distribution. 
+!      and/or other materials provided with the distribution.
 !    * Neither the name of pikaia nor the names of its
 !      contributors may be used to endorse or promote products derived from
 !      this software without specific prior written permission.
-!    
+!
 !    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 !    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 !    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,10 +37,10 @@
 !    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 !    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 !    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-!    
+!
 !    ------------------------------------------------------------------------------
-!    
-!    The original version of the PIKAIA software is public domain software 
+!
+!    The original version of the PIKAIA software is public domain software
 !    and is available electronically from the High Altitude Observatory.
 !    http://www.hao.ucar.edu/modeling/pikaia/pikaia.php
 !
@@ -60,96 +60,100 @@
 
     private
 
-    integer,parameter :: wp = real64  !! Default real kind [8 bytes].
+    integer,parameter :: wp = real64  !! Default real kind [8 bytes]. 默认实数为双精度
+    integer,parameter :: I1B = int8   !染色体编码数组8字节就足够了 魏兴增加 [-128,127] 有改动
+    integer,parameter :: IB = int32   !用于染色体二进制编码   有改动 二进制
 
     !*********************************************************
-    type,public :: pikaia_class
-    
+    type,public :: pikaia_class !pikaia类
+
         !! Main class for using the Pikaia algorithm.
-        !! INIT and SOLVE are the only public methods.
+        !! INIT and SOLVE are the only public methods. 公开方法：init 和 solve
 
         private
 
-        integer :: n = 0  !number of solution variables
-        real(wp),dimension(:),allocatable :: xl    !! lower bounds of x
-        real(wp),dimension(:),allocatable :: xu    !! upper bound of x
-        real(wp),dimension(:),allocatable :: del
+        integer(I1B) :: n = 0  !number of solution variables 自变量个数 有改动
+        real(wp),dimension(:),allocatable :: xl    !! lower bounds of x 成员变量为动态数组
+        real(wp),dimension(:),allocatable :: xu    !! upper bound of x 成员变量为动态数组
+        real(wp),dimension(:),allocatable :: del !自变量定义域长度 成员变量为动态数组
 
         !other solution inputs (with default values):
-        integer  :: np                 = 100
-        integer  :: ngen               = 500
-        integer  :: nd                 = 5
-        real(wp) :: pcross             = 0.85_wp
-        integer  :: imut               = 2
-        real(wp) :: pmuti              = 0.005_wp  !! initial value of pmut
-        real(wp) :: pmutmn             = 0.0005_wp
-        real(wp) :: pmutmx             = 0.25_wp
-        real(wp) :: fdif               = 1.0_wp
-        integer  :: irep               = 1
-        integer  :: ielite             = 1
-        integer  :: ivrb               = 0
-        real(wp) :: convergence_tol    = 0.0001_wp
-        integer  :: convergence_window = 20
-        integer  :: iseed              = 999
-        real(wp) :: initial_guess_frac = 0.1_wp
+        integer  :: np                 = 100 !种群数 必须为偶数
+        integer  :: ngen               = 500 !迭代数
+        integer(I1B)  :: nd            = 5   !有效数字 有改动
+        integer(I1B)  :: nb            = 30  !有效数字 有改动 二进制
+        real(wp)      :: z             = 2**30  !有改动 二进制
+        real(wp) :: pcross             = 0.85_wp !交叉概率
+        integer(I1B)  :: imut          = 2 !变异模式 有改动
+        real(wp) :: pmuti              = 0.005_wp  !变异概率初始值
+        real(wp) :: pmutmn             = 0.0005_wp !最小变异概率
+        real(wp) :: pmutmx             = 0.25_wp   !最大变异概率
+        real(wp) :: fdif               = 1.0_wp !相对适应度差异 用于子程序select_parents
+        integer(I1B)  :: irep          = 1 !繁殖计划 有改动
+        integer(I1B)  :: ielite        = 1 !是否遗传精英基因,0否1是 用于子程序newpop  有改动
+        integer(I1B)  :: ivrb          = 0 !打印模式 0无1最小3冗长  有改动
+        real(wp) :: convergence_tol    = 0.0001_wp !收敛判别 两次迭代适应度差值
+        integer :: convergence_window  = 20 !收敛窗口  有改动
+        integer  :: iseed              = 999 !随机种子数
+        real(wp) :: initial_guess_frac = 0.1_wp !初始种群猜测率 用于子程序pikaia 即10%的种群自变量初始值采用猜测值
 
         !used internally:
         real(wp) :: pmut   = -huge(1.0_wp)
-        real(wp) :: bestft = huge(1.0_wp)
-        real(wp) :: pmutpv = huge(1.0_wp)
+        real(wp) :: bestft = huge(1.0_wp) !最强适应度
+        real(wp) :: pmutpv = huge(1.0_wp) !最强适应度变异率
 
-        !user-supplied procedures:
+        !user-supplied procedures: 过程指针user_f可以指向任意与pikaia_func相同形参列表的过程
         procedure(pikaia_func),pointer :: user_f => null()  !! fitness function
         procedure(iter_func),pointer   :: iter_f => null()  !! reporting function (best member of population)
 
     contains
 
         !public routines:
-        procedure,non_overridable,public :: init   => set_inputs
-        procedure,non_overridable,public :: solve  => solve_with_pikaia
+        procedure,non_overridable,public :: init   => set_inputs !构造函数 公开方法
+        procedure,non_overridable,public :: solve  => solve_with_pikaia !计算程序 公开方法 [xl,xu]
 
         !private routines:
-        procedure,non_overridable :: ff  => func_wrapper  !! internal pikaia function (x:[0,1])
-        procedure,non_overridable :: newpop
-        procedure,non_overridable :: stdrep
-        procedure,non_overridable :: genrep
-        procedure,non_overridable :: adjmut
-        procedure,non_overridable :: cross
-        procedure,non_overridable :: encode
-        procedure,non_overridable :: mutate
-        procedure,non_overridable :: decode
-        procedure,non_overridable :: select_parents
-        procedure,non_overridable :: report
-        procedure,non_overridable :: rnkpop
-        procedure,non_overridable :: pikaia
+        procedure,non_overridable :: ff  => func_wrapper  !! internal pikaia function (x:[0,1]) 适应度函数 定义域为[0,1]
+        procedure,non_overridable :: newpop !新种群替换旧种群 irep=1
+        procedure,non_overridable :: stdrep !恒定状态繁殖 irep=2或3
+        procedure,non_overridable :: genrep !全部后代替换 irep=1
+        procedure,non_overridable :: adjmut !变异率的动态调整 imut=2,3,5,6
+        procedure,non_overridable :: cross  !交叉
+        procedure,non_overridable :: encode !编码
+        procedure,non_overridable :: mutate !变异 imut>=4或<4
+        procedure,non_overridable :: decode !解码
+        procedure,non_overridable :: select_parents !轮盘赌算法选择父母
+        procedure,non_overridable :: report !打印迭代信息 ivrb>0
+        procedure,non_overridable :: rnkpop !种群适应度排序
+        procedure,non_overridable :: pikaia !计算程序 [0,1]
 
     end type pikaia_class
     !*********************************************************
 
-    abstract interface
-    
-        subroutine pikaia_func(me,x,f)  
+    abstract interface !抽象接口
+
+        subroutine pikaia_func(me,x,f)  !适应度函数接口 具体实现见主程序
             !! The interface for the function that pikaia will be maximizing.
-        import :: wp,pikaia_class
+        import :: wp,pikaia_class !导入模块变量定义 pikaia_class为类名
         implicit none
         class(pikaia_class),intent(inout)  :: me    !! pikaia class
         real(wp),dimension(:),intent(in)   :: x     !! optimization variable vector
         real(wp),intent(out)               :: f     !! fitness value
         end subroutine pikaia_func
 
-        subroutine iter_func(me,iter,x,f)
+        subroutine iter_func(me,iter,x,f) !历次迭代结果 具体实现见主程序
             !! The interface for the function that user can specify
             !! to report each iteration when pikaia is running.
             !! The best (fittest) population member is passed to
             !! this routine in each generation.
-        import :: wp,pikaia_class
+        import :: wp,pikaia_class !导入模块变量定义 pikaia_class为类名
         implicit none
         class(pikaia_class),intent(inout)  :: me    !! pikaia class
         integer,intent(in)                 :: iter  !! iteration number
         real(wp),dimension(:),intent(in)   :: x     !! optimization variable vector
         real(wp),intent(in)                :: f     !! fitness value
         end subroutine iter_func
-        
+
     end interface
 
     contains
@@ -173,29 +177,29 @@
                             np,ngen,nd,pcross,pmutmn,pmutmx,pmut,imut,&
                             fdif,irep,ielite,ivrb,&
                             convergence_tol,convergence_window,initial_guess_frac,&
-                            iseed)
+                            iseed) !构造函数 确定成员变量初值
 
     implicit none
 
     class(pikaia_class),intent(out)    :: me        !! pikaia class
-    integer,intent(in)                 :: n         !! the parameter space dimension, i.e., the number
+    integer(I1B),intent(in)            :: n         !! the parameter space dimension, i.e., the number 有改动
                                                     !! of adjustable parameters (size of the x vector).
-    real(wp),dimension(n),intent(in)   :: xl        !! vector of lower bounds for x
-    real(wp),dimension(n),intent(in)   :: xu        !! vector of upper bounds for x
-    procedure(pikaia_func)             :: f         !! user-supplied scalar function of n variables,
+    real(wp),dimension(n),intent(in)   :: xl        !! vector of lower bounds for x 传入静态数组
+    real(wp),dimension(n),intent(in)   :: xu        !! vector of upper bounds for x 传入静态数组
+    procedure(pikaia_func)             :: f         !! user-supplied scalar function of n variables, 任何与pikaia_func接口一样的子例程都可传入
                                                     !! which must have the [[pikaia_func]] procedure interface.
                                                     !! By convention, f should return higher values for more optimal
                                                     !! parameter values (i.e., individuals which are more "fit").
                                                     !! For example, in fitting a function through data points, f
                                                     !! could return the inverse of chi**2.
-    integer,intent(out)                :: status    !! status output flag (0 if there were no errors)
-    procedure(iter_func),optional      :: iter_f    !! user-supplied subroutine that will report the
+    integer(I1B),intent(out)           :: status    !! status output flag (0 if there were no errors) 错误类型  有改动
+    procedure(iter_func),optional      :: iter_f    !! user-supplied subroutine that will report the 任何与iter_func接口一样的子例程都可传入
                                                     !! best solution for each generation.
                                                     !! It must have the [[iter_func]] procedure interface.  If not present,
                                                     !! then it is not used.  (note: this is independent of ivrb).
     integer,intent(in),optional        :: np        !! number of individuals in a population (default is 100)
     integer,intent(in),optional        :: ngen      !! maximum number of iterations
-    integer,intent(in),optional        :: nd        !! number of significant digits (i.e., number of
+    integer(I1B),intent(in),optional   :: nd        !! number of significant digits (i.e., number of 有改动
                                                     !! genes) retained in chromosomal encoding (default is 6).
     real(wp),intent(in),optional       :: pcross    !! crossover probability; must be  <= 1.0 (default
                                                     !! is 0.85). If crossover takes place, either one
@@ -207,24 +211,24 @@
                                                     !! is 0.005) (Note: the mutation rate is the probability
                                                     !! that any one gene locus will mutate in
                                                     !! any one generation.)
-    integer,intent(in),optional        :: imut      !! mutation mode; 1/2/3/4/5 (default is 2).
+    integer(I1B),intent(in),optional   :: imut      !! mutation mode; 1/2/3/4/5 (default is 2). 有改动
                                                     !!  1=one-point mutation, fixed rate.
                                                     !!  2=one-point, adjustable rate based on fitness.
                                                     !!  3=one-point, adjustable rate based on distance.
                                                     !!  4=one-point+creep, fixed rate.
                                                     !!  5=one-point+creep, adjustable rate based on fitness.
                                                     !!  6=one-point+creep, adjustable rate based on distance.
-    real(wp),intent(in),optional       :: fdif      !! relative fitness differential; range from 0
+    real(wp),intent(in),optional       :: fdif      !! relative fitness differential; range from 0 选择父母时使用
                                                     !! (none) to 1 (maximum).  (default is 1.0)
-    integer,intent(in),optional        :: irep      !! reproduction plan; 1/2/3=Full generational
+    integer(I1B),intent(in),optional   :: irep      !! reproduction plan; 1/2/3=Full generational 有改动
                                                     !! replacement/Steady-state-replace-random/Steady-
                                                     !! state-replace-worst (default is 3)
-    integer,intent(in),optional        :: ielite    !! elitism flag; 0/1=off/on (default is 0)
+    integer(I1B),intent(in),optional   :: ielite    !! elitism flag; 0/1=off/on (default is 0) 精英开关 有改动
                                                     !! (Applies only to reproduction plans 1 and 2)
-    integer,intent(in),optional        :: ivrb      !! printed output 0/1/2=None/Minimal/Verbose
+    integer(I1B),intent(in),optional   :: ivrb      !! printed output 0/1/2=None/Minimal/Verbose  0无1最小3冗长 有改动
                                                     !! (default is 0)
     real(wp),intent(in),optional       :: convergence_tol    !! convergence tolerance; must be > 0.0 (default is 0.0001)
-    integer,intent(in),optional        :: convergence_window !! convergence window; must be >= 0
+    integer,intent(in),optional        :: convergence_window !! convergence window; must be >= 0  有改动
                                                              !! This is the number of consecutive solutions
                                                              !! within the tolerance for convergence to
                                                              !! be declared (default is 20)
@@ -236,20 +240,20 @@
     me%n = n
 
     if (allocated(me%xl)) deallocate(me%xl)
-    allocate(me%xl(n))
+    allocate(me%xl(n)) !动态数组确定内存
     me%xl = xl
 
     if (allocated(me%xu)) deallocate(me%xu)
-    allocate(me%xu(n))
+    allocate(me%xu(n)) !动态数组确定内存
     me%xu = xu
 
     if (allocated(me%del)) deallocate(me%del)
-    allocate(me%del(n))
-    me%del = me%xu - me%xl
+    allocate(me%del(n)) !动态数组确定内存
+    me%del = me%xu - me%xl !自变量定义域长度
 
-    me%user_f => f
+    me%user_f => f !过程指针指向子例程
 
-    if (present(iter_f)) me%iter_f => iter_f
+    if (present(iter_f)) me%iter_f => iter_f !过程指针指向子例程
 
     if (present(np                 )) me%np                 = np
     if (present(ngen               )) me%ngen               = ngen
@@ -267,14 +271,15 @@
     if (present(convergence_window )) me%convergence_window = convergence_window
     if (present(initial_guess_frac )) me%initial_guess_frac = initial_guess_frac
     if (present(iseed              )) me%iseed              = iseed
-
+    me%nb=CEILING(log(1.0_wp*10**me%nd)/log(2.0_wp)) !十进制有效数字转换为二进制有效数字  有改动 二进制
+    me%z=2**me%nb-1 !有改动 二进制
     !check for errors:
 
     !initialize error flag:
     status = 0
 
     !Print a header
-    if (me%ivrb>0) then
+    if (me%ivrb>0) then !打印表头
         write(output_unit,'(A)') '------------------------------------------------------------'
         write(output_unit,'(A)') '              PIKAIA Genetic Algorithm Report               '
         write(output_unit,'(A)') '------------------------------------------------------------'
@@ -282,6 +287,7 @@
         write(output_unit,'(A,I4)')    '     Individuals per generation: ',me%np
         write(output_unit,'(A,I4)')    '  Number of Chromosome segments: ',me%n
         write(output_unit,'(A,I4)')    '  Length of Chromosome segments: ',me%nd
+        write(output_unit,'(A,I4)')    '    Binary Length of Chromosome: ',me%nb !有改动 二进制
         write(output_unit,'(A,E11.4)') '          Crossover probability: ',me%pcross
         write(output_unit,'(A,E11.4)') '          Initial mutation rate: ',me%pmuti
         write(output_unit,'(A,E11.4)') '          Minimum mutation rate: ',me%pmutmn
@@ -290,7 +296,7 @@
         write(output_unit,'(A,E11.4)') '         Initial guess fraction: ',me%initial_guess_frac
         write(output_unit,'(A,E11.4)') '          Convergence tolerance: ',me%convergence_tol
         write(output_unit,'(A,I4)')    '             Convergence window: ',me%convergence_window
-        select case (me%imut)
+        select case (me%imut) !变异模式
         case(1); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Constant Rate'
         case(2); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (F)'
         case(3); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (D)'
@@ -298,7 +304,7 @@
         case(5); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (F)'
         case(6); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (D)'
         end select
-        select case (me%irep)
+        select case (me%irep)  !繁殖模式
         case(1); write(output_unit,'(A)') '              Reproduction Plan: Full generational replacement'
         case(2); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-random'
         case(3); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-worst'
@@ -306,7 +312,7 @@
         write(output_unit,'(A)') '------------------------------------------------------------'
     end if
 
-    !Check some control values
+    !Check some control values 检查变异模式
     if (me%imut/=1 .and. me%imut/=2 .and. me%imut/=3 .and. &
           me%imut/=4 .and. me%imut/=5 .and. me%imut/=6) then
        write(output_unit,'(A)') ' ERROR: illegal value for Mutation Mode.'
@@ -318,12 +324,12 @@
        status = 9
     end if
 
-    if (me%irep/=1 .and. me%irep/=2 .and. me%irep/=3) then
+    if (me%irep/=1 .and. me%irep/=2 .and. me%irep/=3) then !检查繁殖变异模式
        write(output_unit,'(A)') ' ERROR: illegal value for Reproduction plan.'
        status = 10
     end if
 
-    if (me%pcross>1.0_wp .or. me%pcross<0.0_wp) then
+    if (me%pcross>1.0_wp .or. me%pcross<0.0_wp) then !检查交叉概率
        write(output_unit,'(A)') ' ERROR: illegal value for Crossover probability.'
        status = 4
     end if
@@ -337,48 +343,58 @@
         write(output_unit,'(A)') ' ERROR: illegal value for Convergence tolerance.'
         status = 101
     end if
- 
+
     if (me%convergence_window<=0) then
         write(output_unit,'(A)') ' ERROR: illegal value for Convergence window.'
         status = 102
     end if
- 
+
     if (me%iseed<=0) then
         write(output_unit,'(A)') ' ERROR: illegal value for iseed.'
         status = 103
     end if
- 
-    if (me%nd>9 .or. me%nd<1) then
+
+    if (me%nd>9 .or. me%nd<1) then !检查有效数字
         write(output_unit,'(A)') ' ERROR: illegal value for Chromosome length.'
         status = 104
     end if
- 
-    if (mod(me%np,2)>0) then
+
+    if (mod(me%np,2)>0) then  !检查种群数是否为偶数
        write(output_unit,'(A)') ' ERROR: population size must be an even number.'
        status = 105
     end if
- 
+
     if (me%initial_guess_frac<0.0_wp .or. me%initial_guess_frac>1.0_wp) then
        write(output_unit,'(A)') ' ERROR: illegal value for Initial guess fraction.'
        status = 106
     end if
- 
+    !以下是警告
     if (me%irep==1 .and. me%imut==1 .and. me%pmuti>0.5_wp .and. me%ielite==0) then
        write(output_unit,'(A)') &
         ' WARNING: dangerously high value for Initial mutation rate; '//&
         '(Should enforce elitism with ielite=1.)'
     end if
- 
+
     if (me%irep==1 .and. me%imut==2 .and. me%pmutmx>0.5_wp .and. me%ielite==0) then
        write(output_unit,'(A)') &
        ' WARNING: dangerously high value for Maximum mutation rate; '//&
        '(Should enforce elitism with ielite=1.)'
     end if
- 
+
     if (me%fdif<0.33_wp .and. me%irep/=3) then
        write(output_unit,'(A)') &
        ' WARNING: dangerously low value of Relative fitness differential.'
     end if
+
+    block !有改动 二进制
+        integer(IB),pointer::a
+        allocate(a)
+        if (me%nb > bit_size(a) - 1) then
+            write(output_unit,'(A)') &
+            ' WARNING: IB is too small,shoud be int64.' 
+        end if
+        deallocate(a)
+    end block
 
     end subroutine set_inputs
 !*****************************************************************************************
@@ -404,7 +420,7 @@
 !   * Paul Charbonneau & Barry Knapp
 !     (High Altitude Observatory, National Center for Atmospheric Research)
 !     Version 1.2 [ 2002 April 3 ]
-!   * Jacob Williams : 3/8/3015 : Refactoring and some new features.
+!   * Jacob Williams : 3/8/2015 : Refactoring and some new features.
 !
 !# References
 !   * Charbonneau, Paul. "An introduction to genetic algorithms for
@@ -420,67 +436,67 @@
 !   * Davis, Lawrence, ed.  Handbook of Genetic Algorithms.
 !     Van Nostrand Reinhold, 1991.
 
-    subroutine pikaia(me,x,f,status)
+    subroutine pikaia(me,x,f,status) !x[0,1] 有改动 二进制
 
     implicit none
 
     !subroutine arguments:
     class(pikaia_class),intent(inout)      :: me
-    real(wp),dimension(:),intent(inout)    :: x      !! Input - initial guess for solution vector. 
-                                                     !! Output - the "fittest" (optimal) solution found, 
+    real(wp),dimension(:),intent(inout)    :: x      !! Input - initial guess for solution vector. [0,1]
+                                                     !! Output - the "fittest" (optimal) solution found, [0,1]
                                                      !! i.e., the solution which maximizes the fitness function.
     real(wp),intent(out)                   :: f      !! the (scalar) value of the fitness function at x
-    integer,intent(out)                    :: status !! an indicator of the success or failure
+    integer(I1B),intent(out)               :: status !! an indicator of the success or failure 有改动
                                                      !! of the call to pikaia (0=success; non-zero=failure)
 
     !Local variables
     integer  :: k,ip,ig,ip1,ip2,new,newtot,istart,i_window
     real(wp) :: current_best_f, last_best_f, fguess
     logical  :: convergence
-    real(wp),dimension(me%n,2)     :: ph
-    real(wp),dimension(me%n,me%np) :: oldph
-    real(wp),dimension(me%n,me%np) :: newph
-    integer,dimension(me%n*me%nd)  :: gn1
-    integer,dimension(me%n*me%nd)  :: gn2
-    integer,dimension(me%np)       :: ifit
-    integer,dimension(me%np)       :: jfit
-    real(wp),dimension(me%np)      :: fitns
-    real(wp),dimension(me%n)       :: xguess
+    real(wp),dimension(me%n,2)     :: ph    !父母种群自变量 [0,1]
+    real(wp),dimension(me%n,me%np) :: oldph !旧种群  [0,1]
+    real(wp),dimension(me%n,me%np) :: newph !新种群  [0,1]
+    integer(IB),dimension(me%n)   :: gn1 !母种群染色体编码  有改动 二进制
+    integer(IB),dimension(me%n)   :: gn2 !父种群染色体编码  有改动 二进制
+    integer,dimension(me%np)       :: ifit !ifit升序下标
+    integer,dimension(me%np)       :: jfit !jfit升序排名
+    real(wp),dimension(me%np)      :: fitns !种群适应度
+    real(wp),dimension(me%n)       :: xguess !种群自变量猜测值
 
     real(wp),parameter :: big = huge(1.0_wp)    !! a large number
 
     !initialize:
     call rninit(me%iseed)
-    me%bestft   = -big
-    me%pmutpv   = -big
+    me%bestft   = -big !先设为极小值
+    me%pmutpv   = -big !先设为极小值
     me%pmut     = me%pmuti  !set initial mutation rate (it can change)
     i_window    = 0
-    last_best_f = -big
-    convergence = .false.
+    last_best_f = -big !先设为极小值
+    convergence = .false. !不收敛
     status      = 0
 
     !Handle the initial guess:
-    if (me%initial_guess_frac==0.0_wp) then
+    if (me%initial_guess_frac==0.0_wp) then !此时猜测值没用 种群全部采用随机值
 
         !initial guess not used (totally random population)
 
-        istart = 1  !index to start random population members
+        istart = 1  !index to start random population members 随机种群序号起点
 
     else
 
         !use the initial guess:
 
-        xguess = x
+        xguess = x !自变量猜测值[0,1]
         do k=1,me%n    !make sure they are all within the [0,1] bounds
-            xguess(k) = max( 0.0_wp, min(1.0_wp,xguess(k)) )
+            xguess(k) = max( 0.0_wp, min(1.0_wp,xguess(k)) ) !猜测值边界检查
         end do
-        call me%ff(xguess,fguess)
+        call me%ff(xguess,fguess) !计算猜测种群适应度函数
 
         !how many elements in the population to set to xguess?:
         ! [at least 1, at most n]
         istart = max(1, min(me%np, int(me%np * me%initial_guess_frac)))
 
-        do k=1,istart
+        do k=1,istart !前istart个种群采用猜测值
             oldph(:,k) = xguess
             fitns(k)   = fguess
         end do
@@ -488,63 +504,63 @@
         istart = istart + 1  !index to start random population members
 
     end if
-
+    !前istart个种群之外的采用随机值
     !Compute initial (random but bounded) phenotypes
     do ip=istart,me%np
         do k=1,me%n
             oldph(k,ip)=urand()  !from [0,1]
         end do
-        call me%ff(oldph(:,ip),fitns(ip))
+        call me%ff(oldph(:,ip),fitns(ip)) !计算随机种群适应度函数
     end do
 
-    !Rank initial population by fitness order
-    call me%rnkpop(fitns,ifit,jfit)
+    !Rank initial population by fitness order 初始种群适应度排名
+    call me%rnkpop(fitns,ifit,jfit)  !ifit升序下标 jfit升序排名
 
     !Main Generation Loop
-    do ig=1,me%ngen
+    do ig=1,me%ngen !迭代
 
         !Main Population Loop
         newtot=0
-        do ip=1,me%np/2
+        do ip=1,me%np/2 !一半种群
 
-            !1. pick two parents
-            call me%select_parents(jfit,ip1,ip2)
-
+            !1. pick two parents 选择父母
+            call me%select_parents(jfit,ip1,ip2) !jfit升序排名
+            !ip1母种群  ip2父种群
             !2. encode parent phenotypes
-            call me%encode(oldph(:,ip1),gn1)
-            call me%encode(oldph(:,ip2),gn2)
+            call me%encode(oldph(:,ip1),gn1) !实数转换为十进制整数
+            call me%encode(oldph(:,ip2),gn2) !实数转换为十进制整数
 
-            !3. breed
-            call me%cross(gn1,gn2)
-            call me%mutate(gn1)
-            call me%mutate(gn2)
+            !3. breed 培育
+            call me%cross(gn1,gn2) !交叉
+            call me%mutate(gn1) !母种群染色体变异
+            call me%mutate(gn2) !父种群染色体变异
 
             !4. decode offspring genotypes
-            call me%decode(gn1,ph(:,1))
-            call me%decode(gn2,ph(:,2))
+            call me%decode(gn1,ph(:,1)) !十进制整数转换为实数
+            call me%decode(gn2,ph(:,2)) !十进制整数转换为实数
 
             !5. insert into population
-            if (me%irep==1) then
+            if (me%irep==1) then !繁殖模式 Full generational replacement
                 call me%genrep(ip,ph,newph)
-            else
-                call me%stdrep(ph,oldph,fitns,ifit,jfit,new)
-                newtot = newtot+new
+            else  !ifit升序下标 jfit升序排名
+                call me%stdrep(ph,oldph,fitns,ifit,jfit,new) !更新种群oldph 更新排名
+                newtot = newtot+new !newtot新种群中新个体数目
             end if
 
         end do    !End of Main Population Loop
 
         !if running full generational replacement: swap populations
-        if (me%irep==1) call me%newpop(oldph,newph,ifit,jfit,fitns,newtot)
-
-        !adjust mutation rate?
+        if (me%irep==1) call me%newpop(oldph,newph,ifit,jfit,fitns,newtot) !繁殖模式 Full generational replacement
+        !newtot新种群中新个体数目 更新了种群适应度排名 此时oldph已经是更新后种群 oldph=newph
+        !adjust mutation rate? 变异率动态调整
         if (any(me%imut==[2,3,5,6])) call adjmut(me,oldph,fitns,ifit)
 
         !report this iteration:
-        if (me%ivrb>0) call me%report(oldph,fitns,ifit,ig,newtot)
+        if (me%ivrb>0) call me%report(oldph,fitns,ifit,ig,newtot) !详细打印迭代信息
 
         !report (unscaled) x:
-        if (associated(me%iter_f)) &
-            call me%iter_f(ig,me%xl+me%del*oldph(1:me%n,ifit(me%np)),fitns(ifit(me%np)))
+        if (associated(me%iter_f)) & !过程指针me%iter_f有指向
+            call me%iter_f(ig,me%xl+me%del*oldph(1:me%n,ifit(me%np)),fitns(ifit(me%np))) !打印每次迭代最强种群及其适应度
 
         !JW additions: add a convergence criteria
         ! [stop if the last convergence_window iterations are all within the convergence_tol]
@@ -555,16 +571,17 @@
         else
             i_window = 0    !a significantly better solution was found, reset window
         end if
+        !连续convergence_window次迭代后 后前两次迭代适应度相对误差小于convergence_tol即认为已收敛
         if (i_window>=me%convergence_window) then
             convergence = .true.
             exit !exit main loop -> convergence
         end if
-        last_best_f = current_best_f    !to compare with next iteration
+        last_best_f = current_best_f    !to compare with next iteration 上一次迭代最强适应度
 
     end do    !End of Main Generation Loop
 
     !JW additions:
-    if (me%ivrb>0) then
+    if (me%ivrb>0) then !详细打印迭代信息
         if (convergence) then
             write(output_unit,'(A)') 'Solution Converged'
         else
@@ -573,8 +590,8 @@
     end if
 
     !Return best phenotype and its fitness
-    x = oldph(1:me%n,ifit(me%np))
-    f = fitns(ifit(me%np))
+    x = oldph(1:me%n,ifit(me%np)) !最强适应度对应自变量[0,1]
+    f = fitns(ifit(me%np)) !最强适应度
 
     end subroutine pikaia
 !*****************************************************************************************
@@ -584,27 +601,27 @@
 !
 !  Main pikaia wrapper used by the class.
 
-    subroutine solve_with_pikaia(me,x,f,status)
+    subroutine solve_with_pikaia(me,x,f,status) ![xl,xu]
 
     implicit none
 
     class(pikaia_class),intent(inout)   :: me
-    real(wp),dimension(:),intent(inout) :: x
+    real(wp),dimension(:),intent(inout) :: x !传入传出均为[xl,xu]
     real(wp),intent(out)                :: f
-    integer,intent(out)                 :: status
+    integer(I1B),intent(out)            :: status !有改动
 
-    if (associated(me%user_f)) then
+    if (associated(me%user_f)) then !已明确适应度函数
 
         !scale input initial guess to be [0,1]:
-        x = (x-me%xl)/me%del
+        x = (x-me%xl)/me%del !将自变量范围转换为[0,1]
 
         !call the main routine, using the wrapper function:
-        call me%pikaia(x,f,status)
+        call me%pikaia(x,f,status) ![0,1]
 
         !unscale output to be [xl,xu]:
-        x = me%xl + me%del*x
+        x = me%xl + me%del*x !将自变量范围从[0,1]恢复至原始
 
-    else
+    else !适应度函数没有关联到具体函数
 
         write(output_unit,'(A)') 'Error: pikaia class not initialized.'
         status = -1
@@ -620,7 +637,7 @@
 !  Wrapper for the user's function that is used by the main pikaia routine
 !  The x input to this function comes from pikaia, and will be between [0,1].
 
-    subroutine func_wrapper(me,x,f)
+    subroutine func_wrapper(me,x,f) !定义域为[0,1]对应适应度函数
 
     implicit none
 
@@ -631,7 +648,7 @@
     real(wp),dimension(me%n) :: xp    !unscaled x vector: [xu,xl]
 
     !map each x variable from [0,1] to [xl,xu]:
-    xp = me%xl + me%del*x
+    xp = me%xl + me%del*x !将自变量范围从[0,1]恢复至原始
 
     !call the user's function with xp:
     call me%user_f(xp,f)
@@ -649,7 +666,7 @@
 !# Reference
 !   * N. Wirth, "Algorithms and Data Structures", Prentice-Hall, 1986
 
-    subroutine rqsort(n,a,p)
+    subroutine rqsort(n,a,p) !整数数组p是实数数组a升序排列的下标
 
     implicit none
 
@@ -723,7 +740,7 @@
 
                 do while (a(p(i))<x)
                     i=i+1
-                end do 
+                end do
 
                 do while (x<a(p(j)))
                     j=j-1
@@ -768,7 +785,7 @@
 !
 !@note This is now just a wrapper for the intrinsic random_number function.
 
-    function urand() result(r)
+    function urand() result(r) !随机数生成器封装
 
     implicit none
 
@@ -787,7 +804,7 @@
 !
 !@note This is now just a wrapper for the intrinsic random_seed function.
 
-    subroutine rninit(iseed)
+    subroutine rninit(iseed) !种子生成器封装
 
     implicit none
 
@@ -809,7 +826,7 @@
 !>
 !  Write generation report to standard output
 
-    subroutine report(me,oldph,fitns,ifit,ig,nnew)
+    subroutine report(me,oldph,fitns,ifit,ig,nnew) !打印迭代信息
 
     implicit none
 
@@ -817,20 +834,20 @@
     real(wp),dimension(me%n,me%np),intent(in) :: oldph
     real(wp),dimension(me%np),intent(in)      :: fitns
     integer,dimension(me%np),intent(in)       :: ifit
-    integer,intent(in)                        :: ig
-    integer,intent(in)                        :: nnew
+    integer,intent(in)                        :: ig   !迭代序号
+    integer,intent(in)                        :: nnew !newtot新种群中新个体数目
 
     integer :: ndpwr,k
     logical :: rpt
 
     rpt=.false.
 
-    if (me%pmut/=me%pmutpv) then
+    if (me%pmut/=me%pmutpv) then !迭代时变异率发生变化
        me%pmutpv=me%pmut
        rpt=.true.
     end if
 
-    if (fitns(ifit(me%np))/=me%bestft) then
+    if (fitns(ifit(me%np))/=me%bestft) then !迭代时最强适应度发生变化
        me%bestft=fitns(ifit(me%np))
        rpt=.true.
     end if
@@ -840,12 +857,12 @@
         !Power of 10 to make integer genotypes for display
         ndpwr = 10**me%nd
 
-        write(output_unit,'(/I6,I6,F10.6,4F10.6)') &
+        write(output_unit,'(/I6,I6,F10.6,4F10.6)') & !打印最强适应度 次强适应度 中位数适应度
             ig,nnew,me%pmut,fitns(ifit(me%np)),&
             fitns(ifit(me%np-1)),fitns(ifit(me%np/2))
 
         do k=1,me%n
-            write(output_unit,'(22X,3I10)') &
+            write(output_unit,'(22X,3I10)') &         !打印相应染色体编码
                     nint(ndpwr*oldph(k,ifit(me%np))),&
                     nint(ndpwr*oldph(k,ifit(me%np-1))),&
                     nint(ndpwr*oldph(k,ifit(me%np/2)))
@@ -861,27 +878,16 @@
 !  Encode phenotype parameters into integer genotype
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine encode(me,ph,gn)
+    subroutine encode(me,ph,gn) !实数转换为二进制整数  有改动 二进制
 
     implicit none
 
     class(pikaia_class),intent(inout)         :: me
     real(wp),dimension(me%n),intent(in)       :: ph
-    integer,dimension(me%n*me%nd),intent(out) :: gn
+    integer(IB),dimension(me%n),intent(out)   :: gn  !有改动 二进制
 
-    integer  :: ip,i,j,ii
-    real(wp) :: z
-
-    z=10.0_wp**me%nd
-    ii=0
-    do i=1,me%n
-        ip=int(ph(i)*z)
-        do j=me%nd,1,-1
-            gn(ii+j)=mod(ip,10)
-            ip=ip/10
-        end do
-        ii=ii+me%nd
-    end do
+    gn=0_IB !初值为0
+    gn=ph*me%z
 
     end subroutine encode
 !*****************************************************************************************
@@ -891,27 +897,15 @@
 !  decode genotype into phenotype parameters
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine decode(me,gn,ph)
+    subroutine decode(me,gn,ph) !二进制整数转换为实数  有改动 二进制
 
     implicit none
 
     class(pikaia_class),intent(inout)        :: me
-    integer,dimension(me%n*me%nd),intent(in) :: gn
+    integer(IB),dimension(me%n),intent(in)   :: gn !有改动 二进制
     real(wp),dimension(me%n),intent(out)     :: ph
 
-    integer  :: ip,i,j,ii
-    real(wp) :: z
-
-    z=10.0_wp**(-me%nd)
-    ii=0
-    do i=1,me%n
-        ip=0
-        do j=1,me%nd
-            ip=10*ip+gn(ii+j)
-        end do
-        ph(i)=ip*z
-        ii=ii+me%nd
-    end do
+    ph=gn/me%z !有改动 二进制
 
     end subroutine decode
 !*****************************************************************************************
@@ -926,30 +920,30 @@
 !@note Compatibility with version 1.0: To enforce 100% use of one-point
 !      crossover, un-comment appropriate line in source code below
 
-    subroutine cross(me,gn1,gn2)
+    subroutine cross(me,gn1,gn2) !交叉 有改动 二进制
 
     implicit none
 
     class(pikaia_class),intent(inout)           :: me
-    integer,dimension(me%n*me%nd),intent(inout) :: gn1
-    integer,dimension(me%n*me%nd),intent(inout) :: gn2
+    integer(IB),dimension(me%n),intent(inout)   :: gn1  !有改动 二进制
+    integer(IB),dimension(me%n),intent(inout)   :: gn2  !有改动 二进制
 
-    integer :: i, ispl, ispl2, itmp, t
+    integer :: i, ispl, ispl2, itmp
+    integer(IB) :: t
 
     !Use crossover probability to decide whether a crossover occurs
     if (urand()<me%pcross) then
 
         !Compute first crossover point
-        ispl=int(urand()*me%n*me%nd)+1
+        ispl=int(urand()*me%nb)+1 ![1,me%nb] 交叉位置起点
 
         !Now choose between one-point and two-point crossover
-        if (urand()<0.5_wp) then
-            ispl2=me%n*me%nd
+        if (urand()<0.5_wp) then !交叉位置终点
+            ispl2=me%nb
         else
-            ispl2=int(urand()*me%n*me%nd)+1
+            ispl2=int(urand()*me%nb)+1 ![1,me%nb]
             !Un-comment following line to enforce one-point crossover
-            !ispl2=me%n*me%nd
-            if (ispl2<ispl) then
+            if (ispl2<ispl) then !交换以确保ispl1<isp2
                 itmp=ispl2
                 ispl2=ispl
                 ispl=itmp
@@ -957,10 +951,13 @@
         end if
 
         !Swap genes from ispl to ispl2
-        do i=ispl,ispl2
-            t=gn2(i)
-            gn2(i)=gn1(i)
-            gn1(i)=t
+        do i=1,me%n !父母交叉染色体
+            !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
+            !将整数FROM的FROMPOS位到FROMPOS+LEN-1位信息复制到整数TO的TOPOS位到TOPOS+LEN-1 LEN为复制位的长度
+            t=0_IB
+            CALL MVBITS(gn2(i), ispl-1, ispl2-ispl+1, t, ispl-1)
+            CALL MVBITS(gn1(i), ispl-1, ispl2-ispl+1, gn2(i), ispl-1)
+            CALL MVBITS(t, ispl-1, ispl2-ispl+1, gn1(i), ispl-1)
         end do
 
     end if
@@ -981,95 +978,46 @@
 !   * imut=5    Uniform or creep mutation, variable rate based on fitness
 !   * imut=6    Uniform or creep mutation, variable rate based on distance
 
-    subroutine mutate(me,gn)
+    subroutine mutate(me,gn) !变异 有改动 二进制
 
     implicit none
 
     class(pikaia_class),intent(inout)           :: me
-    integer,dimension(me%n*me%nd),intent(inout) :: gn
+    integer(IB),dimension(me%n),intent(inout)   :: gn  !有改动 二进制
 
-    integer :: i,j,k,l,ist,inc,loc
-    logical :: fix
+    integer :: i,j,inc
 
     !Decide which type of mutation is to occur
-    if (me%imut>=4 .and. urand()<=0.5_wp) then
+    if (me%imut>=4 .and. urand()<=0.5_wp) then !单点变异+蠕变
 
-        !CREEP MUTATION OPERATOR
+        !CREEP MUTATION OPERATOR 蠕变即染色体编码随机加1或减1 变异较小
         !Subject each locus to random +/- 1 increment at the rate pmut
         do i=1,me%n
-            do j=1,me%nd
-
+            do j=1,me%nb
                 if (urand()<me%pmut) then
-
-                    !Construct integer
-                    loc=(i-1)*me%nd+j
-                    inc=nint( urand() )*2-1
-                    ist=(i-1)*me%nd+1
-                    gn(loc)=gn(loc)+inc
-
-                    !This is where we carry over the one (up to two digits)
-                    !first take care of decrement below 0 case
-                    if (inc<0 .and. gn(loc)<0) then
-                        if (j==1) then
-                            gn(loc)=0
-                        else
-                            fix = .true.
-                            do k=loc,ist+1,-1
-                                gn(k)=9
-                                gn(k-1)=gn(k-1)-1
-                                if ( gn(k-1)>=0 ) then
-                                    fix = .false.
-                                    exit
-                                end if
-                            end do
-                            if (fix) then
-                                !we popped under 0.00000 lower bound; fix it up
-                                if ( gn(ist)<0) then
-                                    do l=ist,loc
-                                        gn(l)=0
-                                    end do
-                                end if
-                            end if
-                        end if
-                    end if
-
-                    if (inc>0 .and. gn(loc)>9) then
-                        if (j==1) then
-                            gn(loc)=9
-                        else
-                            fix = .true.
-                            do k=loc,ist+1,-1
-                                gn(k)=0
-                                gn(k-1)=gn(k-1)+1
-                                if ( gn(k-1)<=9 ) then
-                                    fix = .false.
-                                    exit
-                                end if
-                            end do
-                            if (fix) then
-                                !we popped over 9.99999 upper bound; fix it up
-                                if ( gn(ist)>9 ) then
-                                    do l=ist,loc
-                                        gn(l)=9
-                                    end do
-                                end if
-                            end if
-                        end if
-                    end if
-
+                    inc=nint( urand() )*2-1 !-1或1
+                    gn(i)=gn(i)+shiftl(1_IB,j-1)*inc
                 end if
-
+                !限制范围
+                if (gn(i)<0_IB) gn(i)=0_IB
+                if (gn(i)>me%z) gn(i)=me%z
             end do
         end do
 
-    else
+    else !单点变异
 
-        !UNIFORM MUTATION OPERATOR
+        !UNIFORM MUTATION OPERATOR 统一变异操作 变异较大 可能出现0变7或7变0
         !Subject each locus to random mutation at the rate pmut
-        do i=1,me%n*me%nd
-            if (urand()<me%pmut) then
-                gn(i)=int(urand()*10.0_wp)
-            end if
+        do i=1,me%n !染色体每个位置
+            do j=1,me%nb,3
+                if (urand()<me%pmut) then
+                    !int(urand()*8) ![0,7] or [000,111]
+                    CALL MVBITS(int(urand()*8), 0, 3, gn(i), j-1)
+                    !限制范围
+                    if (gn(i)<0_IB) gn(i)=0_IB
+                    if (gn(i)>me%z) gn(i)=me%z
+                end if
+            end do
         end do
 
     end if
@@ -1086,7 +1034,7 @@
 !   * imut=3 or imut=6 : adjustment based on metric distance
 !     between best and median individuals
 
-    subroutine adjmut(me,oldph,fitns,ifit)
+    subroutine adjmut(me,oldph,fitns,ifit) !变异率的动态调整
 
     implicit none
 
@@ -1102,14 +1050,14 @@
     real(wp),parameter :: rdifhi = 0.25_wp
     real(wp),parameter :: delta  = 1.5_wp
 
-    if (me%imut==2 .or. me%imut==5) then
+    if (me%imut==2 .or. me%imut==5) then !依适应度调整变异率
 
         !Adjustment based on fitness differential
         rdif = abs(fitns(ifit(me%np)) - &
                fitns(ifit(me%np/2)))/(fitns(ifit(me%np)) + &
                fitns(ifit(me%np/2)))
 
-    else if (me%imut==3 .or. me%imut==6) then
+    else if (me%imut==3 .or. me%imut==6) then !依距离调整变异率
 
         !Adjustment based on normalized metric distance
         rdif=0.0_wp
@@ -1141,8 +1089,8 @@
 !# History
 !  * Jacob Williams : 3/10/2015 : rewrote this routine to return both parents,
 !    and also protect against the loop exiting without selecting a parent.
-
-    subroutine select_parents(me,jfit,imom,idad)
+    !轮盘赌算法选择父母
+    subroutine select_parents(me,jfit,imom,idad) !jfit升序排名
 
     implicit none
 
@@ -1162,7 +1110,7 @@
     !get two (unequal) parents:
     do j=1,2
         main: do
-            dice = urand()*me%np*np1
+            dice = urand()*me%np*np1 ![0,np**2+np)
             rtfit = 0.0_wp
             do i=1,me%np
                 rtfit = rtfit+np1+me%fdif*(np1-2*jfit(i))
@@ -1173,10 +1121,10 @@
             end do
         end do main
     end do
-
-    imom = parents(1)
-    idad = parents(2)
-
+    !适应度越好 jfit越小(排名高) rtfit就越大
+    imom = parents(1) !母种群位置
+    idad = parents(2) !父种群位置
+    !me%fdif=1时 第1名 2*np1-2 第2名 2*np1-4 …… 最后1名 2
     end subroutine select_parents
 !*****************************************************************************************
 
@@ -1186,8 +1134,8 @@
 !  Calls external sort routine to produce key index and rank order
 !  of input array arrin (which is not altered).
 
-    subroutine rnkpop(me,arrin,indx,rank)
-
+    subroutine rnkpop(me,arrin,indx,rank) !indx升序下标 rank升序排名
+    !即arrin(indx(1))最小 排名rank为me%np arrin(indx(me%np))最大 排名rank为1
     implicit none
 
     class(pikaia_class),intent(inout)     :: me
@@ -1198,11 +1146,11 @@
     integer :: i
 
     !Compute the key index
-    call rqsort(me%np,arrin,indx)
+    call rqsort(me%np,arrin,indx)  !整数数组indx是实数数组arrin升序排列的下标
 
     !and the rank order
     do i=1,me%np
-        rank(indx(i)) = me%np-i+1
+        rank(indx(i)) = me%np-i+1 !升序排名
     end do
 
     end subroutine rnkpop
@@ -1213,21 +1161,21 @@
 !  Full generational replacement: accumulate offspring into new
 !  population array
 
-    subroutine genrep(me,ip,ph,newph)
+    subroutine genrep(me,ip,ph,newph) !全部后代替换 irep=1
 
     implicit none
 
     class(pikaia_class),intent(inout)          :: me
-    integer,intent(in)                         :: ip
-    real(wp),dimension(me%n,2),intent(in)      :: ph
-    real(wp),dimension(me%n,me%np),intent(out) :: newph
+    integer,intent(in)                         :: ip !种群位置
+    real(wp),dimension(me%n,2),intent(in)      :: ph !父母种群自变量 [0,1]
+    real(wp),dimension(me%n,me%np),intent(out) :: newph !新种群 [0,1]
 
     integer :: i1,i2,k
 
     !Insert one offspring pair into new population
-    i1=2*ip-1
-    i2=i1+1
-    do k=1,me%n
+    i1=2*ip-1   !ip 1 2 3 ... np/2
+    i2=i1+1     !i1 1 3 5 ... np-1
+    do k=1,me%n !i2 2 4 6 ... np
         newph(k,i1)=ph(k,1)
         newph(k,i2)=ph(k,2)
     end do
@@ -1241,7 +1189,7 @@
 !  only if they are fit enough (replace-random if irep=2 or
 !  replace-worst if irep=3).
 
-    subroutine stdrep(me,ph,oldph,fitns,ifit,jfit,nnew)
+    subroutine stdrep(me,ph,oldph,fitns,ifit,jfit,nnew) !恒定状态繁殖 irep=2或3
 
     implicit none
 
@@ -1249,9 +1197,9 @@
     real(wp),dimension(me%n,2),intent(in)         :: ph
     real(wp),dimension(me%n,me%np),intent(inout)  :: oldph
     real(wp),dimension(me%np),intent(inout)       :: fitns
-    integer,dimension(me%np),intent(inout)        :: ifit
-    integer,dimension(me%np),intent(inout)        :: jfit
-    integer,intent(out)                           :: nnew
+    integer,dimension(me%np),intent(inout)        :: ifit !升序下标
+    integer,dimension(me%np),intent(inout)        :: jfit !升序排名
+    integer,intent(out)                           :: nnew !新种群中新个体数目
 
     integer  :: i,j,k,i1,if1
     real(wp) :: fit
@@ -1261,12 +1209,12 @@
     main_loop : do j=1,2
 
         !1. compute offspring fitness (with caller's fitness function)
-        call me%ff(ph(:,j),fit)
+        call me%ff(ph(:,j),fit) !计算父母种群适应度
 
         !2. if fit enough, insert in population
-        do i=me%np,1,-1
+        do i=me%np,1,-1 !倒序
 
-            if (fit>fitns(ifit(i))) then
+            if (fit>fitns(ifit(i))) then !父母种群较优
 
                 !make sure the phenotype is not already in the population
                 if (i<me%np) then
@@ -1277,42 +1225,42 @@
 
                 !(i) insert phenotype at appropriate place in population
                 if (me%irep==3) then
-                    i1=1
-                else if (me%ielite==0 .or. i==me%np) then
-                    i1=int(urand()*me%np)+1
-                else
-                    i1=int(urand()*(me%np-1))+1
+                    i1=1 !只更新最差种群
+                else if (me%ielite==0 .or. i==me%np) then !me%irep==2
+                    i1=int(urand()*me%np)+1 ![1,me%np]
+                else  !me%irep==2
+                    i1=int(urand()*(me%np-1))+1 ![1,me%np-1]
                 end if
-                if1 = ifit(i1)
+                if1 = ifit(i1) !升序下标 新种群位置
                 fitns(if1)=fit
                 do k=1,me%n
-                    oldph(k,if1)=ph(k,j)
+                    oldph(k,if1)=ph(k,j) !更新种群
                 end do
 
                 !(ii) shift and update ranking arrays
                 if (i<i1) then
 
-                    !shift up
-                    jfit(if1)=me%np-i
+                    !shift up 上移
+                    jfit(if1)=me%np-i !升序排名
                     do k=i1-1,i+1,-1
                         jfit(ifit(k))=jfit(ifit(k))-1
-                        ifit(k+1)=ifit(k)
+                        ifit(k+1)=ifit(k) !升序下标
                     end do
                     ifit(i+1)=if1
 
-                else
+                else !i>=i1
 
-                    !shift down
-                    jfit(if1)=me%np-i+1
+                    !shift down 下移
+                    jfit(if1)=me%np-i+1 !升序排名
                     do k=i1+1,i
                         jfit(ifit(k))=jfit(ifit(k))+1
-                        ifit(k-1)=ifit(k)
+                        ifit(k-1)=ifit(k) !升序下标
                     end do
                     ifit(i)=if1
 
                 end if
 
-                nnew = nnew+1
+                nnew = nnew+1 !新种群数
                 cycle main_loop
 
             end if
@@ -1331,32 +1279,32 @@
 !# History
 !  * Jacob Williams : 3/9/2015 : avoid unnecessary function evaluation if `ielite/=1`.
 
-    subroutine newpop(me,oldph,newph,ifit,jfit,fitns,nnew)
+    subroutine newpop(me,oldph,newph,ifit,jfit,fitns,nnew) !irep==1
 
     implicit none
 
     class(pikaia_class),intent(inout)            :: me
     real(wp),dimension(me%n,me%np),intent(inout) :: oldph
     real(wp),dimension(me%n,me%np),intent(inout) :: newph
-    integer,dimension(me%np),intent(out)         :: ifit
-    integer,dimension(me%np),intent(out)         :: jfit
+    integer,dimension(me%np),intent(out)         :: ifit !升序下标
+    integer,dimension(me%np),intent(out)         :: jfit !升序排名
     real(wp),dimension(me%np),intent(out)        :: fitns
-    integer,intent(out)                          :: nnew
+    integer,intent(out)                          :: nnew !新种群中新个体数目
 
     integer  :: i
     real(wp) :: f
 
     nnew = me%np
 
-    if (me%ielite==1) then
+    if (me%ielite==1) then !精英种群处理
 
         !if using elitism, introduce in new population fittest of old
         !population (if greater than fitness of the individual it is
         !to replace)
-        call me%ff(newph(:,1),f)
+        call me%ff(newph(:,1),f) !计算新种群第1个个体适应度
 
-        if (f<fitns(ifit(me%np))) then
-            newph(:,1)=oldph(:,ifit(me%np))
+        if (f<fitns(ifit(me%np))) then !该适应度比最优适应度差
+            newph(:,1)=oldph(:,ifit(me%np)) !新种群第1个个体替换成精英
             nnew = nnew-1
         end if
 
@@ -1365,15 +1313,15 @@
     !replace population
     do i=1,me%np
 
-        oldph(:,i)=newph(:,i)
+        oldph(:,i)=newph(:,i) !更新种群
 
         !get fitness using caller's fitness function
-        call me%ff(oldph(:,i),fitns(i))
+        call me%ff(oldph(:,i),fitns(i)) !更新适应度
 
     end do
 
     !compute new population fitness rank order
-    call me%rnkpop(fitns,ifit,jfit)
+    call me%rnkpop(fitns,ifit,jfit)  !更新种群排名
 
     end subroutine newpop
 !*****************************************************************************************

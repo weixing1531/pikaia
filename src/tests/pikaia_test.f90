@@ -8,21 +8,22 @@
     program pikaia_test
 
     use pikaia_module, only: pikaia_class
-    use,intrinsic :: iso_fortran_env, wp => real64
+    use,intrinsic :: iso_fortran_env, wp => real64, I1B => int8 !双精度实数 有改动
 
     implicit none
+    !n为自变量个数
+    integer(I1B),parameter :: n = 2  !! dimension of problem (number of optimization variables) 有改动
 
-    integer,parameter :: n = 2  !! dimension of problem (number of optimization variables)
-
-    integer                 :: seed,status
-    real(wp),dimension(n)   :: x
-    real(wp)                :: f
+    integer                 :: seed !有改动
+    integer(I1B)            :: status !有改动
+    real(wp),dimension(n)   :: x !自变量数组
+    real(wp)                :: f !函数值 适应度
     integer                 :: iunit,istat
-    real(wp),dimension(n)   :: xl,xu
+    real(wp),dimension(n)   :: xl,xu !自变量下界、上界数组
     type(pikaia_class)      :: p
     logical                 :: header_written
     real                    :: tstart,tend
-
+    !输出文件名
     character(len=*),parameter :: filename = 'pikaia_test.txt'
 
     seed = 999  ! specify the random seed
@@ -30,37 +31,37 @@
     !output file:
     open(newunit=iunit,file=filename,iostat=istat)
     if (istat/=0) stop 'error opening output file.'
-    header_written = .false.
+    header_written = .false. !表头打印关闭
 
     !initial guess:
     write(output_unit,'(A)') ''
     write(output_unit,'(A)') ' TWOD Example'
     write(output_unit,'(A)') ''
 
-    x = 0.0_wp
-    xl = 0.0_wp
-    xu = 1.0_wp
+    x  = 0.0_wp !猜测值[xl,xu]
+    xl = 0.0_wp !自变量下界
+    xu = 1.0_wp !自变量上界
 
     !initialize the class:
     call p%init(n,xl,xu,twod,status,&
                 iter_f              = report_iteration,&
                 ngen                = 1000,&
-                nd                  = 9,&
-                ivrb                = 1,&    !0,1,2
+                nd                  = 9_I1B,&
+                ivrb                = 1_I1B,&    !0,1,2
                 convergence_tol     = 1.0e-6_wp,&
                 convergence_window  = 200,&
                 iseed               = seed)
 
     !Now call pikaia:
     call cpu_time(tstart)
-    call p%solve(x,f,status)
+    call p%solve(x,f,status) ![xl,xu]
     call cpu_time(tend)
 
     !Print the results:
     write(output_unit,'(A)') ''
     write(output_unit,'(A,1X,*(I4))')    '  status: ',status
-    write(output_unit,'(A,1X,*(F12.6))') '       x: ',x
-    write(output_unit,'(A,1X,*(F12.6))') '       f: ',f
+    write(output_unit,'(A,1X,*(F12.6))') '       x: ',x !最强适应度对应自变量
+    write(output_unit,'(A,1X,*(F12.6))') '       f: ',f !最强适应度
     write(output_unit,'(A)') ''
     write(output_unit,'(A,1X,F12.6,A)')  'run time: ',tend-tstart,' sec'
     write(output_unit,'(A)') ''
@@ -72,36 +73,36 @@
     write(output_unit,'(A)') ' ROSENBROCK Example'
     write(output_unit,'(A)') ''
 
-    x  = 0.5_wp
-    xl = 0.0_wp
-    xu = 2.0_wp
+    x  = 0.5_wp !猜测值[xl,xu]
+    xl = 0.0_wp !自变量下界
+    xu = 2.0_wp !自变量上界
 
     !initialize the class:
     call p%init(n,xl,xu,rosenbrock,status,&
                 np                  = 500,&        !try a larger population for this one
                 ngen                = 1000,&
-                nd                  = 9,&
+                nd                  = 9_I1B,&
                 convergence_tol     = 1.0e-10_wp,& !tighter tolerance also
                 convergence_window  = 200,&
                 iseed               = seed)
 
     !Now call pikaia:
     call cpu_time(tstart)
-    call p%solve(x,f,status)
+    call p%solve(x,f,status) ![xl,xu]
     call cpu_time(tend)
 
     !Print the results:
     write(output_unit,'(A)') ''
     write(output_unit,'(A,1X,*(I4))')    '  status: ',status
-    write(output_unit,'(A,1X,*(F12.6))') '       x: ',x
-    write(output_unit,'(A,1X,*(F12.6))') '       f: ',f
+    write(output_unit,'(A,1X,*(F12.6))') '       x: ',x !最强适应度对应自变量
+    write(output_unit,'(A,1X,*(F12.6))') '       f: ',f !最强适应度
     write(output_unit,'(A)') ''
     write(output_unit,'(A,1X,F12.6,A)')  'run time: ',tend-tstart,' sec'
     write(output_unit,'(A)') ''
 
     close(iunit,iostat=istat)
 
-    contains
+    contains !抽象接口的具体实现
 
         subroutine twod(me,x,f)
 
@@ -130,7 +131,7 @@
             stop
         else
             rr=sqrt( (0.5_wp-x(1))**2+ (0.5_wp-x(2))**2)
-            f=cos(rr*nn*pi)**2 *exp(-rr**2/sigma2)
+            f=cos(rr*nn*pi)**2 *exp(-rr**2/sigma2) !默认是求最大值
         end if
 
         end subroutine twod
@@ -155,11 +156,11 @@
         !the rosenbrock function:
         f = (one-x(1))**2 + hundred*(x(2)-x(1)**2)**2
 
-        f = -f    !since pikaia maximizes
+        f = -f    !since pikaia maximizes !求最小值
 
         end subroutine rosenbrock
 
-        subroutine report_iteration(me,iter,x,f)
+        subroutine report_iteration(me,iter,x,f) !历次迭代结果
 
         !! A simple iteration reporting function.
         !! Writes `iter,x,f` to the output file.
@@ -171,13 +172,13 @@
         real(wp),dimension(:),intent(in)   :: x
         real(wp),intent(in)                :: f
 
-        character(len=10),dimension(n) :: xheader
+        character(len=10),dimension(n) :: xheader !表头
         integer :: i
 
         !the first time it is called, also write a header:
         if (.not. header_written) then
             do i=1,n
-                write(xheader(i),'(I10)') i
+                write(xheader(i),'(I10)') i !整数转换为字符串
                 xheader(i) = 'X'//trim(adjustl(xheader(i)))
                 xheader(i) = repeat(' ',10-len_trim(xheader(i)))//xheader(i)
             end do
