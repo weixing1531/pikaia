@@ -8,11 +8,12 @@
     program pikaia_test
 
     use pikaia_module, only: pikaia_class
+    use pikaia_binary_module, only: pikaia_binary_class
     use,intrinsic :: iso_fortran_env, wp => real64, I1B => int8 !双精度实数 有改动
 
     implicit none
     !n为自变量个数
-    integer(I1B),parameter :: n = 2  !! dimension of problem (number of optimization variables) 有改动
+    integer(I1B),parameter  :: n = 2  !! dimension of problem (number of optimization variables) 有改动
 
     integer                 :: seed !有改动
     integer(I1B)            :: status !有改动
@@ -20,9 +21,9 @@
     real(wp)                :: f !函数值 适应度
     integer                 :: iunit,istat
     real(wp),dimension(n)   :: xl,xu !自变量下界、上界数组
-    type(pikaia_class)      :: p
+    type(pikaia_binary_class) :: p !对象
     logical                 :: header_written
-    real                    :: tstart,tend
+    real                    :: tstart,tend !起始时间 结束时间
     !输出文件名
     character(len=*),parameter :: filename = 'pikaia_test.txt'
 
@@ -51,7 +52,9 @@
                 convergence_tol     = 1.0e-6_wp,&
                 convergence_window  = 200,&
                 iseed               = seed)
-
+    !call p%SetIsGray(IsGray=.true.)
+    !imut  1   2  3   4  5   6
+    !ngen 103 85 154 38 143 213
     !Now call pikaia:
     call cpu_time(tstart)
     call p%solve(x,f,status) ![xl,xu]
@@ -85,7 +88,7 @@
                 convergence_tol     = 1.0e-10_wp,& !tighter tolerance also
                 convergence_window  = 200,&
                 iseed               = seed)
-
+    !call p%SetIsGray(IsGray=.true.)
     !Now call pikaia:
     call cpu_time(tstart)
     call p%solve(x,f,status) ![xl,xu]

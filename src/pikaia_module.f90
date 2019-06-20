@@ -58,31 +58,27 @@
 
     implicit none
 
-    private
+    public !为了便于子类继承父类所有公有的实例变量和方法
 
-    integer,parameter :: wp = real64  !! Default real kind [8 bytes]. 默认实数为双精度
-    integer,parameter :: I1B = int8   !染色体编码数组8字节就足够了 魏兴增加 [-128,127] 有改动
-    integer,parameter :: IB = int32   !用于染色体二进制编码   有改动 二进制
-
+    integer,parameter,private :: wp  = real64 !! Default real kind [8 bytes]. 默认实数为双精度
+    integer,parameter,private :: I1B = int8   !染色体编码数组8字节就足够了 [-127,128] 有改动
+    integer,parameter,private :: IB  = int32  !用于染色体二进制编码  用于子类
+    
     !*********************************************************
-    type,public :: pikaia_class !pikaia类
+    type,public :: pikaia_class !pikaia_class类
 
         !! Main class for using the Pikaia algorithm.
         !! INIT and SOLVE are the only public methods. 公开方法：init 和 solve
 
-        private
-
         integer(I1B) :: n = 0  !number of solution variables 自变量个数 有改动
         real(wp),dimension(:),allocatable :: xl    !! lower bounds of x 成员变量为动态数组
         real(wp),dimension(:),allocatable :: xu    !! upper bound of x 成员变量为动态数组
-        real(wp),dimension(:),allocatable :: del !自变量定义域长度 成员变量为动态数组
+        real(wp),dimension(:),allocatable :: del   !自变量定义域长度 成员变量为动态数组
 
         !other solution inputs (with default values):
         integer  :: np                 = 100 !种群数 必须为偶数
         integer  :: ngen               = 500 !迭代数
         integer(I1B)  :: nd            = 5   !有效数字 有改动
-        integer(I1B)  :: nb            = 30  !有效数字 有改动 二进制
-        real(wp)      :: z             = 2**30  !有改动 二进制
         real(wp) :: pcross             = 0.85_wp !交叉概率
         integer(I1B)  :: imut          = 2 !变异模式 有改动
         real(wp) :: pmuti              = 0.005_wp  !变异概率初始值
@@ -109,7 +105,7 @@
     contains
 
         !public routines:
-        procedure,non_overridable,public :: init   => set_inputs !构造函数 公开方法
+        procedure,public :: init   => set_inputs !构造函数 公开方法
         procedure,non_overridable,public :: solve  => solve_with_pikaia !计算程序 公开方法 [xl,xu]
 
         !private routines:
@@ -118,43 +114,25 @@
         procedure,non_overridable :: stdrep !恒定状态繁殖 irep=2或3
         procedure,non_overridable :: genrep !全部后代替换 irep=1
         procedure,non_overridable :: adjmut !变异率的动态调整 imut=2,3,5,6
-        procedure,non_overridable :: cross  !交叉
-        procedure,non_overridable :: encode !编码
-        procedure,non_overridable :: mutate !变异 imut>=4或<4
-        procedure,non_overridable :: decode !解码
         procedure,non_overridable :: select_parents !轮盘赌算法选择父母
         procedure,non_overridable :: report !打印迭代信息 ivrb>0
         procedure,non_overridable :: rnkpop !种群适应度排序
-        procedure,non_overridable :: pikaia !计算程序 [0,1]
+        !绑定过程的通用名称 父类调用decimal 子类调用binary
+        generic :: cross  => cross_decimal ,cross_binary  !交叉 十进制 二进制
+        generic :: encode => encode_decimal,encode_binary !编码 十进制 二进制
+        generic :: mutate => mutate_decimal,mutate_binary !变异 十进制 二进制 imut>=4或<4
+        generic :: decode => decode_decimal,decode_binary !解码 十进制 二进制
+        !子类需重载过程 因为gn的定义改变
+        procedure :: pikaia !计算程序 [0,1]
+        procedure :: cross_decimal ,cross_binary
+        procedure :: encode_decimal,encode_binary
+        procedure :: mutate_decimal,mutate_binary 
+        procedure :: decode_decimal,decode_binary 
 
     end type pikaia_class
     !*********************************************************
 
-    abstract interface !抽象接口
-
-        subroutine pikaia_func(me,x,f)  !适应度函数接口 具体实现见主程序
-            !! The interface for the function that pikaia will be maximizing.
-        import :: wp,pikaia_class !导入模块变量定义 pikaia_class为类名
-        implicit none
-        class(pikaia_class),intent(inout)  :: me    !! pikaia class
-        real(wp),dimension(:),intent(in)   :: x     !! optimization variable vector
-        real(wp),intent(out)               :: f     !! fitness value
-        end subroutine pikaia_func
-
-        subroutine iter_func(me,iter,x,f) !历次迭代结果 具体实现见主程序
-            !! The interface for the function that user can specify
-            !! to report each iteration when pikaia is running.
-            !! The best (fittest) population member is passed to
-            !! this routine in each generation.
-        import :: wp,pikaia_class !导入模块变量定义 pikaia_class为类名
-        implicit none
-        class(pikaia_class),intent(inout)  :: me    !! pikaia class
-        integer,intent(in)                 :: iter  !! iteration number
-        real(wp),dimension(:),intent(in)   :: x     !! optimization variable vector
-        real(wp),intent(in)                :: f     !! fitness value
-        end subroutine iter_func
-
-    end interface
+    include "interface.f90" !abstract interface
 
     contains
 !*****************************************************************************************
@@ -271,8 +249,7 @@
     if (present(convergence_window )) me%convergence_window = convergence_window
     if (present(initial_guess_frac )) me%initial_guess_frac = initial_guess_frac
     if (present(iseed              )) me%iseed              = iseed
-    me%nb=CEILING(log(1.0_wp*10**me%nd)/log(2.0_wp)) !十进制有效数字转换为二进制有效数字  有改动 二进制
-    me%z=2**me%nb-1 !有改动 二进制
+
     !check for errors:
 
     !initialize error flag:
@@ -287,7 +264,6 @@
         write(output_unit,'(A,I4)')    '     Individuals per generation: ',me%np
         write(output_unit,'(A,I4)')    '  Number of Chromosome segments: ',me%n
         write(output_unit,'(A,I4)')    '  Length of Chromosome segments: ',me%nd
-        write(output_unit,'(A,I4)')    '    Binary Length of Chromosome: ',me%nb !有改动 二进制
         write(output_unit,'(A,E11.4)') '          Crossover probability: ',me%pcross
         write(output_unit,'(A,E11.4)') '          Initial mutation rate: ',me%pmuti
         write(output_unit,'(A,E11.4)') '          Minimum mutation rate: ',me%pmutmn
@@ -386,16 +362,6 @@
        ' WARNING: dangerously low value of Relative fitness differential.'
     end if
 
-    block !有改动 二进制
-        integer(IB),pointer::a
-        allocate(a)
-        if (me%nb > bit_size(a) - 1) then
-            write(output_unit,'(A)') &
-            ' WARNING: IB is too small,shoud be int64.' 
-        end if
-        deallocate(a)
-    end block
-
     end subroutine set_inputs
 !*****************************************************************************************
 
@@ -436,7 +402,7 @@
 !   * Davis, Lawrence, ed.  Handbook of Genetic Algorithms.
 !     Van Nostrand Reinhold, 1991.
 
-    subroutine pikaia(me,x,f,status) !x[0,1] 有改动 二进制
+    subroutine pikaia(me,x,f,status) !x[0,1]
 
     implicit none
 
@@ -449,150 +415,11 @@
     integer(I1B),intent(out)               :: status !! an indicator of the success or failure 有改动
                                                      !! of the call to pikaia (0=success; non-zero=failure)
 
-    !Local variables
-    integer  :: k,ip,ig,ip1,ip2,new,newtot,istart,i_window
-    real(wp) :: current_best_f, last_best_f, fguess
-    logical  :: convergence
-    real(wp),dimension(me%n,2)     :: ph    !父母种群自变量 [0,1]
-    real(wp),dimension(me%n,me%np) :: oldph !旧种群  [0,1]
-    real(wp),dimension(me%n,me%np) :: newph !新种群  [0,1]
-    integer(IB),dimension(me%n)   :: gn1 !母种群染色体编码  有改动 二进制
-    integer(IB),dimension(me%n)   :: gn2 !父种群染色体编码  有改动 二进制
-    integer,dimension(me%np)       :: ifit !ifit升序下标
-    integer,dimension(me%np)       :: jfit !jfit升序排名
-    real(wp),dimension(me%np)      :: fitns !种群适应度
-    real(wp),dimension(me%n)       :: xguess !种群自变量猜测值
-
-    real(wp),parameter :: big = huge(1.0_wp)    !! a large number
-
-    !initialize:
-    call rninit(me%iseed)
-    me%bestft   = -big !先设为极小值
-    me%pmutpv   = -big !先设为极小值
-    me%pmut     = me%pmuti  !set initial mutation rate (it can change)
-    i_window    = 0
-    last_best_f = -big !先设为极小值
-    convergence = .false. !不收敛
-    status      = 0
-
-    !Handle the initial guess:
-    if (me%initial_guess_frac==0.0_wp) then !此时猜测值没用 种群全部采用随机值
-
-        !initial guess not used (totally random population)
-
-        istart = 1  !index to start random population members 随机种群序号起点
-
-    else
-
-        !use the initial guess:
-
-        xguess = x !自变量猜测值[0,1]
-        do k=1,me%n    !make sure they are all within the [0,1] bounds
-            xguess(k) = max( 0.0_wp, min(1.0_wp,xguess(k)) ) !猜测值边界检查
-        end do
-        call me%ff(xguess,fguess) !计算猜测种群适应度函数
-
-        !how many elements in the population to set to xguess?:
-        ! [at least 1, at most n]
-        istart = max(1, min(me%np, int(me%np * me%initial_guess_frac)))
-
-        do k=1,istart !前istart个种群采用猜测值
-            oldph(:,k) = xguess
-            fitns(k)   = fguess
-        end do
-
-        istart = istart + 1  !index to start random population members
-
-    end if
-    !前istart个种群之外的采用随机值
-    !Compute initial (random but bounded) phenotypes
-    do ip=istart,me%np
-        do k=1,me%n
-            oldph(k,ip)=urand()  !from [0,1]
-        end do
-        call me%ff(oldph(:,ip),fitns(ip)) !计算随机种群适应度函数
-    end do
-
-    !Rank initial population by fitness order 初始种群适应度排名
-    call me%rnkpop(fitns,ifit,jfit)  !ifit升序下标 jfit升序排名
-
-    !Main Generation Loop
-    do ig=1,me%ngen !迭代
-
-        !Main Population Loop
-        newtot=0
-        do ip=1,me%np/2 !一半种群
-
-            !1. pick two parents 选择父母
-            call me%select_parents(jfit,ip1,ip2) !jfit升序排名
-            !ip1母种群  ip2父种群
-            !2. encode parent phenotypes
-            call me%encode(oldph(:,ip1),gn1) !实数转换为十进制整数
-            call me%encode(oldph(:,ip2),gn2) !实数转换为十进制整数
-
-            !3. breed 培育
-            call me%cross(gn1,gn2) !交叉
-            call me%mutate(gn1) !母种群染色体变异
-            call me%mutate(gn2) !父种群染色体变异
-
-            !4. decode offspring genotypes
-            call me%decode(gn1,ph(:,1)) !十进制整数转换为实数
-            call me%decode(gn2,ph(:,2)) !十进制整数转换为实数
-
-            !5. insert into population
-            if (me%irep==1) then !繁殖模式 Full generational replacement
-                call me%genrep(ip,ph,newph)
-            else  !ifit升序下标 jfit升序排名
-                call me%stdrep(ph,oldph,fitns,ifit,jfit,new) !更新种群oldph 更新排名
-                newtot = newtot+new !newtot新种群中新个体数目
-            end if
-
-        end do    !End of Main Population Loop
-
-        !if running full generational replacement: swap populations
-        if (me%irep==1) call me%newpop(oldph,newph,ifit,jfit,fitns,newtot) !繁殖模式 Full generational replacement
-        !newtot新种群中新个体数目 更新了种群适应度排名 此时oldph已经是更新后种群 oldph=newph
-        !adjust mutation rate? 变异率动态调整
-        if (any(me%imut==[2,3,5,6])) call adjmut(me,oldph,fitns,ifit)
-
-        !report this iteration:
-        if (me%ivrb>0) call me%report(oldph,fitns,ifit,ig,newtot) !详细打印迭代信息
-
-        !report (unscaled) x:
-        if (associated(me%iter_f)) & !过程指针me%iter_f有指向
-            call me%iter_f(ig,me%xl+me%del*oldph(1:me%n,ifit(me%np)),fitns(ifit(me%np))) !打印每次迭代最强种群及其适应度
-
-        !JW additions: add a convergence criteria
-        ! [stop if the last convergence_window iterations are all within the convergence_tol]
-        current_best_f = fitns(ifit(me%np))    !current iteration best fitness
-        if (abs(current_best_f-last_best_f)<=me%convergence_tol) then
-            !this solution is within the tol from the previous one
-            i_window = i_window + 1    !number of solutions within the convergence tolerance
-        else
-            i_window = 0    !a significantly better solution was found, reset window
-        end if
-        !连续convergence_window次迭代后 后前两次迭代适应度相对误差小于convergence_tol即认为已收敛
-        if (i_window>=me%convergence_window) then
-            convergence = .true.
-            exit !exit main loop -> convergence
-        end if
-        last_best_f = current_best_f    !to compare with next iteration 上一次迭代最强适应度
-
-    end do    !End of Main Generation Loop
-
-    !JW additions:
-    if (me%ivrb>0) then !详细打印迭代信息
-        if (convergence) then
-            write(output_unit,'(A)') 'Solution Converged'
-        else
-            write(output_unit,'(A)') 'Iteration Limit Reached'
-        end if
-    end if
-
-    !Return best phenotype and its fitness
-    x = oldph(1:me%n,ifit(me%np)) !最强适应度对应自变量[0,1]
-    f = fitns(ifit(me%np)) !最强适应度
-
+    !Local variables 子类独有
+    integer(I1B),dimension(me%n*me%nd)  :: gn1 !母种群染色体编码 有改动
+    integer(I1B),dimension(me%n*me%nd)  :: gn2 !父种群染色体编码 有改动
+    
+    include "pikaia_sub.f90" !此段程序父类与子类相同
     end subroutine pikaia
 !*****************************************************************************************
 
@@ -878,18 +705,41 @@
 !  Encode phenotype parameters into integer genotype
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine encode(me,ph,gn) !实数转换为二进制整数  有改动 二进制
+    subroutine encode_decimal(me,ph,gn) !实数转换为十进制整数 父类调用
 
     implicit none
 
     class(pikaia_class),intent(inout)         :: me
     real(wp),dimension(me%n),intent(in)       :: ph
-    integer(IB),dimension(me%n),intent(out)   :: gn  !有改动 二进制
+    integer(I1B),dimension(me%n*me%nd),intent(out) :: gn !有改动
 
-    gn=0_IB !初值为0
-    gn=ph*me%z
+    integer  :: ip,i,j,ii
+    real(wp) :: z
 
-    end subroutine encode
+    z=10**me%nd !nd为有效数字 有改动  z=10.0_wp**me%nd
+    ii=0
+    do i=1,me%n
+        ip=int(ph(i)*z)
+        do j=me%nd,1,-1 !低位到高位顺序
+            gn(ii+j)=mod(ip,10)
+            ip=ip/10
+        end do
+        ii=ii+me%nd
+    end do
+
+    end subroutine encode_decimal
+    
+    subroutine encode_binary(me,ph,gn) !实数转换为二进制整数 子类调用
+
+    implicit none
+
+    class(pikaia_class),intent(inout)         :: me
+    real(wp),dimension(me%n),intent(in)       :: ph
+    integer(IB),dimension(me%n),intent(out)   :: gn !有改动
+
+    gn=0_IB !有改动
+
+    end subroutine encode_binary
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -897,17 +747,43 @@
 !  decode genotype into phenotype parameters
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine decode(me,gn,ph) !二进制整数转换为实数  有改动 二进制
+    subroutine decode_decimal(me,gn,ph) !十进制整数转换为实数 父类调用
 
     implicit none
 
     class(pikaia_class),intent(inout)        :: me
-    integer(IB),dimension(me%n),intent(in)   :: gn !有改动 二进制
+    integer(I1B),dimension(me%n*me%nd),intent(in) :: gn !有改动
     real(wp),dimension(me%n),intent(out)     :: ph
 
-    ph=gn/me%z !有改动 二进制
+    integer  :: ip,i,j,ii
+    real(wp) :: z
 
-    end subroutine decode
+    !z=10.0_wp**(-me%nd)
+    z=10**me%nd !有改动
+    ii=0
+    do i=1,me%n
+        ip=0
+        do j=1,me%nd !高位到低位顺序
+            ip=10*ip+gn(ii+j)
+        end do
+        !ph(i)=ip*z
+        ph(i)=ip/z !有改动
+        ii=ii+me%nd
+    end do
+
+    end subroutine decode_decimal
+    
+    subroutine decode_binary(me,gn,ph) !二进制整数转换为实数 子类调用
+
+    implicit none
+
+    class(pikaia_class),intent(inout)        :: me
+    integer(IB),dimension(me%n),intent(in)   :: gn !有改动
+    real(wp),dimension(me%n),intent(out)     :: ph
+
+    ph=0.0_wp !有改动
+
+    end subroutine decode_binary
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -920,29 +796,29 @@
 !@note Compatibility with version 1.0: To enforce 100% use of one-point
 !      crossover, un-comment appropriate line in source code below
 
-    subroutine cross(me,gn1,gn2) !交叉 有改动 二进制
+    subroutine cross_decimal(me,gn1,gn2) !交叉 父类调用
 
     implicit none
 
     class(pikaia_class),intent(inout)           :: me
-    integer(IB),dimension(me%n),intent(inout)   :: gn1  !有改动 二进制
-    integer(IB),dimension(me%n),intent(inout)   :: gn2  !有改动 二进制
+    integer(I1B),dimension(me%n*me%nd),intent(inout) :: gn1 !有改动
+    integer(I1B),dimension(me%n*me%nd),intent(inout) :: gn2 !有改动
 
-    integer :: i, ispl, ispl2, itmp
-    integer(IB) :: t
+    integer :: i, ispl, ispl2, itmp, t
 
     !Use crossover probability to decide whether a crossover occurs
     if (urand()<me%pcross) then
 
         !Compute first crossover point
-        ispl=int(urand()*me%nb)+1 ![1,me%nb] 交叉位置起点
+        ispl=int(urand()*me%n*me%nd)+1 ![1,me%n*me%nd] 交叉位置起点
 
         !Now choose between one-point and two-point crossover
         if (urand()<0.5_wp) then !交叉位置终点
-            ispl2=me%nb
+            ispl2=me%n*me%nd
         else
-            ispl2=int(urand()*me%nb)+1 ![1,me%nb]
+            ispl2=int(urand()*me%n*me%nd)+1
             !Un-comment following line to enforce one-point crossover
+            !ispl2=me%n*me%nd
             if (ispl2<ispl) then !交换以确保ispl1<isp2
                 itmp=ispl2
                 ispl2=ispl
@@ -951,18 +827,27 @@
         end if
 
         !Swap genes from ispl to ispl2
-        do i=1,me%n !父母交叉染色体
-            !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
-            !将整数FROM的FROMPOS位到FROMPOS+LEN-1位信息复制到整数TO的TOPOS位到TOPOS+LEN-1 LEN为复制位的长度
-            t=0_IB
-            CALL MVBITS(gn2(i), ispl-1, ispl2-ispl+1, t, ispl-1)
-            CALL MVBITS(gn1(i), ispl-1, ispl2-ispl+1, gn2(i), ispl-1)
-            CALL MVBITS(t, ispl-1, ispl2-ispl+1, gn1(i), ispl-1)
+        do i=ispl,ispl2 !父母交叉染色体
+            t=gn2(i)
+            gn2(i)=gn1(i)
+            gn1(i)=t
         end do
 
     end if
 
-    end subroutine cross
+    end subroutine cross_decimal
+    
+    subroutine cross_binary(me,gn1,gn2) !交叉 子类调用
+
+    implicit none
+
+    class(pikaia_class),intent(inout)           :: me
+    integer(IB),dimension(me%n),intent(inout)   :: gn1 !有改动
+    integer(IB),dimension(me%n),intent(inout)   :: gn2 !有改动
+
+    gn1=0_IB !有改动
+    gn2=0_IB !有改动
+    end subroutine cross_binary
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -978,14 +863,15 @@
 !   * imut=5    Uniform or creep mutation, variable rate based on fitness
 !   * imut=6    Uniform or creep mutation, variable rate based on distance
 
-    subroutine mutate(me,gn) !变异 有改动 二进制
+    subroutine mutate_decimal(me,gn) !变异 父类调用
 
     implicit none
 
     class(pikaia_class),intent(inout)           :: me
-    integer(IB),dimension(me%n),intent(inout)   :: gn  !有改动 二进制
+    integer(I1B),dimension(me%n*me%nd),intent(inout) :: gn !有改动
 
-    integer :: i,j,inc
+    integer :: i,j,k,l,ist,inc,loc
+    logical :: fix
 
     !Decide which type of mutation is to occur
     if (me%imut>=4 .and. urand()<=0.5_wp) then !单点变异+蠕变
@@ -993,36 +879,94 @@
         !CREEP MUTATION OPERATOR 蠕变即染色体编码随机加1或减1 变异较小
         !Subject each locus to random +/- 1 increment at the rate pmut
         do i=1,me%n
-            do j=1,me%nb
+            do j=1,me%nd
+
                 if (urand()<me%pmut) then
+
+                    !Construct integer
+                    loc=(i-1)*me%nd+j !染色体位置
                     inc=nint( urand() )*2-1 !-1或1
-                    gn(i)=gn(i)+shiftl(1_IB,j-1)*inc
+                    ist=(i-1)*me%nd+1 !该自变量第1个染色体位置
+                    gn(loc)=gn(loc)+inc
+
+                    !This is where we carry over the one (up to two digits)
+                    !first take care of decrement below 0 case
+                    if (inc<0 .and. gn(loc)<0) then !0减1不够
+                        if (j==1) then !第1个染色体位置不变异 最高位
+                            gn(loc)=0
+                        else !不是第1个染色体位置变异
+                            fix = .true.
+                            do k=loc,ist+1,-1 !相当于该位置减1
+                                gn(k)=9
+                                gn(k-1)=gn(k-1)-1 !高位减1即借10
+                                if ( gn(k-1)>=0 ) then
+                                    fix = .false.
+                                    exit
+                                end if
+                            end do
+                            if (fix) then
+                                !we popped under 0.00000 lower bound; fix it up
+                                if ( gn(ist)<0) then !例如000000
+                                    do l=ist,loc
+                                        gn(l)=0
+                                    end do
+                                end if
+                            end if
+                        end if
+                    end if
+
+                    if (inc>0 .and. gn(loc)>9) then !9加1需进位
+                        if (j==1) then !第1个染色体位置不变异 最高位
+                            gn(loc)=9
+                        else !不是第1个染色体位置变异
+                            fix = .true.
+                            do k=loc,ist+1,-1 !相当于该位置加1
+                                gn(k)=0
+                                gn(k-1)=gn(k-1)+1!高位进一
+                                if ( gn(k-1)<=9 ) then
+                                    fix = .false.
+                                    exit
+                                end if
+                            end do
+                            if (fix) then
+                                !we popped over 9.99999 upper bound; fix it up
+                                if ( gn(ist)>9 ) then !例如999999
+                                    do l=ist,loc
+                                        gn(l)=9
+                                    end do
+                                end if
+                            end if
+                        end if
+                    end if
+
                 end if
-                !限制范围
-                if (gn(i)<0_IB) gn(i)=0_IB
-                if (gn(i)>me%z) gn(i)=me%z
+
             end do
         end do
 
     else !单点变异
 
-        !UNIFORM MUTATION OPERATOR 统一变异操作 变异较大 可能出现0变7或7变0
+        !UNIFORM MUTATION OPERATOR 统一变异操作 变异较大 可能出现0变9或9变0
         !Subject each locus to random mutation at the rate pmut
-        do i=1,me%n !染色体每个位置
-            do j=1,me%nb,3
-                if (urand()<me%pmut) then
-                    !int(urand()*8) ![0,7] or [000,111]
-                    CALL MVBITS(int(urand()*8), 0, 3, gn(i), j-1)
-                    !限制范围
-                    if (gn(i)<0_IB) gn(i)=0_IB
-                    if (gn(i)>me%z) gn(i)=me%z
-                end if
-            end do
+        do i=1,me%n*me%nd !染色体每个位置
+            if (urand()<me%pmut) then
+                gn(i)=int(urand()*10.0_wp)
+            end if
         end do
 
     end if
 
-    end subroutine mutate
+    end subroutine mutate_decimal
+    
+    subroutine mutate_binary(me,gn) !变异 子类调用
+
+    implicit none
+
+    class(pikaia_class),intent(inout)           :: me
+    integer(IB),dimension(me%n),intent(inout)   :: gn !有改动
+
+    gn=0_IB
+    end subroutine mutate_binary
 !*****************************************************************************************
 
 !*****************************************************************************************
