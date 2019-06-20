@@ -61,36 +61,36 @@
 
     private
 
-    integer,parameter,private :: wp  = real64 !! Default real kind [8 bytes]. Ä¬ÈÏÊµÊıÎªË«¾«¶È
-    integer,parameter,private :: I1B = int8   !È¾É«Ìå±àÂëÊı×é8×Ö½Ú¾Í×ã¹»ÁË [-127,128] ÓĞ¸Ä¶¯
-    integer,parameter,private :: IB  = int32  !ÓÃÓÚÈ¾É«Ìå¶ş½øÖÆ±àÂë  ÓÃÓÚ×ÓÀà
+    integer,parameter,private :: wp  = real64 !! Default real kind [8 bytes]. é»˜è®¤å®æ•°ä¸ºåŒç²¾åº¦
+    integer,parameter,private :: I1B = int8   !æŸ“è‰²ä½“ç¼–ç æ•°ç»„8å­—èŠ‚å°±è¶³å¤Ÿäº† [-127,128] æœ‰æ”¹åŠ¨
+    integer,parameter,private :: IB  = int32  !ç”¨äºæŸ“è‰²ä½“äºŒè¿›åˆ¶ç¼–ç   ç”¨äºå­ç±»
     !IB  int16   int32  int64
     !nd    4       9     18
     !nb   14      30     60
     !*********************************************************
-    type, extends(pikaia_class),public :: pikaia_binary_class !pikaia_classµÄ×ÓÀà
-        !×ÓÀà¼Ì³Ğ¸¸ÀàËùÓĞ¹«ÓĞµÄÊµÀı±äÁ¿ºÍ·½·¨
+    type, extends(pikaia_class),public :: pikaia_binary_class !pikaia_classçš„å­ç±»
+        !å­ç±»ç»§æ‰¿çˆ¶ç±»æ‰€æœ‰å…¬æœ‰çš„å®ä¾‹å˜é‡å’Œæ–¹æ³•
         !! Main class for using the Pikaia algorithm.
-        !! INIT and SOLVE are the only public methods. ¹«¿ª·½·¨£ºinit ºÍ solve
+        !! INIT and SOLVE are the only public methods. å…¬å¼€æ–¹æ³•ï¼šinit å’Œ solve
 
         private
         !nd 11  10  9  8  7  6  5  4
         !nb 37  34  30 27 24 20 17 14
-        integer(I1B)  :: nb            = 30                   !ÓĞĞ§Êı×Ö ÓĞ¸Ä¶¯ ¶ş½øÖÆ
-        real(wp)      :: z             = shiftl(1_IB,30)-1_IB !ÓĞ¸Ä¶¯ ¶ş½øÖÆ 2**30-1
+        integer(I1B)  :: nb            = 30                   !æœ‰æ•ˆæ•°å­— æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
+        real(wp)      :: z             = shiftl(1_IB,30)-1_IB !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ 2**30-1
         logical       :: IsGray        = .false.              !F:Gray T:Binary
 
     contains
 
         !public routines:
-        procedure,non_overridable,public :: init   => set_inputs !¹¹Ôìº¯Êı ¹«¿ª·½·¨
+        procedure,non_overridable,public :: init   => set_inputs !æ„é€ å‡½æ•° å…¬å¼€æ–¹æ³•
         procedure,non_overridable,public :: SetIsGray
         !private routines:
-        procedure,non_overridable :: cross_binary  !½»²æ
-        procedure,non_overridable :: encode_binary !±àÂë
-        procedure,non_overridable :: mutate_binary !±äÒì imut>=4»ò<4
-        procedure,non_overridable :: decode_binary !½âÂë
-        procedure,non_overridable :: pikaia        !¼ÆËã³ÌĞò [0,1]
+        procedure,non_overridable :: cross_binary  !äº¤å‰
+        procedure,non_overridable :: encode_binary !ç¼–ç 
+        procedure,non_overridable :: mutate_binary !å˜å¼‚ imut>=4æˆ–<4
+        procedure,non_overridable :: decode_binary !è§£ç 
+        procedure,non_overridable :: pikaia        !è®¡ç®—ç¨‹åº [0,1]
         
 
     end type pikaia_binary_class
@@ -118,29 +118,29 @@
                             np,ngen,nd,pcross,pmutmn,pmutmx,pmut,imut,&
                             fdif,irep,ielite,ivrb,&
                             convergence_tol,convergence_window,initial_guess_frac,&
-                            iseed) !¹¹Ôìº¯Êı È·¶¨³ÉÔ±±äÁ¿³õÖµ
+                            iseed) !æ„é€ å‡½æ•° ç¡®å®šæˆå‘˜å˜é‡åˆå€¼
 
     implicit none
 
     class(pikaia_binary_class),intent(out)    :: me        !! pikaia class
-    integer(I1B),intent(in)            :: n         !! the parameter space dimension, i.e., the number ÓĞ¸Ä¶¯
+    integer(I1B),intent(in)            :: n         !! the parameter space dimension, i.e., the number æœ‰æ”¹åŠ¨
                                                     !! of adjustable parameters (size of the x vector).
-    real(wp),dimension(n),intent(in)   :: xl        !! vector of lower bounds for x ´«Èë¾²Ì¬Êı×é
-    real(wp),dimension(n),intent(in)   :: xu        !! vector of upper bounds for x ´«Èë¾²Ì¬Êı×é
-    procedure(pikaia_func)             :: f         !! user-supplied scalar function of n variables, ÈÎºÎÓëpikaia_func½Ó¿ÚÒ»ÑùµÄ×ÓÀı³Ì¶¼¿É´«Èë
+    real(wp),dimension(n),intent(in)   :: xl        !! vector of lower bounds for x ä¼ å…¥é™æ€æ•°ç»„
+    real(wp),dimension(n),intent(in)   :: xu        !! vector of upper bounds for x ä¼ å…¥é™æ€æ•°ç»„
+    procedure(pikaia_func)             :: f         !! user-supplied scalar function of n variables, ä»»ä½•ä¸pikaia_funcæ¥å£ä¸€æ ·çš„å­ä¾‹ç¨‹éƒ½å¯ä¼ å…¥
                                                     !! which must have the [[pikaia_func]] procedure interface.
                                                     !! By convention, f should return higher values for more optimal
                                                     !! parameter values (i.e., individuals which are more "fit").
                                                     !! For example, in fitting a function through data points, f
                                                     !! could return the inverse of chi**2.
-    integer(I1B),intent(out)           :: status    !! status output flag (0 if there were no errors) ´íÎóÀàĞÍ  ÓĞ¸Ä¶¯
-    procedure(iter_func),optional      :: iter_f    !! user-supplied subroutine that will report the ÈÎºÎÓëiter_func½Ó¿ÚÒ»ÑùµÄ×ÓÀı³Ì¶¼¿É´«Èë
+    integer(I1B),intent(out)           :: status    !! status output flag (0 if there were no errors) é”™è¯¯ç±»å‹  æœ‰æ”¹åŠ¨
+    procedure(iter_func),optional      :: iter_f    !! user-supplied subroutine that will report the ä»»ä½•ä¸iter_funcæ¥å£ä¸€æ ·çš„å­ä¾‹ç¨‹éƒ½å¯ä¼ å…¥
                                                     !! best solution for each generation.
                                                     !! It must have the [[iter_func]] procedure interface.  If not present,
                                                     !! then it is not used.  (note: this is independent of ivrb).
     integer,intent(in),optional        :: np        !! number of individuals in a population (default is 100)
     integer,intent(in),optional        :: ngen      !! maximum number of iterations
-    integer(I1B),intent(in),optional   :: nd        !! number of significant digits (i.e., number of ÓĞ¸Ä¶¯
+    integer(I1B),intent(in),optional   :: nd        !! number of significant digits (i.e., number of æœ‰æ”¹åŠ¨
                                                     !! genes) retained in chromosomal encoding (default is 6).
     real(wp),intent(in),optional       :: pcross    !! crossover probability; must be  <= 1.0 (default
                                                     !! is 0.85). If crossover takes place, either one
@@ -152,24 +152,24 @@
                                                     !! is 0.005) (Note: the mutation rate is the probability
                                                     !! that any one gene locus will mutate in
                                                     !! any one generation.)
-    integer(I1B),intent(in),optional   :: imut      !! mutation mode; 1/2/3/4/5 (default is 2). ÓĞ¸Ä¶¯
+    integer(I1B),intent(in),optional   :: imut      !! mutation mode; 1/2/3/4/5 (default is 2). æœ‰æ”¹åŠ¨
                                                     !!  1=one-point mutation, fixed rate.
                                                     !!  2=one-point, adjustable rate based on fitness.
                                                     !!  3=one-point, adjustable rate based on distance.
                                                     !!  4=one-point+creep, fixed rate.
                                                     !!  5=one-point+creep, adjustable rate based on fitness.
                                                     !!  6=one-point+creep, adjustable rate based on distance.
-    real(wp),intent(in),optional       :: fdif      !! relative fitness differential; range from 0 Ñ¡Ôñ¸¸Ä¸Ê±Ê¹ÓÃ
+    real(wp),intent(in),optional       :: fdif      !! relative fitness differential; range from 0 é€‰æ‹©çˆ¶æ¯æ—¶ä½¿ç”¨
                                                     !! (none) to 1 (maximum).  (default is 1.0)
-    integer(I1B),intent(in),optional   :: irep      !! reproduction plan; 1/2/3=Full generational ÓĞ¸Ä¶¯
+    integer(I1B),intent(in),optional   :: irep      !! reproduction plan; 1/2/3=Full generational æœ‰æ”¹åŠ¨
                                                     !! replacement/Steady-state-replace-random/Steady-
                                                     !! state-replace-worst (default is 3)
-    integer(I1B),intent(in),optional   :: ielite    !! elitism flag; 0/1=off/on (default is 0) ¾«Ó¢¿ª¹Ø ÓĞ¸Ä¶¯
+    integer(I1B),intent(in),optional   :: ielite    !! elitism flag; 0/1=off/on (default is 0) ç²¾è‹±å¼€å…³ æœ‰æ”¹åŠ¨
                                                     !! (Applies only to reproduction plans 1 and 2)
-    integer(I1B),intent(in),optional   :: ivrb      !! printed output 0/1/2=None/Minimal/Verbose  0ÎŞ1×îĞ¡3Èß³¤ ÓĞ¸Ä¶¯
+    integer(I1B),intent(in),optional   :: ivrb      !! printed output 0/1/2=None/Minimal/Verbose  0æ— 1æœ€å°3å†—é•¿ æœ‰æ”¹åŠ¨
                                                     !! (default is 0)
     real(wp),intent(in),optional       :: convergence_tol    !! convergence tolerance; must be > 0.0 (default is 0.0001)
-    integer,intent(in),optional        :: convergence_window !! convergence window; must be >= 0  ÓĞ¸Ä¶¯
+    integer,intent(in),optional        :: convergence_window !! convergence window; must be >= 0  æœ‰æ”¹åŠ¨
                                                              !! This is the number of consecutive solutions
                                                              !! within the tolerance for convergence to
                                                              !! be declared (default is 20)
@@ -177,30 +177,30 @@
                                                              !! to set equal to the initial guess.  Range from 0
                                                              !! (none) to 1.0 (all). (default is 0.1 or 10%).
     integer,intent(in),optional        :: iseed              !! random seed value; must be > 0 (default is 999)
-    !logical,intent(in),optional        :: IsGray !ÓĞ¸Ä¶¯ Ôö¼Ó¸ñÀ×±àÂë
+    !logical,intent(in),optional        :: IsGray !æœ‰æ”¹åŠ¨ å¢åŠ æ ¼é›·ç¼–ç 
     
-    call me%pikaia_class%init(n,xl,xu,f,status,& !µ÷ÓÃ¸¸ÀàµÄ¹¹Ôìº¯Êı
+    call me%pikaia_class%init(n,xl,xu,f,status,& !è°ƒç”¨çˆ¶ç±»çš„æ„é€ å‡½æ•°
                             iter_f,&
                             np,ngen,nd,pcross,pmutmn,pmutmx,pmut,imut,&
                             fdif,irep,ielite,ivrb,&
                             convergence_tol,convergence_window,initial_guess_frac,&
                             iseed)
-    !ÒÔÏÂÎª×ÓÀà¶ÀÓĞ³ÉÔ±±äÁ¿¸³Öµ
-    !me%nb=CEILING(log(1.0_wp*10**me%nd)/log(2.0_wp)) !Ê®½øÖÆÓĞĞ§Êı×Ö×ª»»Îª¶ş½øÖÆÓĞĞ§Êı×Ö  ÓĞ¸Ä¶¯ ¶ş½øÖÆ
-    me%nb=CEILING(me%nd/log10(2.0_wp)) !Ê®½øÖÆÓĞĞ§Êı×Ö×ª»»Îª¶ş½øÖÆÓĞĞ§Êı×Ö  ÓĞ¸Ä¶¯ ¶ş½øÖÆ
-    me%z=shiftl(1_IB,me%nb)-1_IB !ÓĞ¸Ä¶¯ ¶ş½øÖÆ 2**me%nb-1
-    !me%IsGray=IsGray !ÓĞ¸Ä¶¯ Ôö¼Ó¸ñÀ×±àÂë
+    !ä»¥ä¸‹ä¸ºå­ç±»ç‹¬æœ‰æˆå‘˜å˜é‡èµ‹å€¼
+    !me%nb=CEILING(log(1.0_wp*10**me%nd)/log(2.0_wp)) !åè¿›åˆ¶æœ‰æ•ˆæ•°å­—è½¬æ¢ä¸ºäºŒè¿›åˆ¶æœ‰æ•ˆæ•°å­—  æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
+    me%nb=CEILING(me%nd/log10(2.0_wp)) !åè¿›åˆ¶æœ‰æ•ˆæ•°å­—è½¬æ¢ä¸ºäºŒè¿›åˆ¶æœ‰æ•ˆæ•°å­—  æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
+    me%z=shiftl(1_IB,me%nb)-1_IB !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ 2**me%nb-1
+    !me%IsGray=IsGray !æœ‰æ”¹åŠ¨ å¢åŠ æ ¼é›·ç¼–ç 
 
     !Print a header
-    if (me%ivrb>0) then !´òÓ¡±íÍ·
-        write(output_unit,'(A,I4)')    '    Binary Length of Chromosome: ',me%nb     !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    if (me%ivrb>0) then !æ‰“å°è¡¨å¤´
+        write(output_unit,'(A,I4)')    '    Binary Length of Chromosome: ',me%nb     !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
     end if
 
-    block !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    block !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
         integer(IB),pointer::a
         allocate(a)
         
-        if (me%nb > bit_size(a) - 1) then !bit_size(a)×î¸ßÎ»Îª·ûºÅÎ» ±àÂë²»µÃÕ¼ÓÃ
+        if (me%nb > bit_size(a) - 1) then !bit_size(a)æœ€é«˜ä½ä¸ºç¬¦å·ä½ ç¼–ç ä¸å¾—å ç”¨
             write(output_unit,'(A)') &
             ' WARNING: IB is too small, shoud be int64.'
         end if
@@ -247,7 +247,7 @@
 !   * Davis, Lawrence, ed.  Handbook of Genetic Algorithms.
 !     Van Nostrand Reinhold, 1991.
 
-    subroutine pikaia(me,x,f,status) !x[0,1] ÓĞ¸Ä¶¯ ¶ş½øÖÆ ¸²¸Ç¸¸Àà·½·¨
+    subroutine pikaia(me,x,f,status) !x[0,1] æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ è¦†ç›–çˆ¶ç±»æ–¹æ³•
 
     implicit none
 
@@ -257,14 +257,14 @@
                                                      !! Output - the "fittest" (optimal) solution found, [0,1]
                                                      !! i.e., the solution which maximizes the fitness function.
     real(wp),intent(out)                   :: f      !! the (scalar) value of the fitness function at x
-    integer(I1B),intent(out)               :: status !! an indicator of the success or failure ÓĞ¸Ä¶¯
+    integer(I1B),intent(out)               :: status !! an indicator of the success or failure æœ‰æ”¹åŠ¨
                                                      !! of the call to pikaia (0=success; non-zero=failure)
 
-    !Local variables ×ÓÀà¶ÀÓĞ
-    integer(IB),dimension(me%n)    :: gn1 !Ä¸ÖÖÈºÈ¾É«Ìå±àÂë  ÓĞ¸Ä¶¯ ¶ş½øÖÆ
-    integer(IB),dimension(me%n)    :: gn2 !¸¸ÖÖÈºÈ¾É«Ìå±àÂë  ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    !Local variables å­ç±»ç‹¬æœ‰
+    integer(IB),dimension(me%n)    :: gn1 !æ¯ç§ç¾¤æŸ“è‰²ä½“ç¼–ç   æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
+    integer(IB),dimension(me%n)    :: gn2 !çˆ¶ç§ç¾¤æŸ“è‰²ä½“ç¼–ç   æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
     
-    include "pikaia_sub.f90" !´Ë¶Î³ÌĞò¸¸ÀàÓë×ÓÀàÏàÍ¬
+    include "pikaia_sub.f90" !æ­¤æ®µç¨‹åºçˆ¶ç±»ä¸å­ç±»ç›¸åŒ
     end subroutine pikaia
 !*****************************************************************************************
 
@@ -273,17 +273,17 @@
 !  Encode phenotype parameters into integer genotype
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine encode_binary(me,ph,gn) !ÊµÊı×ª»»Îª¶ş½øÖÆÕûÊı  ÓĞ¸Ä¶¯ ¶ş½øÖÆ ¸²¸Ç¸¸Àà·½·¨
+    subroutine encode_binary(me,ph,gn) !å®æ•°è½¬æ¢ä¸ºäºŒè¿›åˆ¶æ•´æ•°  æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ è¦†ç›–çˆ¶ç±»æ–¹æ³•
 
     implicit none
 
     class(pikaia_binary_class),intent(inout)  :: me
     real(wp),dimension(me%n),intent(in)       :: ph
-    integer(IB),dimension(me%n),intent(out)   :: gn  !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    integer(IB),dimension(me%n),intent(out)   :: gn  !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
 
-    gn=0_IB !³õÖµÎª0
+    gn=0_IB !åˆå€¼ä¸º0
     gn=ph*me%z
-    if(me%IsGray)call binary2gray(gn,gn) !¶ş½øÖÆ±àÂë×ª»»Îª¸ñÀ×±àÂë
+    if(me%IsGray)call binary2gray(gn,gn) !äºŒè¿›åˆ¶ç¼–ç è½¬æ¢ä¸ºæ ¼é›·ç¼–ç 
 
     end subroutine encode_binary
 !*****************************************************************************************
@@ -293,23 +293,23 @@
 !  decode genotype into phenotype parameters
 !  ph(k) are x,y coordinates [ 0 < x,y < 1 ]
 
-    subroutine decode_binary(me,gn,ph) !¶ş½øÖÆÕûÊı×ª»»ÎªÊµÊı  ÓĞ¸Ä¶¯ ¶ş½øÖÆ ¸²¸Ç¸¸Àà·½·¨
+    subroutine decode_binary(me,gn,ph) !äºŒè¿›åˆ¶æ•´æ•°è½¬æ¢ä¸ºå®æ•°  æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ è¦†ç›–çˆ¶ç±»æ–¹æ³•
 
     implicit none
 
     class(pikaia_binary_class),intent(inout) :: me
-    integer(IB),dimension(me%n),intent(in)   :: gn !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    integer(IB),dimension(me%n),intent(in)   :: gn !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
     real(wp),dimension(me%n),intent(out)     :: ph
     
 
     if(me%IsGray)then
         block
             integer(IB),dimension(me%n) :: gn0
-            call gray2binary(gn,gn0) !¸ñÀ×±àÂë×ª»»Îª¶ş½øÖÆ±àÂë
-            ph=gn0/me%z !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+            call gray2binary(gn,gn0) !æ ¼é›·ç¼–ç è½¬æ¢ä¸ºäºŒè¿›åˆ¶ç¼–ç 
+            ph=gn0/me%z !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
         end block
     else
-        ph=gn/me%z !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+        ph=gn/me%z !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
     end if
 
     end subroutine decode_binary
@@ -325,13 +325,13 @@
 !@note Compatibility with version 1.0: To enforce 100% use of one-point
 !      crossover, un-comment appropriate line in source code below
 
-    subroutine cross_binary(me,gn1,gn2) !½»²æ ÓĞ¸Ä¶¯ ¶ş½øÖÆ ¸²¸Ç¸¸Àà·½·¨
+    subroutine cross_binary(me,gn1,gn2) !äº¤å‰ æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ è¦†ç›–çˆ¶ç±»æ–¹æ³•
 
     implicit none
 
     class(pikaia_binary_class),intent(inout)    :: me
-    integer(IB),dimension(me%n),intent(inout)   :: gn1  !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
-    integer(IB),dimension(me%n),intent(inout)   :: gn2  !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    integer(IB),dimension(me%n),intent(inout)   :: gn1  !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
+    integer(IB),dimension(me%n),intent(inout)   :: gn2  !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
 
     integer :: i, ispl, ispl2, itmp
     integer(IB) :: t
@@ -340,15 +340,15 @@
     if (urand()<me%pcross) then
 
         !Compute first crossover point
-        ispl=int(urand()*me%nb)+1 ![1,me%nb] ½»²æÎ»ÖÃÆğµã
+        ispl=int(urand()*me%nb)+1 ![1,me%nb] äº¤å‰ä½ç½®èµ·ç‚¹
 
         !Now choose between one-point and two-point crossover
-        if (urand()<0.5_wp) then !½»²æÎ»ÖÃÖÕµã
+        if (urand()<0.5_wp) then !äº¤å‰ä½ç½®ç»ˆç‚¹
             ispl2=me%nb
         else
             ispl2=int(urand()*me%nb)+1 ![1,me%nb]
             !Un-comment following line to enforce one-point crossover
-            if (ispl2<ispl) then !½»»»ÒÔÈ·±£ispl1<isp2
+            if (ispl2<ispl) then !äº¤æ¢ä»¥ç¡®ä¿ispl1<isp2
                 itmp=ispl2
                 ispl2=ispl
                 ispl=itmp
@@ -356,9 +356,9 @@
         end if
 
         !Swap genes from ispl to ispl2
-        do i=1,me%n !¸¸Ä¸½»²æÈ¾É«Ìå
+        do i=1,me%n !çˆ¶æ¯äº¤å‰æŸ“è‰²ä½“
             !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
-            !½«ÕûÊıFROMµÄFROMPOSÎ»µ½FROMPOS+LEN-1Î»ĞÅÏ¢¸´ÖÆµ½ÕûÊıTOµÄTOPOSÎ»µ½TOPOS+LEN-1 LENÎª¸´ÖÆÎ»µÄ³¤¶È
+            !å°†æ•´æ•°FROMçš„FROMPOSä½åˆ°FROMPOS+LEN-1ä½ä¿¡æ¯å¤åˆ¶åˆ°æ•´æ•°TOçš„TOPOSä½åˆ°TOPOS+LEN-1 LENä¸ºå¤åˆ¶ä½çš„é•¿åº¦
             t=0_IB
             CALL MVBITS(gn2(i), ispl-1, ispl2-ispl+1, t, ispl-1)      !t=gn2
             CALL MVBITS(gn1(i), ispl-1, ispl2-ispl+1, gn2(i), ispl-1) !gn2=gn1
@@ -383,29 +383,29 @@
 !   * imut=5    Uniform or creep mutation, variable rate based on fitness
 !   * imut=6    Uniform or creep mutation, variable rate based on distance
 
-    subroutine mutate_binary(me,gn) !±äÒì ÓĞ¸Ä¶¯ ¶ş½øÖÆ ¸²¸Ç¸¸Àà·½·¨
+    subroutine mutate_binary(me,gn) !å˜å¼‚ æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶ è¦†ç›–çˆ¶ç±»æ–¹æ³•
 
     implicit none
 
     class(pikaia_binary_class),intent(inout)    :: me
-    integer(IB),dimension(me%n),intent(inout)   :: gn  !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    integer(IB),dimension(me%n),intent(inout)   :: gn  !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
 
     integer :: i,j,inc
 
     !Decide which type of mutation is to occur
-    if (me%imut>=4 .and. urand()<=0.5_wp) then !µ¥µã±äÒì+Èä±ä
+    if (me%imut>=4 .and. urand()<=0.5_wp) then !å•ç‚¹å˜å¼‚+è •å˜
 
-        !CREEP MUTATION OPERATOR Èä±ä¼´È¾É«Ìå±àÂëËæ»ú¼Ó1»ò¼õ1 ±äÒì½ÏĞ¡
+        !CREEP MUTATION OPERATOR è •å˜å³æŸ“è‰²ä½“ç¼–ç éšæœºåŠ 1æˆ–å‡1 å˜å¼‚è¾ƒå°
         !Subject each locus to random +/- 1 increment at the rate pmut
         do i=1,me%n
             do j=1,me%nb
                 if (urand()<me%pmut) then
                     if (me%IsGray) then !Gray
-                        gn(i) = ieor(gn(i),shiftl(1_IB,j-1)) !È¡·´
+                        gn(i) = ieor(gn(i),shiftl(1_IB,j-1)) !å–å
                     else !Binary
-                        inc=nint( urand() )*2-1 !-1»ò1
+                        inc=nint( urand() )*2-1 !-1æˆ–1
                         gn(i)=gn(i)+shiftl(1_IB,j-1)*inc
-                        !ÏŞÖÆ·¶Î§
+                        !é™åˆ¶èŒƒå›´
                         if (gn(i)<0_IB) gn(i)=0_IB
                         if (gn(i)>me%z) gn(i)=me%z
                     end if
@@ -413,11 +413,11 @@
             end do
         end do
         
-    else !µ¥µã±äÒì
+    else !å•ç‚¹å˜å¼‚
 
-        !UNIFORM MUTATION OPERATOR Í³Ò»±äÒì²Ù×÷ ±äÒì½Ï´ó ¿ÉÄÜ³öÏÖ0±ä7»ò7±ä0
+        !UNIFORM MUTATION OPERATOR ç»Ÿä¸€å˜å¼‚æ“ä½œ å˜å¼‚è¾ƒå¤§ å¯èƒ½å‡ºç°0å˜7æˆ–7å˜0
         !Subject each locus to random mutation at the rate pmut
-        do i=1,me%n !È¾É«ÌåÃ¿¸öÎ»ÖÃ
+        do i=1,me%n !æŸ“è‰²ä½“æ¯ä¸ªä½ç½®
             do j=1,me%nb,3
                 !nd 9  8  7  6  5 
                 !nb 30 27 24 20 17
@@ -426,12 +426,12 @@
                     if(me%nb==20 .or. me%nb==17)then
                         if(j==me%nb-1)then
                             CALL MVBITS(int(urand()*4), 0, 2, gn(i), j-1)
-                            exit !ÍË³öÄÚÑ­»·
+                            exit !é€€å‡ºå†…å¾ªç¯
                         end if
                     end if
                     !int(urand()*8) ![0,7] or [000,111]
                     CALL MVBITS(int(urand()*8), 0, 3, gn(i), j-1)
-                    !ÏŞÖÆ·¶Î§
+                    !é™åˆ¶èŒƒå›´
                     !if (gn(i)<0_IB) gn(i)=0_IB
                     !if (gn(i)>me%z) gn(i)=me%z
                 end if
@@ -442,32 +442,32 @@
 
     end subroutine mutate_binary
 !*****************************************************************************************
-    !¶ş½øÖÆ±àÂë×ª»»Îª¸ñÀ×Âë ÊÊÓÃÓÚÎŞ·ûºÅÕûÊı  Ôö¼Ó
+    !äºŒè¿›åˆ¶ç¼–ç è½¬æ¢ä¸ºæ ¼é›·ç  é€‚ç”¨äºæ— ç¬¦å·æ•´æ•°  å¢åŠ 
     pure elemental subroutine binary2gray(b,g)
     implicit none
 
     integer(kind=IB), intent(in)  :: b
     integer(kind=IB), intent(out) :: g
-    !ieorÎ»Òì»ò Í¬0Òì1 ishftÎ»ÓÒÒÆ(¸ºÊı´ú±íÓÒÒÆ)
-    g = ieor(b,shiftr(b,1))  ! ²Î¿¼cÓïÑÔx^(x>>1) F08
+    !ieorä½å¼‚æˆ– åŒ0å¼‚1 ishftä½å³ç§»(è´Ÿæ•°ä»£è¡¨å³ç§»)
+    g = ieor(b,shiftr(b,1))  ! å‚è€ƒcè¯­è¨€x^(x>>1) F08
     return
     end subroutine binary2gray
-    !¸ñÀ×Âë×ª»»Îª¶ş½øÖÆ±àÂë ÊÊÓÃÓÚÎŞ·ûºÅÕûÊı  Ôö¼Ó
+    !æ ¼é›·ç è½¬æ¢ä¸ºäºŒè¿›åˆ¶ç¼–ç  é€‚ç”¨äºæ— ç¬¦å·æ•´æ•°  å¢åŠ 
     pure elemental subroutine gray2binary(g,b)
     implicit none
 
-    integer(kind=IB), value       :: g ! ´«Öµ
+    integer(kind=IB), value       :: g ! ä¼ å€¼
     integer(kind=IB), intent(out) :: b
 
     b=g                 !unsigned int y = x;
 
-    do while (g > 0_IB) !while(x>>=1) !x>>=1µÈ¼ÛÓÚx=x>>1 ·Ç0Õæ0¼Ù
+    do while (g > 0_IB) !while(x>>=1) !x>>=1ç­‰ä»·äºx=x>>1 é0çœŸ0å‡
       g=shiftr(g,1)
-      b=ieor(b,g)       !y ^= x; Í¬0Òì1
+      b=ieor(b,g)       !y ^= x; åŒ0å¼‚1
     end do
 
     return
-	end subroutine gray2binary
+    end subroutine gray2binary
     
     subroutine SetIsGray(me,IsGray)
     implicit none
@@ -477,8 +477,8 @@
     
     me%IsGray=IsGray !T Gray,F Binary
     !Print a header
-    if (me%ivrb>0) then !´òÓ¡±íÍ·
-        write(output_unit,'(A,L4)')    'Chromosome Is Encoded with Gray: ',me%IsGray !ÓĞ¸Ä¶¯ ¶ş½øÖÆ
+    if (me%ivrb>0) then !æ‰“å°è¡¨å¤´
+        write(output_unit,'(A,L4)')    'Chromosome Is Encoded with Gray: ',me%IsGray !æœ‰æ”¹åŠ¨ äºŒè¿›åˆ¶
     end if
     end subroutine SetIsGray
 !*****************************************************************************************
