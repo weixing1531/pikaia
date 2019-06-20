@@ -400,15 +400,19 @@
         do i=1,me%n
             do j=1,me%nb
                 if (urand()<me%pmut) then
-                    inc=nint( urand() )*2-1 !-1或1
-                    gn(i)=gn(i)+shiftl(1_IB,j-1)*inc
+                    if (me%IsGray) then !Gray
+                        gn(i) = ieor(gn(i),shiftl(1_IB,j-1)) !取反
+                    else !Binary
+                        inc=nint( urand() )*2-1 !-1或1
+                        gn(i)=gn(i)+shiftl(1_IB,j-1)*inc
+                        !限制范围
+                        if (gn(i)<0_IB) gn(i)=0_IB
+                        if (gn(i)>me%z) gn(i)=me%z
+                    end if
                 end if
-                !限制范围
-                if (gn(i)<0_IB) gn(i)=0_IB
-                if (gn(i)>me%z) gn(i)=me%z
             end do
         end do
-
+        
     else !单点变异
 
         !UNIFORM MUTATION OPERATOR 统一变异操作 变异较大 可能出现0变7或7变0
@@ -439,15 +443,15 @@
     end subroutine mutate_binary
 !*****************************************************************************************
     !二进制编码转换为格雷码 适用于无符号整数  增加
-	pure elemental subroutine binary2gray(b,g)
-	implicit none
+    pure elemental subroutine binary2gray(b,g)
+    implicit none
 
-	integer(kind=IB), intent(in)  :: b
-	integer(kind=IB), intent(out) :: g
-	!ieor位异或 同0异1 ishft位右移(负数代表右移)
+    integer(kind=IB), intent(in)  :: b
+    integer(kind=IB), intent(out) :: g
+    !ieor位异或 同0异1 ishft位右移(负数代表右移)
     g = ieor(b,shiftr(b,1))  ! 参考c语言x^(x>>1) F08
-	return
-	end subroutine binary2gray
+    return
+    end subroutine binary2gray
     !格雷码转换为二进制编码 适用于无符号整数  增加
     pure elemental subroutine gray2binary(g,b)
     implicit none
