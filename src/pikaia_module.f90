@@ -78,7 +78,7 @@
         !other solution inputs (with default values):
         integer  :: np                 = 100 !种群数 必须为偶数
         integer  :: ngen               = 500 !迭代数
-        integer(I1B)  :: nd            = 5   !有效数字 有改动
+        integer(I1B)  :: nd            = 5   !有效数字 有改动 min:4 max:9
         real(wp) :: pcross             = 0.85_wp !交叉概率
         integer(I1B)  :: imut          = 2 !变异模式 有改动
         real(wp) :: pmuti              = 0.005_wp  !变异概率初始值
@@ -177,7 +177,7 @@
                                                     !! then it is not used.  (note: this is independent of ivrb).
     integer,intent(in),optional        :: np        !! number of individuals in a population (default is 100)
     integer,intent(in),optional        :: ngen      !! maximum number of iterations
-    integer(I1B),intent(in),optional   :: nd        !! number of significant digits (i.e., number of 有改动
+    integer(I1B),intent(in),optional   :: nd        !! number of significant digits (i.e., number of 有改动 min:4 max:9
                                                     !! genes) retained in chromosomal encoding (default is 6).
     real(wp),intent(in),optional       :: pcross    !! crossover probability; must be  <= 1.0 (default
                                                     !! is 0.85). If crossover takes place, either one
@@ -330,7 +330,7 @@
         status = 103
     end if
 
-    if (me%nd>9 .or. me%nd<1) then !检查有效数字
+    if (me%nd>9 .or. me%nd<4) then !检查有效数字 有改动
         write(output_unit,'(A)') ' ERROR: illegal value for Chromosome length.'
         status = 104
     end if

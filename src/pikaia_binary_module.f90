@@ -74,8 +74,8 @@
         !! INIT and SOLVE are the only public methods. 公开方法：init 和 solve
 
         private
-        !nd 11  10  9  8  7  6  5  4
-        !nb 37  34  30 27 24 20 17 14
+        !nd 11  10  9  8  7  6  5  4  3
+        !nb 37  34  30 27 24 20 17 14 10
         integer(I1B)  :: nb            = 30                   !有效数字 有改动 二进制
         real(wp)      :: z             = shiftl(1_IB,30)-1_IB !有改动 二进制 2**30-1
         logical       :: IsGray        = .false.              !F:Binary T:Gray
@@ -427,12 +427,13 @@
         !Subject each locus to random mutation at the rate pmut
         do i=1,me%n !染色体每个位置
             do j=1,me%nb,3 ! 三个位置分别为j j+1 j+2
-                !nd 9  8  7  6  5
-                !nb 30 27 24 20 17
-                if (urand()<me%pmut) then
+                !nd 9  8  7  6  5  4 
+                !nb 30 27 24 20 17 14
+                if (urand()<me%pmut) then ! 4<=nd<=9
                     !int(urand()*4) ![0,3] or [00,11]
-                    if(me%nb==20 .or. me%nb==17)then !mod(me%nb,3)==2
-                        if(j==me%nb-1)then !最后一个位置的位起点 19或16
+                    !if(me%nb==20 .or. me%nb==17 .or. me%nb==14)then !mod(me%nb,3)==2
+                    if(me%nd<=6)then !mod(me%nb,3)==2
+                        if(j==me%nb-1)then !最后一个位置的位起点 19或16或13
                             !int32 最低位为0(右边第1位) 最高位为31(右边第32位)
                             !0为随机数位起点 2为位长度 j-1为gn(i)位起点
                             CALL MVBITS(int(urand()*4), 0, 2, gn(i), j-1)
