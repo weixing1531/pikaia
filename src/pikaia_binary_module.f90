@@ -76,9 +76,9 @@
         private
         !nd 11  10  9  8  7  6  5  4  3
         !nb 37  34  30 27 24 20 17 14 10
-        integer(I1B)  :: nb            = 30                   !有效数字 有改动 二进制
-        real(wp)      :: z             = shiftl(1_IB,30)-1_IB !有改动 二进制 2**30-1
-        logical       :: IsGray        = .false.              !F:Binary T:Gray
+        integer(I1B)  :: nb     = 30_I1B                           !有效数字 有改动 二进制
+        real(wp)      :: z      = real(ibset(0_IB,30_IB)-1_IB,wp)  !有改动 二进制 2**30-1  fast
+        logical       :: IsGray = .false.                          !F:Binary T:Gray
 
     contains
 
@@ -185,12 +185,11 @@
                             convergence_tol,convergence_window,initial_guess_frac,&
                             iseed)
     !以下为子类独有实例变量赋值 依赖于父类实例变量
-    !me%nb=CEILING(log(1.0_wp*10**me%nd)/log(2.0_wp)) !十进制有效数字转换为二进制有效数字  有改动 二进制
-    me%nb=CEILING(me%nd/log10(2.0_wp)) !十进制有效数字转换为二进制有效数字  有改动 二进制
-    me%z=shiftl(1_IB,me%nb)-1_IB !有改动 二进制 2**me%nb-1
+    me%nb=CEILING(me%nd/log10(2.0_wp),I1B) !十进制有效数字转换为二进制有效数字  有改动 二进制
+    me%z=real(ibset(0_IB,me%nb)-1_IB,wp)   !有改动 二进制 2**me%nb-1
 
     !Print a header
-    if (me%ivrb>0) then !打印表头
+    if (me%ivrb>0_I1B) then !打印表头
         write(output_unit,'(A,I4)')    '    Binary Length of Chromosome: ',me%nb     !有改动 二进制
     end if
 
@@ -281,8 +280,7 @@
     real(wp),dimension(me%n),intent(in)       :: ph  ![0,1]
     integer(IB),dimension(me%n),intent(out)   :: gn  !有改动 二进制
 
-    gn=0_IB !初值为0
-    gn=ph*me%z  !实数[0,1]转换为二进制编码
+    gn=int(ph*me%z,IB)  !实数[0,1]转换为二进制编码
     if(me%IsGray)call binary2gray(gn,gn) !二进制编码转换为格雷编码
 
     end subroutine encode_binary
@@ -301,12 +299,11 @@
     integer(IB),dimension(me%n),intent(in)   :: gn !有改动 二进制
     real(wp),dimension(me%n),intent(out)     :: ph ![0,1]
 
-
     if(me%IsGray)then
         block
             integer(IB),dimension(me%n) :: gn0
             call gray2binary(gn,gn0) !格雷编码转换为二进制编码
-            ph=gn0/me%z !有改动 二进制 二进制编码转换为实数[0,1]
+            ph=real(gn0,wp)/me%z !有改动 二进制 二进制编码转换为实数[0,1]
         end block
     else
         ph=gn/me%z !有改动 二进制 二进制编码转换为实数[0,1]
@@ -334,45 +331,97 @@
     integer(IB),dimension(me%n),intent(inout)   :: gn2  !有改动 二进制
 
     integer :: i, ispl, ispl2, itmp
-    integer(IB) :: t
+    integer(IB) :: t=0_IB
+    integer(I1B),parameter :: method = 1_I1B ! speed:method1 > method2 
 
     !Use crossover probability to decide whether a crossover occurs
     if (urand()<me%pcross) then
+        select case(method)
+        case(1_I1B)  !method1:all vectors have same ispl and ispl2.
+            !Compute first crossover point
+            ispl=int(urand()*me%nb)+1 ![1,me%nb] 交叉位置起点
 
-        !Compute first crossover point
-        ispl=int(urand()*me%nb)+1 ![1,me%nb] 交叉位置起点
-
-        !Now choose between one-point and two-point crossover
-        if (urand()<0.5_wp) then !交叉位置终点
-            ispl2=me%nb
-        else
-            ispl2=int(urand()*me%nb)+1 ![1,me%nb]
-            !Un-comment following line to enforce one-point crossover
-            if (ispl2<ispl) then !交换以确保ispl1<isp2
-                itmp=ispl2
-                ispl2=ispl
-                ispl=itmp
+            !Now choose between one-point and two-point crossover
+            if (urand()<0.5_wp) then !交叉位置终点
+                ispl2=me%nb !相当于单点交叉
+            else
+                ispl2=int(urand()*me%nb)+1 ![1,me%nb] 相当于两点交叉
+                !Un-comment following line to enforce one-point crossover
+                !ispl2=me%nb !强制单点交叉
+                if (ispl2<ispl) then !交换以确保ispl1<=isp2
+                    itmp=ispl2
+                    ispl2=ispl
+                    ispl=itmp
+                end if
             end if
-        end if
 
-        !Swap genes from ispl to ispl2
-        !method 1
-        do i=1,me%n !父母交叉染色体
-            !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
-            !将整数FROM的FROMPOS位到FROMPOS+LEN-1位信息复制到整数TO的TOPOS位到TOPOS+LEN-1 LEN为复制位的长度
-            t=0_IB
-            CALL MVBITS(gn2(i), ispl-1, ispl2-ispl+1, t, ispl-1)      !t=gn2
-            CALL MVBITS(gn1(i), ispl-1, ispl2-ispl+1, gn2(i), ispl-1) !gn2=gn1
-            CALL MVBITS(t, ispl-1, ispl2-ispl+1, gn1(i), ispl-1)      !gn1=t
-        end do
-        !method 2
-!        i=int(urand()*me%n)+1 ![1,me%n] 交叉的自变量由随机产生
-!        !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
-!        !将整数FROM的FROMPOS位到FROMPOS+LEN-1位信息复制到整数TO的TOPOS位到TOPOS+LEN-1 LEN为复制位的长度
-!        t=0_IB
-!        CALL MVBITS(gn2(i), ispl-1, ispl2-ispl+1, t, ispl-1)      !t=gn2
-!        CALL MVBITS(gn1(i), ispl-1, ispl2-ispl+1, gn2(i), ispl-1) !gn2=gn1
-!        CALL MVBITS(t, ispl-1, ispl2-ispl+1, gn1(i), ispl-1)      !gn1=t
+            itmp=ispl2-ispl+1 !避免重复计算 交叉基因长度
+            !Swap genes from ispl to ispl2
+            do i=1,me%n !每个自变量均交叉
+                !CALL MVBITS(FROM, FROMPOS, LEN, TO, TOPOS)
+                !将整数FROM的FROMPOS位到FROMPOS+LEN-1位信息复制到整数TO的TOPOS位到TOPOS+LEN-1 LEN为复制位的长度
+                t=IBITS(gn2(i),ispl-1,itmp) !t储存gn2(i)基因信息
+                CALL MVBITS(gn1(i), ispl-1, itmp, gn2(i), ispl-1) !gn2=gn1
+                CALL MVBITS(t     , 0     , itmp, gn1(i), ispl-1) !gn1=t
+            end do
+        case(2_I1B)  !method2:the same method as surperclass
+            !Compute first crossover point
+            ispl=int(urand()*me%nb*me%n)+1 ![1,me%nb*me%n] 交叉位置起点
+
+            !Now choose between one-point and two-point crossover
+            if (urand()<0.5_wp) then !交叉位置终点
+                ispl2=me%nb*me%n !相当于单点交叉
+            else
+                ispl2=int(urand()*me%nb*me%n)+1 ![1,me%nb*me%n] 相当于两点交叉
+                !Un-comment following line to enforce one-point crossover
+                !ispl2=me%nb*me%n !强制单点交叉
+                if (ispl2<ispl) then !交换以确保ispl1<=isp2
+                    itmp=ispl2
+                    ispl2=ispl
+                    ispl=itmp
+                end if
+            end if
+            
+            block
+                integer,dimension(:),allocatable :: nn1,nn2 !自变量染色体中的起点、终点位置
+                integer :: i1,i2
+                i1=(ispl -1)/me%nb+1  ![1,me%n] !起点所在自变量  ispl  ispl2
+                i2=(ispl2-1)/me%nb+1  ![1,me%n] !终点所在自变量   30     31
+                ALLOCATE(nn1(i1:i2),nn2(i1:i2)) !分配内存         i1     i2
+                !                                                  1      2
+                if (i1/=i2)then !ispl2、ispl不在同一个自变量
+                    do i=i1,i2
+                        if (i==i1) then !最左边自变量
+                            nn1(i)=mod(ispl -1,me%nb)+1
+                            nn2(i)=me%nb
+                        else if (i==i2) then !最右边自变量
+                            nn1(i)=1
+                            nn2(i)=mod(ispl2-1,me%nb)+1
+                        else !中间自变量全部交叉
+                            nn1(i)=1
+                            nn2(i)=me%nb
+                        end if
+                        
+                        itmp=nn2(i)-nn1(i)+1 !避免重复计算
+                        t=IBITS(gn2(i),nn1(i)-1,itmp) !t储存gn2(i)基因信息
+                        CALL MVBITS(gn1(i), nn1(i)-1, itmp, gn2(i), nn1(i)-1)  !gn2=gn1
+                        CALL MVBITS(t     , 0       , itmp, gn1(i), nn1(i)-1)  !gn1=t
+                    end do
+                else !i1==i2  ispl2、ispl在同一个自变量
+                    itmp=ispl2-ispl+1 !避免重复计算
+                    nn1(i1)=mod(ispl -1,me%nb)+1 !自变量染色体中的起点位置
+                    !nn2(i1)=mod(ispl2-1,me%nb)+1 !自变量染色体中的终点位置
+                    nn2(i1)=nn1(i1)+itmp-1 !自变量染色体中的终点位置
+                    
+                    !itmp==ispl2-ispl+1==nn(2,i1)-nn(1,i1)+1              
+                    t=IBITS(gn2(i1),nn1(i1)-1,itmp) !t储存gn2(i1)基因信息
+                    CALL MVBITS(gn1(i1), nn1(i1)-1, itmp, gn2(i1), nn1(i1)-1)  !gn2=gn1
+                    CALL MVBITS(t      , 0        , itmp, gn1(i1), nn1(i1)-1)  !gn1=t
+                end if
+                
+                DEALLOCATE(nn1,nn2) !释放内存
+            end block
+        end select
     end if
 
     end subroutine cross_binary
@@ -398,21 +447,23 @@
     class(pikaia_binary_class),intent(inout)    :: me
     integer(IB),dimension(me%n),intent(inout)   :: gn  !有改动 二进制
 
-    integer :: i,j,inc
+    integer(I1B) :: i,j,inc
 
     !Decide which type of mutation is to occur
-    if (me%imut>=4 .and. urand()<=0.5_wp) then !单点变异+蠕变
+    if (me%imut>=4_I1B .and. urand()<=0.5_wp) then !单点变异+蠕变
 
         !CREEP MUTATION OPERATOR 蠕变即染色体编码随机加1或减1 变异较小
         !Subject each locus to random +/- 1 increment at the rate pmut
-        do i=1,me%n
-            do j=1,me%nb
+        do i=1_I1B,me%n
+            do j=1_I1B,me%nb
                 if (urand()<me%pmut) then
                     if (me%IsGray) then !Gray
-                        gn(i) = ieor(gn(i),shiftl(1_IB,j-1)) !取反
+                        gn(i) = ieor(gn(i),ibset(0_IB,j-1))   !取反  
+                        !another method shiftl(1_IB,j-1)
                     else !Binary
                         inc=nint( urand() )*2-1 !-1或1
-                        gn(i)=gn(i)+shiftl(1_IB,j-1)*inc !shiftl(1_IB,j-1)=2**(j-1)
+                        gn(i)=gn(i)+ibset(0_IB,j-1)*inc   !ibset(0_IB,j-1) =2**(j-1)  
+                        !another method shiftl(1_IB,j-1)
                         !限制范围
                         if (gn(i)<0_IB) gn(i)=0_IB
                         if (gn(i)>me%z) gn(i)=me%z
@@ -425,15 +476,14 @@
 
         !UNIFORM MUTATION OPERATOR 统一变异操作 变异较大 可能出现0变7或7变0
         !Subject each locus to random mutation at the rate pmut
-        do i=1,me%n !染色体每个位置
-            do j=1,me%nb,3 ! 三个位置分别为j j+1 j+2
+        do i=1_I1B,me%n !染色体每个位置
+            do j=1_I1B,me%nb,3_I1B ! 三个位置分别为j j+1 j+2
                 !nd 9  8  7  6  5  4 
                 !nb 30 27 24 20 17 14
                 if (urand()<me%pmut) then ! 4<=nd<=9
                     !int(urand()*4) ![0,3] or [00,11]
-                    !if(me%nb==20 .or. me%nb==17 .or. me%nb==14)then !mod(me%nb,3)==2
-                    if(me%nd<=6)then !mod(me%nb,3)==2
-                        if(j==me%nb-1)then !最后一个位置的位起点 19或16或13
+                    if(me%nd<=6_I1B)then !mod(me%nb,3)==2
+                        if(j==me%nb-1_I1B)then !最后一个位置的位起点 19或16或13
                             !int32 最低位为0(右边第1位) 最高位为31(右边第32位)
                             !0为随机数位起点 2为位长度 j-1为gn(i)位起点
                             CALL MVBITS(int(urand()*4), 0, 2, gn(i), j-1)
@@ -443,9 +493,6 @@
                     !int(urand()*8) ![0,7] or [000,111]
                     !0为随机数位起点 3为位长度 j-1为gn(i)位起点
                     CALL MVBITS(int(urand()*8), 0, 3, gn(i), j-1)
-                    !限制范围
-                    !if (gn(i)<0_IB) gn(i)=0_IB
-                    !if (gn(i)>me%z) gn(i)=me%z
                 end if
             end do
         end do
@@ -489,7 +536,7 @@
 
     me%IsGray=IsGray !T Gray,F Binary
     !Print a header
-    if (me%ivrb>0) then !打印表头
+    if (me%ivrb>0_I1B) then !打印表头
         write(output_unit,'(A,L4)')    'Chromosome Is Encoded with Gray: ',me%IsGray !有改动 二进制
     end if
     end subroutine SetIsGray

@@ -54,9 +54,10 @@
                 convergence_window  = 200,&
                 iseed               = seed)
     !call p%SetIsGray(IsGray=.true.) !F:Binary T:Gray
-    !imut  1   2  3   4  5   6
-    !ngen 103 85 154 38 143 213 method1
-    !ngen 65 107 425 50 20  243 method2
+    !imut  1   2  3    4   5   6
+    !ngen  51 75 203  28  22  24 superclass
+    !ngen 103 85 154  38 143 213 subclass method1
+    !ngen  51 32 305 206  98 343 subclass method2
     !Now call pikaia:
     call cpu_time(tstart)
     call p%solve(x,f,status) ![xl,xu]

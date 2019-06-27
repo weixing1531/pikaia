@@ -70,7 +70,7 @@
         !! Main class for using the Pikaia algorithm.
         !! INIT and SOLVE are the only public methods. 公开方法：init 和 solve
 
-        integer(I1B) :: n = 0  !number of solution variables 自变量个数 有改动
+        integer(I1B) :: n = 0_I1B  !number of solution variables 自变量个数 有改动
         real(wp),dimension(:),allocatable :: xl    !! lower bounds of x 成员变量为动态数组
         real(wp),dimension(:),allocatable :: xu    !! upper bound of x 成员变量为动态数组
         real(wp),dimension(:),allocatable :: del   !自变量定义域长度 成员变量为动态数组
@@ -78,16 +78,16 @@
         !other solution inputs (with default values):
         integer  :: np                 = 100 !种群数 必须为偶数
         integer  :: ngen               = 500 !迭代数
-        integer(I1B)  :: nd            = 5   !有效数字 有改动 min:4 max:9
+        integer(I1B)  :: nd            = 5_I1B   !有效数字 有改动 min:4 max:9
         real(wp) :: pcross             = 0.85_wp !交叉概率
-        integer(I1B)  :: imut          = 2 !变异模式 有改动
+        integer(I1B)  :: imut          = 2_I1B !变异模式 有改动
         real(wp) :: pmuti              = 0.005_wp  !变异概率初始值
         real(wp) :: pmutmn             = 0.0005_wp !最小变异概率
         real(wp) :: pmutmx             = 0.25_wp   !最大变异概率
         real(wp) :: fdif               = 1.0_wp !相对适应度差异 用于子程序select_parents
-        integer(I1B)  :: irep          = 1 !繁殖计划 有改动
-        integer(I1B)  :: ielite        = 1 !是否遗传精英基因,0否1是 用于子程序newpop  有改动
-        integer(I1B)  :: ivrb          = 0 !打印模式 0无1最小3冗长  有改动
+        integer(I1B)  :: irep          = 1_I1B !繁殖计划 有改动
+        integer(I1B)  :: ielite        = 1_I1B !是否遗传精英基因,0否1是 用于子程序newpop  有改动
+        integer(I1B)  :: ivrb          = 0_I1B !打印模式 0无1最小3冗长  有改动
         real(wp) :: convergence_tol    = 0.0001_wp !收敛判别 两次迭代适应度差值
         integer :: convergence_window  = 20 !收敛窗口  有改动
         integer  :: iseed              = 999 !随机种子数
@@ -256,7 +256,7 @@
     status = 0
 
     !Print a header
-    if (me%ivrb>0) then !打印表头
+    if (me%ivrb>0_I1B) then !打印表头
         write(output_unit,'(A)') '------------------------------------------------------------'
         write(output_unit,'(A)') '              PIKAIA Genetic Algorithm Report               '
         write(output_unit,'(A)') '------------------------------------------------------------'
@@ -273,24 +273,24 @@
         write(output_unit,'(A,E11.4)') '          Convergence tolerance: ',me%convergence_tol
         write(output_unit,'(A,I4)')    '             Convergence window: ',me%convergence_window
         select case (me%imut) !变异模式
-        case(1); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Constant Rate'
-        case(2); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (F)'
-        case(3); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (D)'
-        case(4); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Constant Rate'
-        case(5); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (F)'
-        case(6); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (D)'
+        case(1_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Constant Rate'
+        case(2_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (F)'
+        case(3_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform, Variable Rate (D)'
+        case(4_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Constant Rate'
+        case(5_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (F)'
+        case(6_I1B); write(output_unit,'(A)') '                  Mutation Mode: Uniform+Creep, Variable Rate (D)'
         end select
         select case (me%irep)  !繁殖模式
-        case(1); write(output_unit,'(A)') '              Reproduction Plan: Full generational replacement'
-        case(2); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-random'
-        case(3); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-worst'
+        case(1_I1B); write(output_unit,'(A)') '              Reproduction Plan: Full generational replacement'
+        case(2_I1B); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-random'
+        case(3_I1B); write(output_unit,'(A)') '              Reproduction Plan: Steady-state-replace-worst'
         end select
         write(output_unit,'(A)') '------------------------------------------------------------'
     end if
 
     !Check some control values 检查变异模式
-    if (me%imut/=1 .and. me%imut/=2 .and. me%imut/=3 .and. &
-          me%imut/=4 .and. me%imut/=5 .and. me%imut/=6) then
+    if (me%imut/=1_I1B .and. me%imut/=2_I1B .and. me%imut/=3_I1B .and. &
+          me%imut/=4_I1B .and. me%imut/=5_I1B .and. me%imut/=6_I1B) then
        write(output_unit,'(A)') ' ERROR: illegal value for Mutation Mode.'
        status = 5
     end if
@@ -300,7 +300,7 @@
        status = 9
     end if
 
-    if (me%irep/=1 .and. me%irep/=2 .and. me%irep/=3) then !检查繁殖变异模式
+    if (me%irep/=1_I1B .and. me%irep/=2_I1B .and. me%irep/=3_I1B) then !检查繁殖变异模式
        write(output_unit,'(A)') ' ERROR: illegal value for Reproduction plan.'
        status = 10
     end if
@@ -310,7 +310,7 @@
        status = 4
     end if
 
-    if (me%ielite/=0 .and. me%ielite/=1) then
+    if (me%ielite/=0_I1B .and. me%ielite/=1_I1B) then
        write(output_unit,'(A)') ' ERROR: illegal value for Elitism flag.'
        status = 11
     end if
@@ -330,7 +330,7 @@
         status = 103
     end if
 
-    if (me%nd>9 .or. me%nd<4) then !检查有效数字 有改动
+    if (me%nd>9_I1B .or. me%nd<4_I1B) then !检查有效数字 有改动
         write(output_unit,'(A)') ' ERROR: illegal value for Chromosome length.'
         status = 104
     end if
@@ -345,19 +345,19 @@
        status = 106
     end if
     !以下是警告
-    if (me%irep==1 .and. me%imut==1 .and. me%pmuti>0.5_wp .and. me%ielite==0) then
+    if (me%irep==1_I1B .and. me%imut==1_I1B .and. me%pmuti>0.5_wp .and. me%ielite==0_I1B) then
        write(output_unit,'(A)') &
         ' WARNING: dangerously high value for Initial mutation rate; '//&
         '(Should enforce elitism with ielite=1.)'
     end if
 
-    if (me%irep==1 .and. me%imut==2 .and. me%pmutmx>0.5_wp .and. me%ielite==0) then
+    if (me%irep==1_I1B .and. me%imut==2_I1B .and. me%pmutmx>0.5_wp .and. me%ielite==0_I1B) then
        write(output_unit,'(A)') &
        ' WARNING: dangerously high value for Maximum mutation rate; '//&
        '(Should enforce elitism with ielite=1.)'
     end if
 
-    if (me%fdif<0.33_wp .and. me%irep/=3) then
+    if (me%fdif<0.33_wp .and. me%irep/=3_I1B) then
        write(output_unit,'(A)') &
        ' WARNING: dangerously low value of Relative fitness differential.'
     end if
@@ -805,7 +805,8 @@
     integer(I1B),dimension(me%n*me%nd),intent(inout) :: gn1 !有改动
     integer(I1B),dimension(me%n*me%nd),intent(inout) :: gn2 !有改动
 
-    integer :: i, ispl, ispl2, itmp, t
+    integer :: i, ispl, ispl2, itmp
+    integer(I1B) :: t !有改动
 
     !Use crossover probability to decide whether a crossover occurs
     if (urand()<me%pcross) then
@@ -815,11 +816,11 @@
 
         !Now choose between one-point and two-point crossover
         if (urand()<0.5_wp) then !交叉位置终点
-            ispl2=me%n*me%nd
+            ispl2=me%n*me%nd !相当于单点交叉
         else
-            ispl2=int(urand()*me%n*me%nd)+1
+            ispl2=int(urand()*me%n*me%nd)+1 !相当于两点交叉
             !Un-comment following line to enforce one-point crossover
-            !ispl2=me%n*me%nd
+            !ispl2=me%n*me%nd !强制单点交叉
             if (ispl2<ispl) then !交换以确保ispl1<isp2
                 itmp=ispl2
                 ispl2=ispl
@@ -875,7 +876,7 @@
     logical :: fix
 
     !Decide which type of mutation is to occur
-    if (me%imut>=4 .and. urand()<=0.5_wp) then !单点变异+蠕变
+    if (me%imut>=4_I1B .and. urand()<=0.5_wp) then !单点变异+蠕变
 
         !CREEP MUTATION OPERATOR 蠕变即染色体编码随机加1或减1 变异较小
         !Subject each locus to random +/- 1 increment at the rate pmut
