@@ -54,11 +54,12 @@
 
     module pikaia_module
 
-    use,intrinsic :: iso_fortran_env
+    use,intrinsic :: iso_fortran_env, only: real64,int8,int32,output_unit
 
     implicit none
 
-    public !为了便于子类继承父类所有公有的实例变量和方法
+    private
+    public::rninit,urand
 
     integer,parameter,private :: wp  = real64 !! Default real kind [8 bytes]. 默认实数为双精度
     integer,parameter,private :: I1B = int8   !染色体十进制编码数组8字节就足够了 [-127,128] 有改动

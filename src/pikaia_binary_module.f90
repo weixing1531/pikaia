@@ -55,7 +55,7 @@
     module pikaia_binary_module
 
     use pikaia_module, only: pikaia_class,urand,rninit !rqsort所在实例方法rnkpop直接继承父类
-    use,intrinsic :: iso_fortran_env
+    use,intrinsic :: iso_fortran_env, only: real64,int8,int32,output_unit
 
     implicit none
 
@@ -194,10 +194,10 @@
     end if
 
     block !有改动 二进制
-        integer(IB),pointer::a
+        integer(IB),pointer :: a
         allocate(a)
 
-        if (me%nb > bit_size(a) - 1) then !bit_size(a)=32 最高位为符号位 编码不得占用
+        if (me%nb > DIGITS(a)) then !DIGITS(a)=bit_size(a)-1=31 最高位为符号位 编码不得占用
             write(output_unit,'(A)') &
             ' ERROR: IB is too small, shoud be int64.'
             stop  !有改动
@@ -299,14 +299,14 @@
     integer(IB),dimension(me%n),intent(in)   :: gn !有改动 二进制
     real(wp),dimension(me%n),intent(out)     :: ph ![0,1]
 
-    if(me%IsGray)then
+    if(.not.me%IsGray)then !me%IsGray=F Binary
+        ph=gn/me%z !有改动 二进制 二进制编码转换为实数[0,1]
+    else !me%IsGray=T Gray
         block
             integer(IB),dimension(me%n) :: gn0
             call gray2binary(gn,gn0) !格雷编码转换为二进制编码
             ph=real(gn0,wp)/me%z !有改动 二进制 二进制编码转换为实数[0,1]
         end block
-    else
-        ph=gn/me%z !有改动 二进制 二进制编码转换为实数[0,1]
     end if
 
     end subroutine decode_binary
@@ -457,16 +457,16 @@
         do i=1_I1B,me%n
             do j=1_I1B,me%nb
                 if (urand()<me%pmut) then
-                    if (me%IsGray) then !Gray
-                        gn(i) = ieor(gn(i),ibset(0_IB,j-1))   !取反  
-                        !another method shiftl(1_IB,j-1)
-                    else !Binary
+                    if (.not.me%IsGray) then !Binary
                         inc=nint( urand() )*2-1 !-1或1
-                        gn(i)=gn(i)+ibset(0_IB,j-1)*inc   !ibset(0_IB,j-1) =2**(j-1)  
+                        gn(i)=gn(i)+ibset(0_IB,j-1)*inc     !ibset(0_IB,j-1) =2**(j-1)  
                         !another method shiftl(1_IB,j-1)
                         !限制范围
                         if (gn(i)<0_IB) gn(i)=0_IB
                         if (gn(i)>me%z) gn(i)=me%z
+                    else !Gray
+                        gn(i) = ieor(gn(i),ibset(0_IB,j-1)) !取反  
+                        !another method shiftl(1_IB,j-1)
                     end if
                 end if
             end do
