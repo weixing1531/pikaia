@@ -54,7 +54,7 @@
 
     module pikaia_binary_module
 
-    use pikaia_module, only: pikaia_class,urand,rninit !rqsort所在实例方法rnkpop直接继承父类
+    use pikaia_module
     use,intrinsic :: iso_fortran_env, only: real64,int8,int32,output_unit
 
     implicit none
@@ -94,7 +94,6 @@
 
     end type pikaia_binary_class
     !*********************************************************
-    include "interface.f90" !abstract interface 父类与子类共享接口代码
     !子类新的实用方法有:binary2gray,gray2binary
     contains
 !*****************************************************************************************
